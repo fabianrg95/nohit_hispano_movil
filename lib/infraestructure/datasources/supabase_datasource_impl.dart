@@ -13,7 +13,7 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
     final respuesta = await supabase
         .from('juegos')
         .select<List<Map<String, dynamic>>>(
-            'id, nombre, url_imagen, oficial_team_hitless')
+            'id, nombre, subtitulo, url_imagen, oficial_team_hitless')
         .eq('oficial_team_hitless', oficialTeamHitless);
     return JuegoMapper.supabaseToEntity(respuesta);
   }

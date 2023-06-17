@@ -24,8 +24,6 @@ class JugadoresViewState extends ConsumerState<JugadoresView> {
   @override
   Widget build(BuildContext context) {
     listaJugadores = ref.watch(jugadorProvider);
-    final colors = Theme.of(context).colorScheme;
-    final textStyle = Theme.of(context).textTheme;
 
     if (listaJugadores.isEmpty) {
       return const Column(
@@ -52,11 +50,7 @@ class JugadoresViewState extends ConsumerState<JugadoresView> {
                     ));
               },
               icon: const Icon(Icons.search))
-        ], title: Text(
-              'Jugadores',
-              style: textStyle.titleLarge?.copyWith(color: colors.primary),
-            ),
-            centerTitle: true),
+        ], title: const Text('Jugadores'), centerTitle: true),
         body: ListView.builder(
             itemCount: listaJugadores.length,
             itemBuilder: (context, index) {

@@ -20,6 +20,22 @@ class BuscarJugadoresDelegate extends SearchDelegate {
   }
 
   @override
+  ThemeData appBarTheme(BuildContext context) {
+    final ThemeData color = Theme.of(context);
+    return color.copyWith(
+        appBarTheme: AppBarTheme(
+          foregroundColor: color.colorScheme.tertiary,
+          color: color.colorScheme.secondary,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20)))
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+            labelStyle: TextStyle(color: color.colorScheme.secondary)));
+  }
+
+  @override
   List<Widget>? buildActions(BuildContext context) {
     return [
       StreamBuilder(
@@ -67,13 +83,13 @@ class BuscarJugadoresDelegate extends SearchDelegate {
     final textStyle = Theme.of(context).textTheme;
     final color = Theme.of(context).colorScheme;
     if (query.isEmpty) {
-      return  Center(
-        child:  Column(
+      return Center(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'Ingrese un nombre de usuario',
-              style: textStyle.titleMedium?.copyWith(color: color.primary.withAlpha(150)),
+              style: textStyle.titleMedium?.copyWith(color: color.tertiary),
             ),
           ],
         ),

@@ -7,6 +7,7 @@ class JuegoMapper {
       juegos.add(Juego(
           id: element['id'],
           nombre: element['nombre'],
+          subtitulo: element['subtitulo'],
           oficialTeamHitles: element['oficial_team_hitless'],
           urlImagen: element['url_imagen']));
     }
