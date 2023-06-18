@@ -19,13 +19,15 @@ class ItemJugador extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
       child: Container(
-        decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), boxShadow: [
-          BoxShadow(
-              color: Colors.black38,
-              spreadRadius: 0,
-              blurRadius: 5,
-              offset: Offset(0, 0))
-        ]),
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black38,
+                  spreadRadius: 0,
+                  blurRadius: 5,
+                  offset: Offset(0, 0))
+            ]),
         child: Card(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
@@ -33,7 +35,9 @@ class ItemJugador extends StatelessWidget {
           child: ListTile(
             leading: BanderaJugador(codigoBandera: jugador.codigoBandera),
             title: Text(jugador.nombre),
-            subtitle: Text(jugador.pronombre),
+            subtitle: Visibility(
+                visible: jugador.pronombre != null,
+                child: Text(jugador.pronombre.toString())),
             dense: false,
             titleTextStyle: styleText.titleMedium,
             subtitleTextStyle: styleText.bodySmall,

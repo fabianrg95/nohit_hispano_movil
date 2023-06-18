@@ -3,9 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   static const Color primario = Color(0xff48426D);
-  static const Color secundario = Color.fromARGB(255, 53, 49, 85);
-  static const Color terciario = Color.fromARGB(255, 238, 193, 141);
-  static const Color texto = Color(0xffBEABC2);
+  static const Color secundario = Color(0xff342F52);
+  static const Color terciario = Color(0xffF0C38E);
+  static const Color texto = Color(0xffF9D1BA);
 
   ThemeData getTheme() => ThemeData(
       fontFamily: GoogleFonts.poppins().fontFamily,
@@ -25,7 +25,8 @@ class AppTheme {
           background: primario,
           primary: primario,
           secondary: secundario,
-          tertiary: terciario),
+          tertiary: terciario,
+          surface: texto),
       tabBarTheme: TabBarTheme(
           indicator: BoxDecoration(
               color: terciario, borderRadius: BorderRadius.circular(10))),

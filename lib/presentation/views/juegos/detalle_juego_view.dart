@@ -13,52 +13,54 @@ class DetalleJuego extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
 
-    return Scaffold(
-      body: CustomScrollView(
-        physics: const ClampingScrollPhysics(),
-        slivers: [
-          SliverAppBar(
-            backgroundColor: Colors.black,
-            expandedHeight: size.height * 0.7,
-            foregroundColor: colors.primary,
-            flexibleSpace: FlexibleSpaceBar(
-              titlePadding: const EdgeInsets.only(bottom: 0),
-              title: _CustomGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: const [0.7, 1.0],
-                  colors: [Colors.transparent, scaffoldBackgroundColor]),
-              background: Stack(children: [
-                SizedBox.expand(
-                  child: juego.urlImagen != null
-                      ? Image.network(juego.urlImagen!, fit: BoxFit.cover)
-                      : Image.asset('assets/images/no-game-image.webp',
-                          fit: BoxFit.cover),
-                ),
-                const _CustomGradient(begin: Alignment.topLeft, stops: [
-                  0.0,
-                  0.3
-                ], colors: [
-                  Colors.black87,
-                  Colors.transparent,
-                ])
-              ]),
+    return SafeArea(
+      child: Scaffold(
+        body: CustomScrollView(
+          physics: const ClampingScrollPhysics(),
+          slivers: [
+            SliverAppBar(
+              backgroundColor: Colors.black,
+              expandedHeight: size.height * 0.5,
+              foregroundColor: colors.tertiary,
+              flexibleSpace: FlexibleSpaceBar(
+                titlePadding: const EdgeInsets.only(bottom: 0),
+                title: _CustomGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: const [0.7, 1.0],
+                    colors: [Colors.transparent, scaffoldBackgroundColor]),
+                background: Stack(children: [
+                  SizedBox.expand(
+                    child: juego.urlImagen != null
+                        ? Image.network(juego.urlImagen!, fit: BoxFit.cover)
+                        : Image.asset('assets/images/no-game-image.webp',
+                            fit: BoxFit.cover),
+                  ),
+                  const _CustomGradient(begin: Alignment.topLeft, stops: [
+                    0.0,
+                    0.3
+                  ], colors: [
+                    Colors.black87,
+                    Colors.transparent,
+                  ])
+                ]),
+              ),
             ),
-          ),
-          SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) {
-            return Column(
-              children: [
-                Center(
-                  child: Text(juego.nombre,
-                      textAlign: TextAlign.center,
-                      style: textStyle.titleLarge!
-                          .copyWith(color: colors.primary)),
-                )
-              ],
-            );
-          }, childCount: 1))
-        ],
+            SliverList(
+                delegate: SliverChildBuilderDelegate((context, index) {
+              return Column(
+                children: [
+                  Center(
+                    child: Text(juego.nombre,
+                        textAlign: TextAlign.center,
+                        style: textStyle.titleLarge!
+                            .copyWith(color: colors.primary)),
+                  )
+                ],
+              );
+            }, childCount: 1))
+          ],
+        ),
       ),
     );
   }

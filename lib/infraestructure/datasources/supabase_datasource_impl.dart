@@ -36,7 +36,7 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
             'id, nombre_usuario, anio_nacimiento, url_canal_youtube, url_canal_twitch, '
             'pronombre(pronombre, genero), '
             'nacionalidad(pais, codigo_bandera, gentilicio_masculino, gentilicio_femenino, neutro, continente(nombre)), '
-            'partidas(id, nombre_partida, juegos(id, nombre)))')
+            'partidas(id, nombre_partida, juegos(id, nombre, subtitulo, url_imagen, oficial_team_hitless)))')
         .eq('id', idJugador);
     return JugadorMapper.detalleJugadorToEntity(respuesta);
   }

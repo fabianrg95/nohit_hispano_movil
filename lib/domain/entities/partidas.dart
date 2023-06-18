@@ -1,8 +1,8 @@
 import 'package:no_hit/domain/entities/entities.dart';
 
 class Partidas {
-  final String nombreJuego;
+  final Juego juego;
   List<DetallePartida> partidas;
 
-  Partidas({required this.nombreJuego, required this.partidas});
+  Partidas({required this.juego, required this.partidas});
 }

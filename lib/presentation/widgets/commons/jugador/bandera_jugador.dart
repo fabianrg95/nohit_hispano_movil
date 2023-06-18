@@ -13,7 +13,7 @@ class BanderaJugador extends StatelessWidget {
     return Visibility(
       visible: codigoBandera != null,
       replacement: Image.asset(
-        'assets/images/panel_blanco.png',
+        'assets/images/panel_negro.png',
         fit: BoxFit.fill,
         width: 40,
         height: 35,

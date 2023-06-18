@@ -9,11 +9,11 @@ class JugadorMapper {
           id: element['id'],
           nombre: element['nombre_usuario'],
           pronombre: element['pronombre'] != null
-              ? element['pronombre']['pronombre'] ?? 'Any'
-              : 'Any',
+              ? element['pronombre']['pronombre']
+              : null,
           pais: element['nacionalidad'] != null
-              ? element['nacionalidad']['pais'] ?? 'Sin nacionalidad'
-              : 'Sin nacionalidad',
+              ? element['nacionalidad']['pais']
+              : null,
           codigoBandera: element['nacionalidad'] != null
               ? element['nacionalidad']['codigo_bandera']
               : null,
@@ -33,13 +33,18 @@ class JugadorMapper {
 
       final List<Partidas> partidas = [];
       Map<String, Partidas> mapaPartidas = {};
-      partidasSupa
-          .sort((a, b) => a['juegos']['nombre'].toString().compareTo(b['juegos']['nombre']));
+      partidasSupa.sort((a, b) =>
+          a['juegos']['nombre'].toString().compareTo(b['juegos']['nombre']));
       for (var run in partidasSupa) {
         var nombreJuego = run['juegos']['nombre'];
         if (!mapaPartidas.containsKey(nombreJuego)) {
           var listaPartidasAgrupadas = Partidas(
-              nombreJuego: nombreJuego,
+              juego: Juego(
+                  id: run['juegos']['id'],
+                  nombre: run['juegos']['nombre'],
+                  subtitulo: run['juegos']['subtitulo'],
+                  oficialTeamHitles: run['juegos']['oficial_team_hitless'],
+                  urlImagen: run['juegos']['url_imagen']),
               partidas: _obtenerPartidas(nombreJuego, partidasSupa));
           mapaPartidas = {...mapaPartidas, nombreJuego: listaPartidasAgrupadas};
           partidas.add(listaPartidasAgrupadas);
@@ -53,14 +58,14 @@ class JugadorMapper {
           urlTwitch: detalle['url_canal_twitch'],
           urlYoutube: detalle['url_canal_youtube'],
           pronombre: detalle['pronombre'] != null
-              ? detalle['pronombre']['pronombre'] ?? 'Any'
-              : 'Any',
+              ? detalle['pronombre']['pronombre']
+              : null,
           genero: detalle['pronombre'] != null
               ? detalle['pronombre']['genero']
-              : 'Neutro',
+              : null,
           pais: detalle['nacionalidad'] != null
-              ? detalle['nacionalidad']['pais'] ?? 'Sin nacionalidad'
-              : 'Sin nacionalidad',
+              ? detalle['nacionalidad']['pais']
+              : null,
           gentilicioFemenino: detalle['nacionalidad'] != null
               ? detalle['nacionalidad']['gentilicio_femenino']
               : null,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/domain/entities/entities.dart';
 import 'package:no_hit/presentation/providers/providers.dart';
+import 'package:no_hit/presentation/views/juegos/detalle_juego_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class ListaJuegos extends ConsumerStatefulWidget {
@@ -43,7 +44,11 @@ class TabViewJuegosState extends ConsumerState<ListaJuegos> {
         return Padding(
             padding:
                 const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-            child: CardJuego(juego: juego, accion: () {}));
+            child: CardJuego(juego: juego, accion: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        DetalleJuego(juego: juego)))));
       },
     );
   }

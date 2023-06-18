@@ -8,10 +8,15 @@ class PantallaCargaBasica extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SafeArea(
-        child: Center(
-      child: CircularProgressIndicator(
-        strokeWidth: 2,
-      ),
-    ));
+        child: Scaffold(
+            body: Center(
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(strokeWidth: 2),
+            Text('Consultando informacion jugador')
+          ]),
+    )));
   }
 }
