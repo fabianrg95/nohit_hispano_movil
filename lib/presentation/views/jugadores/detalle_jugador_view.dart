@@ -1,3 +1,4 @@
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/domain/entities/entities.dart';
@@ -151,7 +152,7 @@ class _InformacionPartidasJugador extends StatelessWidget {
     final textStyle = Theme.of(context).textTheme;
 
     return Container(
-      height: 300,
+      height: 265,
       margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
       padding: const EdgeInsets.only(top: 10, bottom: 10),
       decoration: BoxDecoration(
@@ -180,49 +181,61 @@ class _InformacionPartidasJugador extends StatelessWidget {
                 Partidas partida = jugador!.partidas[index];
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: SizedBox(
-                    width: 170,
-                    child: Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            side: BorderSide(color: color.tertiary)),
-                        color: color.primary,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            ImagenJuego(
-                                juego: partida.juego,
-                                existeUrl: partida.juego.urlImagen != null),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                              child: Text(partida.juego.nombre,
-                                  maxLines: 2,
-                                  textAlign: TextAlign.center,
-                                  style: textStyle.bodyMedium
-                                      ?.copyWith(color: color.surface)),
-                            ),
-                            Visibility(
-                              visible: partida.juego.subtitulo != null,
-                              child: Text(partida.juego.subtitulo.toString(),
-                                    textAlign: TextAlign.center,
-                                    style: textStyle.labelSmall
-                                        ?.copyWith(color: color.surface)),
-                            ),
-                            const Expanded(child: Text('')),
-                            Text(
-                                '${partida.partidas.length} partida${partida.partidas.length > 1 ? 's' : ''}',
-                                style: textStyle.labelSmall
-                                    ?.copyWith(color: color.surface))
-                          ],
-                        )),
-                  ),
+                  child: _TarjetaPartidaJuegoJugador(partida: partida),
                 );
               },
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _TarjetaPartidaJuegoJugador extends StatelessWidget {
+  final Partidas partida;
+
+  const _TarjetaPartidaJuegoJugador({required this.partida});
+
+  @override
+  Widget build(BuildContext context) {
+    final color = Theme.of(context).colorScheme;
+    final textStyle = Theme.of(context).textTheme;
+
+    return SizedBox(
+      width: 170,
+      child: Card(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+              side: BorderSide(color: color.tertiary)),
+          color: color.primary,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ImagenJuego(
+                  juego: partida.juego,
+                  existeUrl: partida.juego.urlImagen != null),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Text(partida.juego.nombre,
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    style:
+                        textStyle.bodyMedium?.copyWith(color: color.surface)),
+              ),
+              Visibility(
+                visible: partida.juego.subtitulo != null,
+                child: Text(partida.juego.subtitulo.toString(),
+                    textAlign: TextAlign.center,
+                    style:
+                        textStyle.labelSmall?.copyWith(color: color.surface)),
+              ),
+              const Expanded(child: Text('')),
+              Text(
+                  '${partida.partidas.length} partida${partida.partidas.length > 1 ? 's' : ''}',
+                  style: textStyle.labelSmall?.copyWith(color: color.surface))
+            ],
+          )),
     );
   }
 }

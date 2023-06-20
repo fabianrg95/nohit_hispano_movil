@@ -46,17 +46,15 @@ class _InicioScreenState extends State<InicioScreen>
       );
     }
 
+    final scaffoldKey = GlobalKey<ScaffoldState>();
+
     return Scaffold(
-      body: PageView(
-        //* Esto evitará que rebote
-        physics: const NeverScrollableScrollPhysics(),
-        controller: pageController,
-        //index: pageIndex,
-        children: viewRoutes,
-      ),
-      bottomNavigationBar: CustomBottomNavigation(
-        currentIndex: widget.pageIndex,
-      ),
+      key: scaffoldKey,
+      body: const PartidasView(),
+      //drawer: CustomDraw(currentIndex: widget.pageIndex),
+      // bottomNavigationBar: CustomBottomNavigation(
+      //   currentIndex: widget.pageIndex,
+      // ),
     );
   }
 

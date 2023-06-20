@@ -26,15 +26,19 @@ class JugadoresViewState extends ConsumerState<JugadoresView> {
     listaJugadores = ref.watch(jugadorProvider);
 
     if (listaJugadores.isEmpty) {
-      return const Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(
-            strokeWidth: 2,
+      return const Scaffold(
+        body: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                strokeWidth: 2,
+              ),
+              Text('Contando hits')
+            ],
           ),
-          Text('Contando hits')
-        ],
+        ),
       );
     }
 

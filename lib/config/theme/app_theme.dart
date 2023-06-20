@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  static const Color primario = Color(0xff48426D);
-  static const Color secundario = Color(0xff342F52);
-  static const Color terciario = Color(0xffF0C38E);
+  static const Color primario = Color.fromARGB(255, 33, 51, 86);
+  static const Color secundario = Color(0xff424E66);
+  static const Color terciario = Color(0xffE9C38C);
   static const Color texto = Color(0xffF9D1BA);
 
   ThemeData getTheme() => ThemeData(
@@ -13,7 +13,7 @@ class AppTheme {
           const ProgressIndicatorThemeData(circularTrackColor: terciario),
       useMaterial3: true,
       cardTheme: const CardTheme(color: secundario),
-      listTileTheme: const ListTileThemeData(textColor: texto),
+      listTileTheme: const ListTileThemeData(textColor: terciario),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: terciario,
           selectedItemColor: Color(0xff353052),

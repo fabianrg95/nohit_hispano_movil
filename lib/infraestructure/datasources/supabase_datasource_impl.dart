@@ -14,7 +14,7 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
         .from('juegos')
         .select<List<Map<String, dynamic>>>(
             'id, nombre, subtitulo, url_imagen, oficial_team_hitless')
-        .eq('oficial_team_hitless', oficialTeamHitless);
+        .eq('oficial_team_hitless', oficialTeamHitless). order('nombre', ascending: true);
     return JuegoMapper.supabaseToEntity(respuesta);
   }
 

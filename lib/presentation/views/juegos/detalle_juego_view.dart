@@ -11,7 +11,7 @@ class DetalleJuego extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     final textStyle = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
-    final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
+    final scaffoldBackgroundColor = Theme.of(context).colorScheme.tertiary;
 
     return SafeArea(
       child: Scaffold(
@@ -19,7 +19,7 @@ class DetalleJuego extends StatelessWidget {
           physics: const ClampingScrollPhysics(),
           slivers: [
             SliverAppBar(
-              backgroundColor: Colors.black,
+              backgroundColor: colors.tertiary,
               expandedHeight: size.height * 0.5,
               foregroundColor: colors.tertiary,
               flexibleSpace: FlexibleSpaceBar(
@@ -50,12 +50,44 @@ class DetalleJuego extends StatelessWidget {
                 delegate: SliverChildBuilderDelegate((context, index) {
               return Column(
                 children: [
-                  Center(
-                    child: Text(juego.nombre,
-                        textAlign: TextAlign.center,
-                        style: textStyle.titleLarge!
-                            .copyWith(color: colors.primary)),
-                  )
+                  Container(
+                    height: 45,
+                    decoration: BoxDecoration(
+                        color: scaffoldBackgroundColor,
+                        borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20))),
+                    child: Center(
+                      child: Text(juego.nombre,
+                          textAlign: TextAlign.center,
+                          style: textStyle.titleLarge!
+                              .copyWith(color: colors.primary)),
+                    ),
+                  ),
+                  Container(
+                      width: size.width * 0.85,
+                      margin: const EdgeInsets.only(left: 5, right: 5),
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: colors.tertiary),
+                          color: colors.secondary,
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(20)),
+                          boxShadow: const [
+                            BoxShadow(
+                                color: Colors.black12,
+                                spreadRadius: 0,
+                                blurRadius: 5,
+                                offset: Offset(0, 0))
+                          ]),
+                      child: Column(
+                        children: [
+                          Visibility(
+                              visible: juego.subtitulo != null,
+                              child: Text(juego.subtitulo.toString()))
+                        ],
+                      ))
                 ],
               );
             }, childCount: 1))
