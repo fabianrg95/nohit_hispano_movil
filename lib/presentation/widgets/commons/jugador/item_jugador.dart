@@ -29,15 +29,17 @@ class ItemJugador extends StatelessWidget {
                   offset: Offset(0, 0))
             ]),
         child: Card(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              side: BorderSide(color: color.tertiary)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: ListTile(
             leading: BanderaJugador(codigoBandera: jugador.codigoBandera),
-            title: Text(jugador.nombre),
+            title: Text(jugador.nombre,
+                style: styleText.bodyMedium?.copyWith(color: color.primary)),
             subtitle: Visibility(
                 visible: jugador.pronombre != null,
-                child: Text(jugador.pronombre.toString())),
+                child: Text(jugador.pronombre.toString(),
+                    style:
+                        styleText.bodyMedium?.copyWith(color: color.primary))),
             dense: false,
             titleTextStyle: styleText.titleMedium,
             subtitleTextStyle: styleText.bodySmall,
@@ -46,8 +48,12 @@ class ItemJugador extends StatelessWidget {
                 MaterialPageRoute(
                     builder: (context) =>
                         DetalleJugadorView(idJugador: jugador.id))),
-            trailing: Text(
-              '${jugador.cantidadPartidas} partida${jugador.cantidadPartidas == 1 ? '' : 's'}',
+            trailing: Chip(
+              elevation: 0,
+              label: Text(
+                '${jugador.cantidadPartidas} partida${jugador.cantidadPartidas == 1 ? '' : 's'}',
+                style: styleText.bodySmall,
+              ),
             ),
           ),
         ),

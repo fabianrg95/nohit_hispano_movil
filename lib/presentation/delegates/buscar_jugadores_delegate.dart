@@ -23,16 +23,23 @@ class BuscarJugadoresDelegate extends SearchDelegate {
   ThemeData appBarTheme(BuildContext context) {
     final ThemeData color = Theme.of(context);
     return color.copyWith(
-        appBarTheme: AppBarTheme(
-          foregroundColor: color.colorScheme.tertiary,
-          color: color.colorScheme.secondary,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)))
+        hintColor: color.colorScheme.primary,
+        textTheme: TextTheme(
+          titleLarge: TextStyle(
+            color: color.colorScheme.primary,
+            fontSize: 24,
+            fontWeight: FontWeight.normal
+          ),
         ),
+        appBarTheme: AppBarTheme(
+            foregroundColor: color.colorScheme.primary,
+            color: color.colorScheme.secondary,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20)))),
         inputDecorationTheme: InputDecorationTheme(
-            labelStyle: TextStyle(color: color.colorScheme.secondary)));
+            labelStyle: TextStyle(color: color.colorScheme.primary)));
   }
 
   @override

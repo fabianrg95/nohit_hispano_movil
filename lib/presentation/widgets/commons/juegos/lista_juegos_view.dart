@@ -32,24 +32,39 @@ class TabViewJuegosState extends ConsumerState<ListaJuegos> {
       return const PantallaCargaBasica();
     }
 
-    return ListView.builder(
-      itemCount: juegos.length + 1,
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        //mainAxisExtent: 300 //tamaño alto de cada item
+      ),
+      itemCount: juegos.length,
       itemBuilder: (BuildContext context, int index) {
-        if (index == juegos.length) {
-          return const SizedBox(height: 50);
-        }
-
         final Juego juego = juegos[index];
 
-        return Padding(
-            padding:
-                const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-            child: CardJuego(juego: juego, accion: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        DetalleJuego(juego: juego)))));
+        return CardJuego(
+          juego: juego,
+          accion: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => DetalleJuego(juego: juego))),
+        );
       },
     );
+
+    // return ListView.builder(
+    //   itemCount: juegos.length,
+    //   itemBuilder: (BuildContext context, int index) {
+    //     final Juego juego = juegos[index];
+
+    //     return CardJuego(
+    //       juego: juego,
+    //       accion: () => Navigator.push(
+    //           context,
+    //           MaterialPageRoute(
+    //               builder: (context) => DetalleJuego(juego: juego))),
+    //       left: index.isEven,
+    //     );
+    //   },
+    // );
   }
 }

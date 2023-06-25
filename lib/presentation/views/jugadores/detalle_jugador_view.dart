@@ -1,4 +1,3 @@
-import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/domain/entities/entities.dart';
@@ -28,6 +27,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
   Widget build(BuildContext context) {
     final DetalleJugador? jugador = ref.watch(detalleJugadorProvider);
     final color = Theme.of(context).colorScheme;
+    final styleTexto = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
 
     if (jugador == null || jugador.id == 0 || jugador.id != widget.idJugador) {
@@ -36,7 +36,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
 
     return Scaffold(
       appBar: AppBar(
-          elevation: 0,
+          elevation: 2,
           title: Text(jugador.nombre),
           centerTitle: true,
           actions: [
@@ -52,7 +52,6 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
               margin: const EdgeInsets.only(left: 5, right: 5),
               padding: const EdgeInsets.only(top: 10, bottom: 10),
               decoration: BoxDecoration(
-                  border: Border.all(color: color.tertiary),
                   color: color.secondary,
                   borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(20),
@@ -69,12 +68,16 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                       children: [
                         Visibility(
                             visible: jugador.pronombre != null,
-                            child: Text(jugador.pronombre.toString())),
+                            child: Text(
+                              jugador.pronombre.toString(),
+                              style: styleTexto.bodyMedium?.copyWith(color: color.primary),
+                            )),
                         Visibility(
                             visible:
                                 jugador.genero != null && jugador.pais != null,
                             child: Text(Nacionalidad.obtenerGentilicioJugador(
-                                jugador))),
+                                jugador),
+                              style: styleTexto.bodyMedium?.copyWith(color: color.primary))),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -131,7 +134,7 @@ class _ListaPartidasJugador extends StatelessWidget {
     required this.jugador,
   });
 
-  final DetalleJugador? jugador;
+  final DetalleJugador jugador;
 
   @override
   Widget build(BuildContext context) {
@@ -139,63 +142,172 @@ class _ListaPartidasJugador extends StatelessWidget {
   }
 }
 
-class _InformacionPartidasJugador extends StatelessWidget {
+class _InformacionPartidasJugador extends StatefulWidget {
   const _InformacionPartidasJugador({
     required this.jugador,
   });
 
-  final DetalleJugador? jugador;
+  final DetalleJugador jugador;
+
+  @override
+  State<_InformacionPartidasJugador> createState() =>
+      _InformacionPartidasJugadorState();
+}
+
+class _InformacionPartidasJugadorState
+    extends State<_InformacionPartidasJugador> {
+  Partidas? partidaSeleccionada;
+  double? heigthContainer;
+
+  @override
+  void initState() {
+    super.initState();
+    heigthContainer = 0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final color = Theme.of(context).colorScheme;
+    final textStyle = Theme.of(context).textTheme;
+    final size = MediaQuery.of(context).size;
+
+    void seleccionarPartida(Partidas partida) async {
+      heigthContainer = 0;
+      await Future(() => const Duration(milliseconds: 500));
+      partidaSeleccionada = partida;
+      setState(() {});
+      heigthContainer = 200;
+    }
+
+    return Column(
+      children: [
+        Container(
+          height: 265,
+          margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
+          padding: const EdgeInsets.only(top: 10, bottom: 10),
+          decoration: BoxDecoration(
+              color: color.secondary,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: const [
+                BoxShadow(
+                    color: Colors.black12,
+                    spreadRadius: 0,
+                    blurRadius: 5,
+                    offset: Offset(0, 0))
+              ]),
+          child: Column(
+            children: [
+              Text('Juegos NoHit',
+                  style: textStyle.titleMedium?.copyWith(color: color.primary)),
+              Divider(color: color.primary),
+              SizedBox(
+                height: 200,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: widget.jugador.partidas.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Partidas partida = widget.jugador.partidas[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: GestureDetector(
+                        onTap: () => seleccionarPartida(partida),
+                        child: _TarjetaPartidaJuegoJugador(
+                            partida: partida, jugador: widget.jugador.nombre),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        AnimatedContainer(
+            duration: const Duration(milliseconds: 500),
+            width: size.width * 0.85,
+            height: heigthContainer,
+            decoration: BoxDecoration(
+                border: Border.all(color: color.tertiary),
+                color: color.secondary,
+                borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20)),
+                boxShadow: const [
+                  BoxShadow(
+                      color: Colors.black12,
+                      spreadRadius: 0,
+                      blurRadius: 5,
+                      offset: Offset(0, 0))
+                ]),
+            child: partidaSeleccionada == null
+                ? const Text('Seleccione una partida')
+                : _DetallePartidas(partidaSeleccionada: partidaSeleccionada!)),
+      ],
+    );
+  }
+}
+
+class _DetallePartidas extends StatelessWidget {
+  const _DetallePartidas({
+    required this.partidaSeleccionada,
+  });
+
+  final Partidas partidaSeleccionada;
 
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme;
     final textStyle = Theme.of(context).textTheme;
 
-    return Container(
-      height: 265,
-      margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
-      padding: const EdgeInsets.only(top: 10, bottom: 10),
-      decoration: BoxDecoration(
-          border: Border.all(color: color.tertiary),
-          color: color.secondary,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: const [
-            BoxShadow(
-                color: Colors.black12,
-                spreadRadius: 0,
-                blurRadius: 5,
-                offset: Offset(0, 0))
-          ]),
-      child: Column(
-        children: [
-          Text('Partidas NoHit',
-              style: textStyle.titleMedium?.copyWith(color: color.surface)),
-          Divider(color: color.tertiary),
-          SizedBox(
-            height: 200,
-            child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: jugador!.partidas.length,
-              itemBuilder: (BuildContext context, int index) {
-                Partidas partida = jugador!.partidas[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: _TarjetaPartidaJuegoJugador(partida: partida),
-                );
-              },
-            ),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Text(partidaSeleccionada.juego.nombre,
+                  style: textStyle.titleMedium?.copyWith(color: color.primary)),
+        ),
+        Divider(color: color.primary),
+        SizedBox(
+          height: 150,
+          width: double.infinity,
+          child: ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            itemCount: partidaSeleccionada.partidas.length,
+            itemBuilder: (BuildContext context, int index) {
+              DetallePartida partida = partidaSeleccionada.partidas[index];
+              return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: Container(
+                      width: 300,
+                      color: color.primary,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: Text(partida.nombre,
+                                maxLines: 2,
+                                textAlign: TextAlign.center,
+                                style: textStyle.bodySmall
+                                    ?.copyWith(color: color.surface)),
+                          )
+                        ],
+                      )));
+            },
           ),
-        ],
-      ),
+        )
+      ],
     );
   }
 }
 
 class _TarjetaPartidaJuegoJugador extends StatelessWidget {
   final Partidas partida;
+  final String jugador;
 
-  const _TarjetaPartidaJuegoJugador({required this.partida});
+  const _TarjetaPartidaJuegoJugador(
+      {required this.partida, required this.jugador});
 
   @override
   Widget build(BuildContext context) {

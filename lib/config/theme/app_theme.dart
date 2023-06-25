@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  static const Color primario = Color.fromARGB(255, 33, 51, 86);
-  static const Color secundario = Color(0xff424E66);
-  static const Color terciario = Color(0xffE9C38C);
-  static const Color texto = Color(0xffF9D1BA);
+  static const Color primario = Color(0Xff253745);
+  static const Color secundario = Color(0xffEDDDC4);
+  static const Color terciario = Color(0xffEDDDC4);
+  static const Color texto = Color(0xffEDDDC4);
 
   ThemeData getTheme() => ThemeData(
       fontFamily: GoogleFonts.poppins().fontFamily,
@@ -13,7 +13,7 @@ class AppTheme {
           const ProgressIndicatorThemeData(circularTrackColor: terciario),
       useMaterial3: true,
       cardTheme: const CardTheme(color: secundario),
-      listTileTheme: const ListTileThemeData(textColor: terciario),
+      listTileTheme: const ListTileThemeData(textColor: texto),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: terciario,
           selectedItemColor: Color(0xff353052),
@@ -33,7 +33,8 @@ class AppTheme {
       appBarTheme: const AppBarTheme(
           backgroundColor: terciario,
           centerTitle: true,
-          foregroundColor: secundario,
+          //titleTextStyle: TextStyle(color: primario),
+          foregroundColor: primario,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),

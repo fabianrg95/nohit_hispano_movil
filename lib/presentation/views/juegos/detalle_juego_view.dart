@@ -85,7 +85,8 @@ class DetalleJuego extends StatelessWidget {
                         children: [
                           Visibility(
                               visible: juego.subtitulo != null,
-                              child: Text(juego.subtitulo.toString()))
+                              child: Text(juego.subtitulo.toString(),
+                              style: textStyle.bodyMedium?.copyWith(color: colors.primary)))
                         ],
                       ))
                 ],

@@ -31,7 +31,6 @@ dependencies:
  animate_do: ^3.0.2
  country_icons: ^2.0.2
  cupertino_icons: ^1.0.2
- flip_card: ^0.7.0
  flutter:
   sdk: flutter
  flutter_dotenv: ^5.0.2

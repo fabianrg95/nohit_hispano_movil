@@ -10,21 +10,19 @@ class JuegosView extends StatefulWidget {
   State<JuegosView> createState() => _JuegosViewState();
 }
 
-class _JuegosViewState extends State<JuegosView>
-    with AutomaticKeepAliveClientMixin {
+class _JuegosViewState extends State<JuegosView> {
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-
-    return const Scaffold(
-      body: SafeArea(
-        child: TapbarJuegos(),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Juegos'),
+        ),
+        drawer: const CustomDraw(),
+        body: const TapbarJuegos(),
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }
 
 class TapbarJuegos extends StatefulWidget {
@@ -54,43 +52,36 @@ class TapbarJuegosState extends State<TapbarJuegos>
   Widget build(BuildContext context) {
     final tema = Theme.of(context);
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Juegos'),
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height - 112,
-              child: Column(children: [
-                const SizedBox(height: 5),
-                Container(
-                    width: MediaQuery.of(context).size.height,
-                    decoration: BoxDecoration(
-                        color: tema.colorScheme.secondaryContainer,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Column(children: [
-                      TabBar(
-                          indicatorSize: TabBarIndicatorSize.tab,
-                          controller: tabController,
-                          labelStyle: tema.textTheme.titleMedium,
-                          unselectedLabelStyle: tema.textTheme.bodySmall,
-                          tabs: const [
-                            Tab(text: 'Oficiales'),
-                            Tab(text: 'No oficiales')
-                          ])
-                    ])),
-                Expanded(
-                  child: TabBarView(controller: tabController, children: const [
-                    ListaJuegos(juegosOficiales: true),
-                    ListaJuegos(juegosOficiales: false)
-                  ]),
-                )
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height - 112,
+          child: Column(children: [
+            const SizedBox(height: 5),
+            Container(
+                width: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                    color: tema.colorScheme.secondaryContainer,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Column(children: [
+                  TabBar(
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      controller: tabController,
+                      labelStyle: tema.textTheme.titleMedium,
+                      unselectedLabelStyle: tema.textTheme.bodySmall,
+                      tabs: const [
+                        Tab(text: 'Oficiales'),
+                        Tab(text: 'No oficiales')
+                      ])
+                ])),
+            Expanded(
+              child: TabBarView(controller: tabController, children: const [
+                ListaJuegos(juegosOficiales: true),
+                ListaJuegos(juegosOficiales: false)
               ]),
-            ),
-          ),
+            )
+          ]),
         ),
       ),
     );

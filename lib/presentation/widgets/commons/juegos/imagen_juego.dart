@@ -19,8 +19,8 @@ class ImagenJuego extends StatelessWidget {
         decoration: const BoxDecoration(
           boxShadow: [
             BoxShadow(
-                color: Colors.black26,
-                spreadRadius: 1,
+                color: Colors.black38,
+                spreadRadius: 5,
                 blurRadius: 5,
                 offset: Offset(0, 0))
           ],
@@ -28,8 +28,8 @@ class ImagenJuego extends StatelessWidget {
         child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: SizedBox(
-                width: 70,
-                height: 90,
+                width: 90,
+                height: 110,
                 child: existeUrl
                     ? Image.network(
                         juego.urlImagen!,

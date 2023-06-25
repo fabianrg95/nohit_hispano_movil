@@ -6,6 +6,7 @@ import 'package:no_hit/presentation/providers/jugador/jugador_provider.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class JugadoresView extends ConsumerStatefulWidget {
+  static const nombre = 'juegadores-screen';
   const JugadoresView({super.key});
 
   @override
@@ -42,8 +43,10 @@ class JugadoresViewState extends ConsumerState<JugadoresView> {
       );
     }
 
+
     return SafeArea(
       child: Scaffold(
+        drawer: const CustomDraw(),
         appBar: AppBar(actions: [
           IconButton(
               onPressed: () {
