@@ -10,32 +10,34 @@ class CustomDraw extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme;
 
-    return Drawer(
-      backgroundColor: color.primary,
-      child: ListView(children: [
-        FadeInDown(
-          duration: const Duration(milliseconds: 300),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(550),
-                bottomRight: Radius.circular(550)),
-            child: DrawerHeader(
-                decoration: BoxDecoration(
-                  color: color.tertiary,
-                  borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(550),
-                      bottomRight: Radius.circular(550)),
-                ),
-                child: Image.asset(
-                  'assets/images/panel_negro.png',
-                  height: 110,
-                )),
+    return SafeArea(
+      child: Drawer(
+        backgroundColor: color.primary,
+        child: ListView(children: [
+          FadeInDown(
+            duration: const Duration(milliseconds: 300),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(550),
+                  bottomRight: Radius.circular(550)),
+              child: DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: color.tertiary,
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(550),
+                        bottomRight: Radius.circular(550)),
+                  ),
+                  child: Image.asset(
+                    'assets/images/panel_blanco.png',
+                    height: 110,
+                  )),
+            ),
           ),
-        ),
-        const _ItemMenu(item: MenuItem.inicio),
-        const _ItemMenu(item: MenuItem.juegos),
-        const _ItemMenu(item: MenuItem.jugadores)
-      ]),
+          const _ItemMenu(item: MenuItem.inicio),
+          const _ItemMenu(item: MenuItem.juegos),
+          const _ItemMenu(item: MenuItem.jugadores)
+        ]),
+      ),
     );
   }
 }

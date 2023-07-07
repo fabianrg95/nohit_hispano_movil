@@ -2,39 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  static const Color primario = Color(0Xff253745);
-  static const Color secundario = Color(0xffEDDDC4);
-  static const Color terciario = Color(0xffEDDDC4);
-  static const Color texto = Color(0xffEDDDC4);
+  static const Color base = Color(0XffE3D8C4);
+  static const Color complemento = Color(0xFFFFFBF1);
+  static const Color extra = Color(0xff282821);
+  static const Color textoBase = Color(0xffF8D35B);
+  static const Color textoComplemento = Color(0xff282821);
+
+  //estilo general
+  final ColorScheme _colorScheme = ColorScheme.fromSeed(
+          seedColor: base,
+          background: base,
+          primary: base,
+          secondary: complemento,
+          tertiary: extra,
+          surfaceTint: textoBase);
 
   ThemeData getTheme() => ThemeData(
-      fontFamily: GoogleFonts.poppins().fontFamily,
+      fontFamily: GoogleFonts.raleway().fontFamily,
+      colorScheme: _colorScheme,
       progressIndicatorTheme:
-          const ProgressIndicatorThemeData(circularTrackColor: terciario),
+          const ProgressIndicatorThemeData(circularTrackColor: extra),
       useMaterial3: true,
-      cardTheme: const CardTheme(color: secundario),
-      listTileTheme: const ListTileThemeData(textColor: texto),
+      cardTheme: const CardTheme(color: complemento),
+      listTileTheme: const ListTileThemeData(textColor: textoBase),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: terciario,
+          backgroundColor: extra,
           selectedItemColor: Color(0xff353052),
           unselectedLabelStyle: TextStyle(color: Color(0xff353052)),
           unselectedItemColor: Color(0xFF353052)),
-      colorScheme: ColorScheme.fromSeed(
-          brightness: Brightness.dark,
-          seedColor: primario,
-          background: primario,
-          primary: primario,
-          secondary: secundario,
-          tertiary: terciario,
-          surface: texto),
       tabBarTheme: TabBarTheme(
+        labelColor: textoBase,
           indicator: BoxDecoration(
-              color: terciario, borderRadius: BorderRadius.circular(10))),
+              color: extra, borderRadius: BorderRadius.circular(10))),
       appBarTheme: const AppBarTheme(
-          backgroundColor: terciario,
+          backgroundColor: extra,
           centerTitle: true,
           //titleTextStyle: TextStyle(color: primario),
-          foregroundColor: primario,
+          foregroundColor: textoBase,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(20),

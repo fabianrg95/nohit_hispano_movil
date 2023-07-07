@@ -42,7 +42,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 5),
-              child: BanderaJugador(codigoBandera: jugador.codigoBandera),
+              child: BanderaJugador(codigoBandera: jugador.codigoBandera, defaultNegro: false),
             )
           ]),
       body: Column(
@@ -70,14 +70,16 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                             visible: jugador.pronombre != null,
                             child: Text(
                               jugador.pronombre.toString(),
-                              style: styleTexto.bodyMedium?.copyWith(color: color.primary),
+                              style: styleTexto.bodyMedium
+                                  ?.copyWith(color: color.tertiary),
                             )),
                         Visibility(
                             visible:
                                 jugador.genero != null && jugador.pais != null,
-                            child: Text(Nacionalidad.obtenerGentilicioJugador(
-                                jugador),
-                              style: styleTexto.bodyMedium?.copyWith(color: color.primary))),
+                            child: Text(
+                                Nacionalidad.obtenerGentilicioJugador(jugador),
+                                style: styleTexto.bodyMedium
+                                    ?.copyWith(color: color.tertiary))),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -115,7 +117,10 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                         )
                       ],
                     )
-                  : const Center(child: Text('Jugador sin informacion'))),
+                  : Center(
+                      child: Text('Jugador sin informacion',
+                          style: styleTexto.bodyMedium
+                              ?.copyWith(color: color.tertiary)))),
           _ListaPartidasJugador(jugador: jugador),
         ],
       ),
@@ -198,8 +203,8 @@ class _InformacionPartidasJugadorState
           child: Column(
             children: [
               Text('Juegos NoHit',
-                  style: textStyle.titleMedium?.copyWith(color: color.primary)),
-              Divider(color: color.primary),
+                  style: textStyle.titleMedium?.copyWith(color: color.tertiary)),
+              Divider(color: color.tertiary),
               SizedBox(
                 height: 200,
                 child: ListView.builder(
@@ -264,7 +269,7 @@ class _DetallePartidas extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 8),
           child: Text(partidaSeleccionada.juego.nombre,
-                  style: textStyle.titleMedium?.copyWith(color: color.primary)),
+              style: textStyle.titleMedium?.copyWith(color: color.primary)),
         ),
         Divider(color: color.primary),
         SizedBox(

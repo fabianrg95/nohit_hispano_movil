@@ -1,5 +1,7 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:no_hit/domain/entities/entities.dart';
+import 'package:simple_shadow/simple_shadow.dart';
 
 class ImagenJuego extends StatelessWidget {
   final Juego juego;
@@ -10,48 +12,36 @@ class ImagenJuego extends StatelessWidget {
     required this.juego,
     this.existeUrl = false,
   });
-
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Container(
-        decoration: const BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black38,
-                spreadRadius: 5,
-                blurRadius: 5,
-                offset: Offset(0, 0))
-          ],
-        ),
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: SizedBox(
-                width: 90,
-                height: 110,
-                child: existeUrl
-                    ? Image.network(
-                        juego.urlImagen!,
-                        fit: BoxFit.fill,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress != null) {
-                            return Center(
-                              child: Column(
-                                children: [
-                                  const CircularProgressIndicator(),
-                                  Text(juego.nombre)
-                                ],
-                              ),
-                            );
-                          }
+        padding: const EdgeInsets.all(8.0),
+        child: Visibility(
+          visible: existeUrl,
+          child: SimpleShadow(
+              opacity: 0.6, // Default: 0.5
+              color: colors.tertiary, // Default: Black
+              offset: const Offset(5, 5), // Default: Offset(2, 2)
+              sigma: 7,
+              child: Image.network(
+                juego.urlImagen.toString(),
+                height: 170,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress != null) {
+                    return const Center(
+                      child: Column(
+                        children: [
+                          CircularProgressIndicator(),
+                        ],
+                      ),
+                    );
+                  }
 
-                          return child;
-                        },
-                      )
-                    : Image.asset('assets/images/no-game-image.webp',
-                        fit: BoxFit.cover))),
-      ),
-    );
+                  return ZoomIn(child: child);
+                },
+              ) // Default: 2
+              ),
+        ));
   }
 }

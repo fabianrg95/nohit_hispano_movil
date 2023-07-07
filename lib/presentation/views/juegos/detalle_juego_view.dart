@@ -11,7 +11,6 @@ class DetalleJuego extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     final textStyle = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
-    final scaffoldBackgroundColor = Theme.of(context).colorScheme.tertiary;
 
     return SafeArea(
       child: Scaffold(
@@ -21,28 +20,16 @@ class DetalleJuego extends StatelessWidget {
             SliverAppBar(
               backgroundColor: colors.tertiary,
               expandedHeight: size.height * 0.5,
-              foregroundColor: colors.tertiary,
+              foregroundColor: colors.primary,
               flexibleSpace: FlexibleSpaceBar(
                 titlePadding: const EdgeInsets.only(bottom: 0),
-                title: _CustomGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: const [0.7, 1.0],
-                    colors: [Colors.transparent, scaffoldBackgroundColor]),
                 background: Stack(children: [
                   SizedBox.expand(
-                    child: juego.urlImagen != null
-                        ? Image.network(juego.urlImagen!, fit: BoxFit.cover)
-                        : Image.asset('assets/images/no-game-image.webp',
-                            fit: BoxFit.cover),
-                  ),
-                  const _CustomGradient(begin: Alignment.topLeft, stops: [
-                    0.0,
-                    0.3
-                  ], colors: [
-                    Colors.black87,
-                    Colors.transparent,
-                  ])
+                    child: Visibility(
+                        visible: juego.urlImagen != null,
+                        child: Image.network(juego.urlImagen.toString(),
+                            fit: BoxFit.fitHeight)),
+                  )
                 ]),
               ),
             ),
@@ -50,20 +37,6 @@ class DetalleJuego extends StatelessWidget {
                 delegate: SliverChildBuilderDelegate((context, index) {
               return Column(
                 children: [
-                  Container(
-                    height: 45,
-                    decoration: BoxDecoration(
-                        color: scaffoldBackgroundColor,
-                        borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(20),
-                            bottomRight: Radius.circular(20))),
-                    child: Center(
-                      child: Text(juego.nombre,
-                          textAlign: TextAlign.center,
-                          style: textStyle.titleLarge!
-                              .copyWith(color: colors.primary)),
-                    ),
-                  ),
                   Container(
                       width: size.width * 0.85,
                       margin: const EdgeInsets.only(left: 5, right: 5),
@@ -86,7 +59,8 @@ class DetalleJuego extends StatelessWidget {
                           Visibility(
                               visible: juego.subtitulo != null,
                               child: Text(juego.subtitulo.toString(),
-                              style: textStyle.bodyMedium?.copyWith(color: colors.primary)))
+                                  style: textStyle.bodyMedium
+                                      ?.copyWith(color: colors.primary)))
                         ],
                       ))
                 ],
