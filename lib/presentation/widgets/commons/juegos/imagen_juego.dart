@@ -6,11 +6,15 @@ import 'package:simple_shadow/simple_shadow.dart';
 class ImagenJuego extends StatelessWidget {
   final Juego juego;
   final bool existeUrl;
+  final bool animarImagen;
+  final double tamanio;
 
   const ImagenJuego({
     super.key,
     required this.juego,
     this.existeUrl = false,
+    this.animarImagen = true,
+    this.tamanio = 170,
   });
   @override
   Widget build(BuildContext context) {
@@ -19,6 +23,9 @@ class ImagenJuego extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Visibility(
           visible: existeUrl,
+          replacement: Align(
+              alignment: AlignmentDirectional.center,
+              child: Text(juego.nombre)),
           child: SimpleShadow(
               opacity: 0.6, // Default: 0.5
               color: colors.tertiary, // Default: Black
@@ -26,7 +33,7 @@ class ImagenJuego extends StatelessWidget {
               sigma: 7,
               child: Image.network(
                 juego.urlImagen.toString(),
-                height: 170,
+                height: tamanio,
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress != null) {
                     return const Center(
@@ -38,7 +45,8 @@ class ImagenJuego extends StatelessWidget {
                     );
                   }
 
-                  return ZoomIn(child: child);
+                  if (animarImagen) return ZoomIn(child: child);
+                  return child;
                 },
               ) // Default: 2
               ),

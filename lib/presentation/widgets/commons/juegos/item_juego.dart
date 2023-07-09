@@ -5,8 +5,13 @@ import 'package:no_hit/presentation/widgets/widgets.dart';
 class CardJuego extends StatelessWidget {
   final Juego juego;
   final Function accion;
+  final bool animarImagen;
 
-  const CardJuego({super.key, required this.juego, required this.accion});
+  const CardJuego(
+      {super.key,
+      required this.juego,
+      required this.accion,
+      this.animarImagen = true});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +20,12 @@ class CardJuego extends StatelessWidget {
 
     return GestureDetector(
       onTap: () => accion(),
-      child: _ItemJuego(color: color, juego: juego, textstyle: textstyle),
+      child: _ItemJuego(
+        color: color,
+        juego: juego,
+        textstyle: textstyle,
+        animarImagen: animarImagen,
+      ),
     );
   }
 }
@@ -25,11 +35,13 @@ class _ItemJuego extends StatelessWidget {
     required this.color,
     required this.juego,
     required this.textstyle,
+    required this.animarImagen,
   });
 
   final ColorScheme color;
   final Juego juego;
   final TextTheme textstyle;
+  final bool animarImagen;
 
   @override
   Widget build(BuildContext context) {

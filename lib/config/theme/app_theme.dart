@@ -10,37 +10,33 @@ class AppTheme {
 
   //estilo general
   final ColorScheme _colorScheme = ColorScheme.fromSeed(
-          seedColor: base,
-          background: base,
-          primary: base,
-          secondary: complemento,
-          tertiary: extra,
-          surfaceTint: textoBase);
+      seedColor: base,
+      background: base,
+      primary: base,
+      secondary: complemento,
+      tertiary: extra,
+      surfaceTint: textoBase);
 
   ThemeData getTheme() => ThemeData(
-      fontFamily: GoogleFonts.raleway().fontFamily,
-      colorScheme: _colorScheme,
-      progressIndicatorTheme:
-          const ProgressIndicatorThemeData(circularTrackColor: extra),
-      useMaterial3: true,
-      cardTheme: const CardTheme(color: complemento),
-      listTileTheme: const ListTileThemeData(textColor: textoBase),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: extra,
-          selectedItemColor: Color(0xff353052),
-          unselectedLabelStyle: TextStyle(color: Color(0xff353052)),
-          unselectedItemColor: Color(0xFF353052)),
-      tabBarTheme: TabBarTheme(
-        labelColor: textoBase,
-          indicator: BoxDecoration(
-              color: extra, borderRadius: BorderRadius.circular(10))),
-      appBarTheme: const AppBarTheme(
-          backgroundColor: extra,
-          centerTitle: true,
-          //titleTextStyle: TextStyle(color: primario),
-          foregroundColor: textoBase,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20)))));
+        fontFamily: GoogleFonts.raleway().fontFamily,
+        colorScheme: _colorScheme,
+        progressIndicatorTheme:
+            const ProgressIndicatorThemeData(circularTrackColor: extra),
+        useMaterial3: true,
+        cardTheme: const CardTheme(color: complemento),
+        listTileTheme: const ListTileThemeData(textColor: textoBase),
+        tabBarTheme: TabBarTheme(
+            labelColor: textoBase,
+            indicator: BoxDecoration(
+                color: extra, borderRadius: BorderRadius.circular(10))),
+        appBarTheme: const AppBarTheme(
+            backgroundColor: extra,
+            centerTitle: true,
+            //titleTextStyle: TextStyle(color: primario),
+            foregroundColor: textoBase,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20)))),
+      );
 }

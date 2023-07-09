@@ -41,12 +41,18 @@ class TabViewJuegosState extends ConsumerState<ListaJuegos> {
       itemBuilder: (BuildContext context, int index) {
         final Juego juego = juegos[index];
 
-        return CardJuego(
-          juego: juego,
-          accion: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => DetalleJuego(juego: juego))),
+        return Hero(
+          tag: juego.nombre +
+              (juego.subtitulo == null
+                  ? juego.subtitulo.toString()
+                  : juego.id.toString()),
+          child: CardJuego(
+            juego: juego,
+            accion: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetalleJuego(juego: juego))),
+          ),
         );
       },
     );
