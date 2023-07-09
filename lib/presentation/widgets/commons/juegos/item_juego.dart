@@ -6,7 +6,6 @@ class CardJuego extends StatelessWidget {
   final Juego juego;
   final Function accion;
   final bool animarImagen;
-
   const CardJuego(
       {super.key,
       required this.juego,
@@ -78,9 +77,15 @@ class _ItemJuego extends StatelessWidget {
         ),
         Align(
           alignment: AlignmentDirectional.topCenter,
-          child: ImagenJuego(
-            juego: juego,
-            existeUrl: juego.urlImagen != null,
+          child: Hero(
+            tag: juego.nombre +
+                (juego.subtitulo == null
+                    ? juego.subtitulo.toString()
+                    : juego.id.toString()),
+            child: ImagenJuego(
+              juego: juego,
+              existeUrl: juego.urlImagen != null,
+            ),
           ),
         )
       ],

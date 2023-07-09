@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/domain/entities/entities.dart';
 import 'package:no_hit/presentation/providers/providers.dart';
@@ -40,37 +41,14 @@ class TabViewJuegosState extends ConsumerState<ListaJuegos> {
       itemCount: juegos.length,
       itemBuilder: (BuildContext context, int index) {
         final Juego juego = juegos[index];
-
-        return Hero(
-          tag: juego.nombre +
-              (juego.subtitulo == null
-                  ? juego.subtitulo.toString()
-                  : juego.id.toString()),
-          child: CardJuego(
+        return CardJuego(
             juego: juego,
-            accion: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => DetalleJuego(juego: juego))),
-          ),
-        );
+            accion: () => Navigator.of(context).push(PageRouteBuilder(
+                  pageBuilder: (context, animation, __) {
+                    return FadeTransition(opacity: animation, child: DetalleJuego(juego: juego));
+                  },
+                )));
       },
     );
-
-    // return ListView.builder(
-    //   itemCount: juegos.length,
-    //   itemBuilder: (BuildContext context, int index) {
-    //     final Juego juego = juegos[index];
-
-    //     return CardJuego(
-    //       juego: juego,
-    //       accion: () => Navigator.push(
-    //           context,
-    //           MaterialPageRoute(
-    //               builder: (context) => DetalleJuego(juego: juego))),
-    //       left: index.isEven,
-    //     );
-    //   },
-    // );
   }
 }

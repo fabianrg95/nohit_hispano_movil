@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -12,7 +13,7 @@ Future<void> main() async {
   await _definirVariablesEntorno();
   _definirLocalizacion();
   await _inicializarSupabase();
-
+  timeDilation = 1.2;
   runApp(const ProviderScope(child: MyApp()));
 }
 

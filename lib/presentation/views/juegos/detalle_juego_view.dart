@@ -25,6 +25,7 @@ class DetalleJuego extends StatelessWidget {
                     juego: juego,
                     expandedHeight: size.height * 0.35,
                     colors: colors,
+                    textStyle: textStyle,
                     size: size),
                 pinned: true),
             SliverList(
@@ -62,64 +63,123 @@ class _CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final Juego juego;
   final ColorScheme colors;
   final Size size;
+  final TextTheme textStyle;
 
   const _CustomSliverAppBarDelegate(
       {required this.juego,
       required this.colors,
       required this.size,
+      required this.textStyle,
       required this.expandedHeight});
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Stack(
-      fit: StackFit.expand,
-      children: [buildJuegoImage(shrinkOffset), buildAppBar(shrinkOffset)],
+      fit: StackFit.passthrough,
+      children: [
+        buildJuegoImage(shrinkOffset),
+        buildAppBar(shrinkOffset),
+      ],
     );
   }
 
   double appear(double shrinkOffset) {
-    if (shrinkOffset / expandedHeight < 0.9) return 0;
-    return shrinkOffset / expandedHeight;
+    if (shrinkOffset / expandedHeight < 0.99) return 0;
+    return (shrinkOffset / expandedHeight);
+  }
+
+  double desappear(double shrinkOffset) {
+    if (shrinkOffset / expandedHeight < 0.99) return 1;
+    return 1 - shrinkOffset / expandedHeight;
+  }
+
+  double radius(double shrinkOffset) {
+    return -180 * (shrinkOffset / expandedHeight) + 200;
   }
 
   Widget buildAppBar(double shrinkOffset) => Opacity(
-      opacity: appear(shrinkOffset), child: AppBar(title: Text(juego.nombre), backgroundColor: colors.tertiary, ));
-
-  Widget buildJuegoImage(double shrinkOffset) => Stack(
+      opacity: appear(shrinkOffset),
+      child: OverflowBar(
         children: [
-          Container(
-              height: 200,
-              width: size.width,
-              decoration: BoxDecoration(
-                  color: colors.tertiary,
-                  borderRadius: const BorderRadius.vertical(
-                    bottom: Radius.circular(500),
-                  ))),
-          Align(
-            alignment: AlignmentDirectional.bottomCenter,
-            child: ImagenJuego(
-              juego: juego,
-              existeUrl: juego.urlImagen != null,
-              animarImagen: false,
-              tamanio: 250,
-            ),
+          AppBar(
+            title: Text(juego.nombre),
+            surfaceTintColor: colors.tertiary,
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16, left: 16),
-            child: Icon(
-              Icons.arrow_back,
-              color: colors.surfaceTint,
-            ),
-          ),
+          Visibility(
+              visible: juego.subtitulo != null,
+              child: Align(
+                alignment: AlignmentDirectional.topCenter,
+                child: Container(
+                    width: size.width * 0.85,
+                    margin: const EdgeInsets.only(left: 5, right: 5),
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: colors.tertiary),
+                        color: colors.secondary,
+                        borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20)),
+                        boxShadow: const [
+                          BoxShadow(
+                              color: Colors.black12,
+                              spreadRadius: 0,
+                              blurRadius: 5,
+                              offset: Offset(0, 0))
+                        ]),
+                    child: Align(
+                      alignment: AlignmentDirectional.topCenter,
+                      child: Text(juego.subtitulo.toString(),
+                          style: textStyle.bodyMedium
+                              ?.copyWith(color: colors.tertiary)),
+                    )),
+              ))
         ],
+      ));
+
+  Widget buildJuegoImage(double shrinkOffset) => Opacity(
+        opacity: desappear(shrinkOffset),
+        child: Stack(
+          children: [
+            Container(
+                height: 200,
+                width: size.width,
+                decoration: BoxDecoration(
+                    color: colors.tertiary,
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(radius(shrinkOffset)),
+                    ))),
+            Align(
+              alignment: AlignmentDirectional.bottomCenter,
+              child: Hero(
+                tag: juego.nombre +
+                    (juego.subtitulo == null
+                        ? juego.subtitulo.toString()
+                        : juego.id.toString()),
+                child: ImagenJuego(
+                  juego: juego,
+                  existeUrl: juego.urlImagen != null,
+                  animarImagen: false,
+                  tamanio: 250,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16, left: 16),
+              child: Icon(
+                Icons.arrow_back,
+                color: colors.surfaceTint,
+              ),
+            ),
+          ],
+        ),
       );
 
   @override
   double get maxExtent => expandedHeight;
 
   @override
-  double get minExtent => kToolbarHeight;
+  double get minExtent => kToolbarHeight - 1;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>

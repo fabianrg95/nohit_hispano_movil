@@ -34,95 +34,97 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
       return const PantallaCargaBasica();
     }
 
-    return Scaffold(
-      appBar: AppBar(
-          elevation: 2,
-          title: Text(jugador.nombre),
-          centerTitle: true,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: BanderaJugador(codigoBandera: jugador.codigoBandera, defaultNegro: false),
-            )
-          ]),
-      body: Column(
-        children: [
-          Container(
-              width: size.width * 0.85,
-              margin: const EdgeInsets.only(left: 5, right: 5),
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              decoration: BoxDecoration(
-                  color: color.secondary,
-                  borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20)),
-                  boxShadow: const [
-                    BoxShadow(
-                        color: Colors.black12,
-                        spreadRadius: 0,
-                        blurRadius: 5,
-                        offset: Offset(0, 0))
-                  ]),
-              child: InformacionJugadorUtils.validarInformacionJugador(jugador)
-                  ? Column(
-                      children: [
-                        Visibility(
-                            visible: jugador.pronombre != null,
-                            child: Text(
-                              jugador.pronombre.toString(),
-                              style: styleTexto.bodyMedium
-                                  ?.copyWith(color: color.tertiary),
-                            )),
-                        Visibility(
-                            visible:
-                                jugador.genero != null && jugador.pais != null,
-                            child: Text(
-                                Nacionalidad.obtenerGentilicioJugador(jugador),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+            title: Text(jugador.nombre),
+            centerTitle: true,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: BanderaJugador(
+                    codigoBandera: jugador.codigoBandera, defaultNegro: false),
+              )
+            ]),
+        body: Column(
+          children: [
+            Container(
+                width: size.width * 0.85,
+                margin: const EdgeInsets.only(left: 5, right: 5),
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                decoration: BoxDecoration(
+                    color: color.secondary,
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20)),
+                    boxShadow: const [
+                      BoxShadow(
+                          color: Colors.black12,
+                          spreadRadius: 0,
+                          blurRadius: 5,
+                          offset: Offset(0, 0))
+                    ]),
+                child: InformacionJugadorUtils.validarInformacionJugador(jugador)
+                    ? Column(
+                        children: [
+                          Visibility(
+                              visible: jugador.pronombre != null,
+                              child: Text(
+                                jugador.pronombre.toString(),
                                 style: styleTexto.bodyMedium
-                                    ?.copyWith(color: color.tertiary))),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Visibility(
-                              visible: jugador.urlYoutube != null,
-                              child: GestureDetector(
-                                onTap: () =>
-                                    _lanzarUrl(jugador.urlYoutube.toString()),
-                                child: Image.asset(
-                                  'assets/images/youtube.png',
-                                  width: 30,
-                                  height: 30,
-                                ),
-                              ),
-                            ),
-                            Visibility(
-                                visible: jugador.urlYoutube != null &&
-                                    jugador.urlTwitch != null,
-                                child: VerticalDivider(
-                                  color: color.tertiary,
-                                )),
-                            Visibility(
-                                visible: jugador.urlTwitch != null,
+                                    ?.copyWith(color: color.tertiary),
+                              )),
+                          Visibility(
+                              visible:
+                                  jugador.genero != null && jugador.pais != null,
+                              child: Text(
+                                  Nacionalidad.obtenerGentilicioJugador(jugador),
+                                  style: styleTexto.bodyMedium
+                                      ?.copyWith(color: color.tertiary))),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Visibility(
+                                visible: jugador.urlYoutube != null,
                                 child: GestureDetector(
                                   onTap: () =>
-                                      _lanzarUrl(jugador.urlTwitch.toString()),
+                                      _lanzarUrl(jugador.urlYoutube.toString()),
                                   child: Image.asset(
-                                    'assets/images/twitch.png',
+                                    'assets/images/youtube.png',
                                     width: 30,
                                     height: 30,
-                                    fit: BoxFit.fitWidth,
                                   ),
-                                ))
-                          ],
-                        )
-                      ],
-                    )
-                  : Center(
-                      child: Text('Jugador sin informacion',
-                          style: styleTexto.bodyMedium
-                              ?.copyWith(color: color.tertiary)))),
-          _ListaPartidasJugador(jugador: jugador),
-        ],
+                                ),
+                              ),
+                              Visibility(
+                                  visible: jugador.urlYoutube != null &&
+                                      jugador.urlTwitch != null,
+                                  child: VerticalDivider(
+                                    color: color.tertiary,
+                                  )),
+                              Visibility(
+                                  visible: jugador.urlTwitch != null,
+                                  child: GestureDetector(
+                                    onTap: () =>
+                                        _lanzarUrl(jugador.urlTwitch.toString()),
+                                    child: Image.asset(
+                                      'assets/images/twitch.png',
+                                      width: 30,
+                                      height: 30,
+                                      fit: BoxFit.fitWidth,
+                                    ),
+                                  ))
+                            ],
+                          )
+                        ],
+                      )
+                    : Center(
+                        child: Text('Jugador sin informacion',
+                            style: styleTexto.bodyMedium
+                                ?.copyWith(color: color.tertiary)))),
+            _ListaPartidasJugador(jugador: jugador),
+          ],
+        ),
       ),
     );
   }
@@ -187,7 +189,7 @@ class _InformacionPartidasJugadorState
     return Column(
       children: [
         Container(
-          height: 265,
+          height: 230,
           margin: const EdgeInsets.only(left: 5, right: 5, top: 10),
           padding: const EdgeInsets.only(top: 10, bottom: 10),
           decoration: BoxDecoration(
@@ -203,10 +205,11 @@ class _InformacionPartidasJugadorState
           child: Column(
             children: [
               Text('Juegos NoHit',
-                  style: textStyle.titleMedium?.copyWith(color: color.tertiary)),
+                  style:
+                      textStyle.titleMedium?.copyWith(color: color.tertiary)),
               Divider(color: color.tertiary),
               SizedBox(
-                height: 200,
+                height: 160,
                 child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
@@ -269,11 +272,11 @@ class _DetallePartidas extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 8),
           child: Text(partidaSeleccionada.juego.nombre,
-              style: textStyle.titleMedium?.copyWith(color: color.primary)),
+              style: textStyle.titleMedium?.copyWith(color: color.tertiary)),
         ),
         Divider(color: color.primary),
         SizedBox(
-          height: 150,
+          height: 120,
           width: double.infinity,
           child: ListView.builder(
             shrinkWrap: true,
@@ -295,7 +298,7 @@ class _DetallePartidas extends StatelessWidget {
                                 maxLines: 2,
                                 textAlign: TextAlign.center,
                                 style: textStyle.bodySmall
-                                    ?.copyWith(color: color.surface)),
+                                    ?.copyWith(color: color.tertiary)),
                           )
                         ],
                       )));
@@ -317,42 +320,41 @@ class _TarjetaPartidaJuegoJugador extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme;
-    final textStyle = Theme.of(context).textTheme;
 
     return SizedBox(
-      width: 170,
-      child: Card(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              side: BorderSide(color: color.tertiary)),
-          color: color.primary,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ImagenJuego(
-                  juego: partida.juego,
-                  existeUrl: partida.juego.urlImagen != null),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Text(partida.juego.nombre,
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    style:
-                        textStyle.bodyMedium?.copyWith(color: color.surface)),
-              ),
-              Visibility(
-                visible: partida.juego.subtitulo != null,
-                child: Text(partida.juego.subtitulo.toString(),
-                    textAlign: TextAlign.center,
-                    style:
-                        textStyle.labelSmall?.copyWith(color: color.surface)),
-              ),
-              const Expanded(child: Text('')),
-              Text(
-                  '${partida.partidas.length} partida${partida.partidas.length > 1 ? 's' : ''}',
-                  style: textStyle.labelSmall?.copyWith(color: color.surface))
-            ],
-          )),
+      width: 150,
+      child: Stack(
+        children: [
+          Align(
+            alignment: AlignmentDirectional.center,
+            child: Transform(
+              transform: Matrix4.identity()
+                ..setEntry(3, 2, -0.01) // Perspectiva 3D
+                ..rotateX(0.25),
+              alignment: FractionalOffset.center, // Rotación en el eje X,
+              child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: color.tertiary),
+                    color: color.primary,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  margin: const EdgeInsets.only(top: 20, right: 10, left: 10),
+                  child: const SizedBox(
+                    width: 150,
+                    height: 110,
+                  )),
+            ),
+          ),
+          Align(
+            alignment: AlignmentDirectional.center,
+            child: ImagenJuego(
+              juego: partida.juego,
+              existeUrl: partida.juego.urlImagen != null,
+              tamanio: 110,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

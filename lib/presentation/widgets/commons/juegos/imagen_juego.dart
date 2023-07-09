@@ -45,7 +45,7 @@ class ImagenJuego extends StatelessWidget {
                     );
                   }
 
-                  if (animarImagen) return ZoomIn(child: child);
+                  //if (animarImagen) return ZoomIn(child: child);
                   return child;
                 },
               ) // Default: 2
