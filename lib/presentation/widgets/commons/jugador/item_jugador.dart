@@ -38,19 +38,19 @@ class ItemJugador extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(top: 8.0, bottom: 5),
                   child: BanderaJugador(
-                      codigoBandera: jugador.codigoBandera,
-                      width: 50,
-                      height: 50),
+                      codigoBandera: jugador.codigoBandera, tamanio: 45),
                 ),
                 Text(jugador.nombre,
+                    maxLines: 2,
+                    softWrap: true,
                     style:
-                        styleText.bodyMedium?.copyWith(color: color.tertiary)),
+                        styleText.bodySmall?.copyWith(color: color.tertiary)),
                 Visibility(
                     visible: jugador.pronombre != null,
                     child: Text(jugador.pronombre.toString(),
-                        style: styleText.bodyMedium
+                        style: styleText.bodySmall
                             ?.copyWith(color: color.tertiary))),
                 const Expanded(child: Text('')),
                 SizedBox(
@@ -59,7 +59,7 @@ class ItemJugador extends StatelessWidget {
                     elevation: 0,
                     label: Text(
                       '${jugador.cantidadPartidas} partida${jugador.cantidadPartidas == 1 ? '' : 's'}',
-                      style: styleText.bodySmall,
+                      style: styleText.labelSmall,
                     ),
                   ),
                 ),

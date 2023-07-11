@@ -10,7 +10,7 @@ class AppTheme {
 
   //estilo general
   final ColorScheme _colorScheme = ColorScheme.fromSeed(
-      seedColor: base,
+      seedColor: extra,
       background: base,
       primary: base,
       secondary: complemento,
@@ -34,6 +34,7 @@ class AppTheme {
             centerTitle: true,
             //titleTextStyle: TextStyle(color: primario),
             foregroundColor: textoBase,
+            surfaceTintColor: extra,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
