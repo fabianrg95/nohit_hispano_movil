@@ -21,7 +21,8 @@ class JugadorMapper {
                   element['nacionalidad']['continente'] != null
               ? element['nacionalidad']['continente']['nombre']
               : null,
-          cantidadPartidas: partidas.length));
+          cantidadPartidas: partidas.length,
+          fechaPrimeraPartida: element['fecha_primera_partida']));
     }
     return jugadores;
   }
@@ -30,6 +31,7 @@ class JugadorMapper {
       List<Map<String, dynamic>> respuesta) {
     for (var detalle in respuesta) {
       final List partidasSupa = detalle['partidas'];
+      int cantidadPartidas = 0;
 
       final List<Partidas> partidas = [];
       Map<String, Partidas> mapaPartidas = {};
@@ -47,6 +49,7 @@ class JugadorMapper {
                   urlImagen: run['juegos']['url_imagen']),
               partidas: _obtenerPartidas(nombreJuego, partidasSupa));
           mapaPartidas = {...mapaPartidas, nombreJuego: listaPartidasAgrupadas};
+          cantidadPartidas += listaPartidasAgrupadas.partidas.length;
           partidas.add(listaPartidasAgrupadas);
         }
       }
@@ -57,6 +60,7 @@ class JugadorMapper {
           anioNacimiento: detalle['anio_nacimiento'],
           urlTwitch: detalle['url_canal_twitch'],
           urlYoutube: detalle['url_canal_youtube'],
+          fechaPrimeraPartida: detalle['fecha_primera_partida'],
           pronombre: detalle['pronombre'] != null
               ? detalle['pronombre']['pronombre']
               : null,
@@ -82,7 +86,7 @@ class JugadorMapper {
                   detalle['nacionalidad']['continente'] != null
               ? detalle['nacionalidad']['continente']['nombre']
               : null,
-          cantidadPartidas: partidas.length,
+          cantidadPartidas: cantidadPartidas,
           partidas: partidas);
     }
 
@@ -92,6 +96,7 @@ class JugadorMapper {
         pronombre: '',
         pais: '',
         cantidadPartidas: 0,
+        fechaPrimeraPartida: DateTime.now().toString(),
         partidas: []);
   }
 

@@ -117,7 +117,7 @@ class BuscarJugadoresDelegate extends SearchDelegate {
 
     _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
       final jugadores = listaInicial
-          .where((element) => element.nombre.contains(query))
+          .where((element) => element.nombre.toLowerCase().contains(query.toLowerCase()))
           .toList();
       listaFiltrada = jugadores;
       debouncedJugadores.add(jugadores);

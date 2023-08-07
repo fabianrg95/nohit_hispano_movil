@@ -56,7 +56,7 @@ class TapbarJuegosState extends State<TapbarJuegos>
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5),
         child: SizedBox(
-          height: MediaQuery.of(context).size.height,
+          height: MediaQuery.of(context).size.height-80,
           child: Column(children: [
             const SizedBox(height: 5),
             Container(

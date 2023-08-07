@@ -57,17 +57,23 @@ class JugadoresViewState extends ConsumerState<JugadoresView> {
               },
               icon: const Icon(Icons.search))
         ], title: const Text('Jugadores'), centerTitle: true),
-        body: GridView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10
-                //mainAxisExtent: 300 //tamaño alto de cada item
-                ),
+        body: ListView.builder(
             itemCount: listaJugadores.length,
             itemBuilder: (context, index) {
               final jugador = listaJugadores[index];
               return ItemJugador(jugador: jugador);
             }),
+        // GridView.builder(
+        //   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        //         crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10
+        //         //mainAxisExtent: 300 //tamaño alto de cada item
+        //         ),
+        //     itemCount: listaJugadores.length,
+        //     itemBuilder: (context, index) {
+        //       final jugador = listaJugadores[index];
+        //       return ItemJugador(jugador: jugador);
+        //     }),
       ),
     );
   }

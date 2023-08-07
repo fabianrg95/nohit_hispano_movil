@@ -20,6 +20,7 @@ class DetalleJugadorNotifier extends StateNotifier<DetalleJugador> {
             pronombre: '',
             pais: '',
             cantidadPartidas: 0,
+            fechaPrimeraPartida: DateTime.now().toString(),
             partidas: []));
 
   Future<void> loadData(int idJugador) async {

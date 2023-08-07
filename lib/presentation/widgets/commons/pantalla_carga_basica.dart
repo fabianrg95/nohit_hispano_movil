@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class PantallaCargaBasica extends StatelessWidget {
+  final String texto;
+
   const PantallaCargaBasica({
+    required this.texto,
     super.key,
   });
 

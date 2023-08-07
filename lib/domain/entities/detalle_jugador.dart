@@ -9,12 +9,14 @@ class DetalleJugador extends Jugador {
   final String? gentilicioFemenino;
   final String? gentilicioNeutro;
   final List<Partidas> partidas;
+
   DetalleJugador(
       {required super.id,
       required super.nombre,
       required super.pronombre,
       required super.pais,
       required super.cantidadPartidas,
+      required super.fechaPrimeraPartida,
       super.continente,
       super.codigoBandera,
       this.anioNacimiento,

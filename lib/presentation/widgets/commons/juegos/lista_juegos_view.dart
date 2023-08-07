@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/domain/entities/entities.dart';
 import 'package:no_hit/presentation/providers/providers.dart';
@@ -30,7 +29,7 @@ class TabViewJuegosState extends ConsumerState<ListaJuegos> {
         ref.watch(juegosProvider)[widget.juegosOficiales];
 
     if (juegos == null) {
-      return const PantallaCargaBasica();
+      return const PantallaCargaBasica(texto: "Consultando Juegos",);
     }
 
     return GridView.builder(
@@ -45,7 +44,8 @@ class TabViewJuegosState extends ConsumerState<ListaJuegos> {
             juego: juego,
             accion: () => Navigator.of(context).push(PageRouteBuilder(
                   pageBuilder: (context, animation, __) {
-                    return FadeTransition(opacity: animation, child: DetalleJuego(juego: juego));
+                    return FadeTransition(
+                        opacity: animation, child: DetalleJuego(juego: juego));
                   },
                 )));
       },

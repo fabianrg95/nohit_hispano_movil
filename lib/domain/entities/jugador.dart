@@ -6,6 +6,7 @@ class Jugador {
   final String? codigoBandera;
   final String? continente;
   final int cantidadPartidas;
+  final String? fechaPrimeraPartida;
 
   Jugador(
       {required this.id,
@@ -14,5 +15,6 @@ class Jugador {
       this.pais,
       this.continente,
       required this.cantidadPartidas,
-      this.codigoBandera});
+      this.codigoBandera,
+      this.fechaPrimeraPartida});
 }

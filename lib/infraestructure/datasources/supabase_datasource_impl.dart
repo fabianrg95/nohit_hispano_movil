@@ -23,7 +23,7 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
     final respuesta = await supabase
         .from('jugadores')
         .select<List<Map<String, dynamic>>>(
-            'id, nombre_usuario, pronombre(pronombre), nacionalidad(pais, codigo_bandera, continente(nombre)), partidas(id))')
+            'id, nombre_usuario, fecha_primera_partida, pronombre(pronombre), nacionalidad(pais, codigo_bandera, continente(nombre)), partidas(id))')
         .order('id', ascending: true);
     return JugadorMapper.supabaseToEntity(respuesta);
   }
@@ -33,7 +33,7 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
     final respuesta = await supabase
         .from('jugadores')
         .select<List<Map<String, dynamic>>>(
-            'id, nombre_usuario, anio_nacimiento, url_canal_youtube, url_canal_twitch, '
+            'id, nombre_usuario, anio_nacimiento, url_canal_youtube, url_canal_twitch, fecha_primera_partida, '
             'pronombre(pronombre, genero), '
             'nacionalidad(pais, codigo_bandera, gentilicio_masculino, gentilicio_femenino, neutro, continente(nombre)), '
             'partidas(id, nombre_partida, juegos(id, nombre, subtitulo, url_imagen, oficial_team_hitless)))')

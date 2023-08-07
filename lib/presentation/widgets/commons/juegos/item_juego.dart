@@ -59,6 +59,7 @@ class _ItemJuego extends StatelessWidget {
             child: Container(
                 decoration: BoxDecoration(
                   color: color.secondary,
+                  border: Border.all(color: color.tertiary, width: 2),
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
