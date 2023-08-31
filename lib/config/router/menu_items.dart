@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:no_hit/presentation/views/juegos/juegos_view.dart';
-import 'package:no_hit/presentation/views/jugadores/jugadores_view.dart';
+import 'package:no_hit/presentation/views/jugadores/lista_jugadores_view.dart';
 import 'package:no_hit/presentation/views/partidas/partidas_view.dart';
 
 enum MenuItem {
@@ -19,7 +19,7 @@ enum MenuItem {
   jugadores(
     title: 'Jugadores',
     link: '/jugadores',
-    page: JugadoresView(),
+    page: ListaJugadoresView(),
     icon: Icons.person_2_outlined,
   );
 
@@ -28,9 +28,5 @@ enum MenuItem {
   final Widget page;
   final IconData icon;
 
-  const MenuItem(
-      {required this.title,
-      required this.link,
-      required this.icon,
-      required this.page});
+  const MenuItem({required this.title, required this.link, required this.icon, required this.page});
 }

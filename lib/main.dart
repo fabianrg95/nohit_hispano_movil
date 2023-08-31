@@ -31,12 +31,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-Future<String> consultar() async {
-  final supabase = Supabase.instance.client;
-  final juegos = await supabase.from('juegos').select('*');
-  return juegos.toString();
-}
-
 Future<void> _definirVariablesEntorno() async {
   await dotenv.load(fileName: '.env');
 }

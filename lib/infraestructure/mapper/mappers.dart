@@ -1,2 +1,2 @@
-export 'juego_mapper.dart';
-export 'jugador_mapper.dart';
+export 'jugador/jugador_mapper.dart';
+export 'partida/partida_mapper.dart';

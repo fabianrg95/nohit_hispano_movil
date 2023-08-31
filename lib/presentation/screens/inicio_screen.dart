@@ -15,10 +15,6 @@ class InicioScreen extends StatelessWidget {
       key: scaffoldKey,
       drawer: const CustomDraw(),
       body: Builder(builder: (context) => const PartidasView()),
-      //drawer: CustomDraw(currentIndex: widget.pageIndex),
-      // bottomNavigationBar: CustomBottomNavigation(
-      //   currentIndex: widget.pageIndex,
-      // ),
     );
   }
 }

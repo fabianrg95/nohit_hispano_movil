@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:no_hit/domain/entities/entities.dart';
+import 'package:no_hit/infraestructure/dto/juego/juego_dto.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class DetalleJuego extends StatelessWidget {
-  final Juego juego;
+  final JuegoDto juego;
 
   const DetalleJuego({super.key, required this.juego});
 
@@ -60,7 +60,7 @@ class DetalleJuego extends StatelessWidget {
 
 class _CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
-  final Juego juego;
+  final JuegoDto juego;
   final ColorScheme colors;
   final Size size;
   final TextTheme textStyle;
@@ -157,8 +157,8 @@ class _CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                         ? juego.subtitulo.toString()
                         : juego.id.toString()),
                 child: ImagenJuego(
-                  juego: juego,
-                  existeUrl: juego.urlImagen != null,
+                  juego: juego.nombre,
+                  urlImagen: juego.urlImagen,
                   animarImagen: false,
                   tamanio: 250,
                 ),

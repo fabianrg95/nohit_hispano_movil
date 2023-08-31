@@ -7,30 +7,15 @@ class PartidasView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme;
 
-    return Container(
-      color: color.tertiary,
-      child: SafeArea(
-          child: Scaffold(
-              appBar: AppBar(
-                leading: IconButton(
-                    onPressed: () => Scaffold.of(context).openDrawer(),
-                    icon: const Icon(Icons.menu)),
-                title: const Text('No hit hispano'),
-                centerTitle: true,
-              ),
-              body: Container(
-                decoration: const BoxDecoration(
-                  border: Border(
-                    top: BorderSide(color: Color(0xFFFFFFFF)),
-                    left: BorderSide(color: Color(0xFFFFFFFF)),
-                    right: BorderSide(),
-                    bottom: BorderSide(),
-                  ),
-                ),
-                child: const Expanded(child: Text('')),
-              ))),
-    );
+    return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+              onPressed: () => Scaffold.of(context).openDrawer(),
+              icon: const Icon(Icons.menu)),
+          title: const Text('No hit hispano'),
+          centerTitle: true,
+        ),
+        body: const Placeholder());
   }
 }
