@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:no_hit/presentation/screens/inicio_screen.dart';
-import 'package:no_hit/presentation/views/juegos/juegos_view.dart';
+import 'package:no_hit/presentation/views/juegos/lista_juegos_view.dart';
 // import 'package:no_hit/presentation/screens/inicio_screen.dart';
 // import 'package:no_hit/presentation/views/juegos/juegos_view.dart';
 import 'package:no_hit/presentation/views/jugadores/lista_jugadores_view.dart';
@@ -16,8 +16,8 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/juegos',
-      name: JuegosView.nombre,
-      builder: (context, state) => const JuegosView(),
+      name: ListaJuegosView.nombre,
+      builder: (context, state) => const ListaJuegosView(),
     ),
     GoRoute(
       path: '/jugadores',

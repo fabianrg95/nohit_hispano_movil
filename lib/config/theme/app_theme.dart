@@ -19,17 +19,16 @@ class AppTheme {
         useMaterial3: true,
         cardTheme: const CardTheme(color: complemento),
         listTileTheme: const ListTileThemeData(textColor: textoBase),
-        tabBarTheme: TabBarTheme(labelColor: textoBase, indicator: BoxDecoration(color: extra, borderRadius: BorderRadius.circular(10))),
         appBarTheme: const AppBarTheme(
             backgroundColor: extra,
             centerTitle: true,
-            //titleTextStyle: TextStyle(color: primario),
             foregroundColor: textoBase,
             surfaceTintColor: extra,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)))),
       );
 
-  static BoxDecoration decorationContainerBasic({required bool topLeft, required bool bottomLeft, required bool bottomRight, required bool topRight}) {
+  static BoxDecoration decorationContainerBasic(
+      {required bool topLeft, required bool bottomLeft, required bool bottomRight, required bool topRight}) {
     BorderRadius borderRadius = BorderRadius.only(
         bottomLeft: Radius.circular(bottomLeft ? 10 : 0),
         bottomRight: Radius.circular(bottomRight ? 10 : 0),

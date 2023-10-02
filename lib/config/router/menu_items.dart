@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:no_hit/presentation/views/juegos/juegos_view.dart';
+import 'package:no_hit/presentation/views/juegos/lista_juegos_view.dart';
 import 'package:no_hit/presentation/views/jugadores/lista_jugadores_view.dart';
 import 'package:no_hit/presentation/views/partidas/partidas_view.dart';
 
@@ -13,7 +13,7 @@ enum MenuItem {
   juegos(
     title: 'Juegos',
     link: '/juegos',
-    page: JuegosView(),
+    page: ListaJuegosView(),
     icon: Icons.sports_esports_outlined,
   ),
   jugadores(
