@@ -39,20 +39,15 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
   }
 
   @override
-  Future<PartidaEntity> obtenerInformacionPartida(int idPartida) {
-    // TODO: implement obtenerInformacionPartida
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<JuegoEntity> obtenerInfromacionJuego(int idJuego) {
-    // TODO: implement obtenerInfromacionJuego
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<JugadorEntity>> obtenerUltimasPartidas(int cantidad) {
-    // TODO: implement obtenerUltimasPartidas
-    throw UnimplementedError();
+  Future<List<PartidaEntity>> obtenerPartidasPorJuego(int idJuego) async {
+    final List<Map<String, dynamic>> respuesta = await supabase
+        .from('partidas')
+        .select<List<Map<String, dynamic>>>(
+            'id, fecha_partida, nombre_partida, primera_partida_personal, primera_partida_hispano, primera_partida_mundial, offstream, videos_clips, '
+            'jugadores(id, nombre_usuario), '
+            'juegos(id, nombre, subtitulo)')
+        .eq('juego_id', idJuego)
+        .order('id', ascending: true);
+    return respuesta.map((partida) => PartidaEntity.fromJson(partida)).toList();
   }
 }

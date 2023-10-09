@@ -23,20 +23,7 @@ class SupabaseRepositoryImpl extends SupabaseRepository {
   }
 
   @override
-  Future<PartidaEntity> obtenerInformacionPartida(int idPartida) {
-    // TODO: implement obtenerInformacionPartida
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<JuegoEntity> obtenerInfromacionJuego(int idJuego) {
-    // TODO: implement obtenerInfromacionJuego
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<JugadorEntity>> obtenerUltimasPartidas(int cantidad) {
-    // TODO: implement obtenerUltimasPartidas
-    throw UnimplementedError();
+  Future<List<PartidaEntity>> obtenerPartidasPorJuego(int idJuego) {
+    return datasource.obtenerPartidasPorJuego(idJuego);
   }
 }

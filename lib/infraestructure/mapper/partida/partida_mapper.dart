@@ -16,5 +16,7 @@ class PartidaMapper {
       primeraPartidaJugador: partidaEntity.primeraPartidaPersonal,
       primeraPartidaMundo: partidaEntity.primeraPartidaMundial);
 
-  
+  static List<PartidaDto> mapearListaPartidas(final List<PartidaEntity> partidas) {
+    return partidas.map((entity) => entityToDto(entity)).toList();
+  }
 }

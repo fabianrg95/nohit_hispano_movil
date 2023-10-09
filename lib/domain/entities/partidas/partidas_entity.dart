@@ -32,7 +32,7 @@ class PartidaEntity {
       fechaPartida: json['fecha_partida'],
       juego: json['juegos'] != null ? JuegoEntity.fromJson(json['juegos']) : null,
       nombrePartida: json['nombre_partida'],
-      jugador: json['jugador'] != null ? JugadorEntity.fromJsonBasico(json['jugador']) : null,
+      jugador: json['jugadores'] != null ? JugadorEntity.fromJsonBasico(json['jugadores']) : null,
       primeraPartidaPersonal: json['primera_partida_personal'],
       primeraPartidaHispano: json['primera_partida_hispano'],
       primeraPartidaMundial: json['primera_partida_mundia'],
