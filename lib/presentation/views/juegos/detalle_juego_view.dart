@@ -5,12 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/partidas/partidas_juego_provider.dart';
+import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/delegates/juegos/cabecera_juego_delegate.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
-
-late ColorScheme colors;
-late TextTheme textStyle;
-late Size size;
 
 class DetalleJuego extends ConsumerStatefulWidget {
   final JuegoDto juego;
@@ -32,10 +29,6 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
 
   @override
   Widget build(BuildContext context) {
-    colors = Theme.of(context).colorScheme;
-    textStyle = Theme.of(context).textTheme;
-    size = MediaQuery.of(context).size;
-
     final ResumenJuegoDto? resumenPartidasJuego = ref.watch(partidasJuegoProvider)[widget.juego.id];
 
     return SafeArea(
@@ -68,69 +61,72 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
       return const SizedBox(height: 300, child: PantallaCargaBasica(texto: "Consultando las partidas del juego seleccionado"));
     }
 
-    return Column(
-      children: [
-        SizedBox(
-          height: 60,
-          child: Row(
-            children: [
-              _muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
-                const SizedBox(height: 5),
-                Text(resumenPartidasJuego.cantidadPartidas.toString(), style: textStyle.titleLarge),
-                Text('Partida${resumenPartidasJuego.cantidadPartidas != 1 ? 's' : ''}')
-              ]),
-              VerticalDivider(color: colors.tertiary, thickness: 2, indent: 0),
-              _muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
-                const SizedBox(height: 5),
-                Text(resumenPartidasJuego.cantidadJugadores.toString(), style: textStyle.titleLarge),
-                Text('Jugador${resumenPartidasJuego.cantidadJugadores != 1 ? 'es' : ''}')
-              ]),
-            ],
+    return IntrinsicHeight(
+      child: Column(
+        children: [
+          IntrinsicHeight(
+            child: Row(
+              children: [
+                _muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
+                  const SizedBox(height: 5),
+                  Text(resumenPartidasJuego.cantidadPartidas.toString(), style: styleTexto.titleLarge),
+                  Text('Partida${resumenPartidasJuego.cantidadPartidas != 1 ? 's' : ''}')
+                ]),
+                VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
+                _muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
+                  const SizedBox(height: 5),
+                  Text(resumenPartidasJuego.cantidadJugadores.toString(), style: styleTexto.titleLarge),
+                  Text('Jugador${resumenPartidasJuego.cantidadJugadores != 1 ? 'es' : ''}')
+                ]),
+              ],
+            ),
           ),
-        ),
-        _primeraUltimaPartida(resumenPartidasJuego)
-      ],
+          _primeraUltimaPartida(resumenPartidasJuego)
+        ],
+      ),
     );
   }
 
   Widget _primeraUltimaPartida(ResumenJuegoDto resumenPartidasJuego) {
     if (resumenPartidasJuego.partidas.isNotEmpty) {
-      return Container(
-          height: resumenPartidasJuego.primeraPartida!.id != resumenPartidasJuego.ultimaPartida!.id ? 180 : 90,
+      return IntrinsicHeight(
+        child: Container(
           margin: const EdgeInsets.only(left: 25, right: 25),
           padding: const EdgeInsets.only(top: 5),
           decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: true, topRight: true),
           child: IntrinsicHeight(
             child: Column(children: [
               _muestraInformacion(alineacion: CrossAxisAlignment.start, items: [
-                Text(resumenPartidasJuego.primeraPartida!.nombreJugador.toString(), style: textStyle.bodyMedium),
+                Text(resumenPartidasJuego.primeraPartida!.nombreJugador.toString(), style: styleTexto.bodyMedium),
                 Text(resumenPartidasJuego.primeraPartida!.nombre.toString(),
-                    style: textStyle.bodySmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
-                Text(resumenPartidasJuego.primeraPartida!.fecha.toString(), style: textStyle.bodySmall),
+                    style: styleTexto.bodySmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+                Text(resumenPartidasJuego.primeraPartida!.fecha.toString(), style: styleTexto.bodySmall),
                 Text(
                   'Primera ${resumenPartidasJuego.primeraPartida!.id == resumenPartidasJuego.ultimaPartida!.id ? 'y unica' : ''} partida',
-                  style: textStyle.bodyLarge?.copyWith(color: AppTheme.textoResaltado),
+                  style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado),
                 )
               ]),
               Visibility(
                 visible: resumenPartidasJuego.primeraPartida!.id != resumenPartidasJuego.ultimaPartida!.id,
-                child: Divider(color: colors.tertiary, thickness: 2, height: 1),
+                child: Divider(color: color.tertiary, thickness: 2, height: 1),
               ),
               Visibility(
                   visible: resumenPartidasJuego.primeraPartida!.id != resumenPartidasJuego.ultimaPartida!.id,
                   child: _muestraInformacion(alineacion: CrossAxisAlignment.end, items: [
                     const SizedBox(height: 4),
-                    Text(resumenPartidasJuego.partidas.last.nombreJugador.toString(), style: textStyle.bodyMedium),
+                    Text(resumenPartidasJuego.partidas.last.nombreJugador.toString(), style: styleTexto.bodyMedium),
                     Text(resumenPartidasJuego.partidas.last.nombre.toString(),
-                        style: textStyle.bodySmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
-                    Text(resumenPartidasJuego.partidas.last.fecha.toString(), style: textStyle.bodySmall),
+                        style: styleTexto.bodySmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+                    Text(resumenPartidasJuego.partidas.last.fecha.toString(), style: styleTexto.bodySmall),
                     Text(
                       'Ultima partida',
-                      style: textStyle.bodyLarge?.copyWith(color: AppTheme.textoResaltado),
+                      style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado),
                     )
                   ]))
             ]),
-          ));
+          ),
+        ),
+      );
     } else {
       return const SizedBox(height: 1);
     }
@@ -144,7 +140,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
           margin: const EdgeInsets.only(left: 25, right: 25),
           padding: const EdgeInsets.only(top: 10, bottom: 10),
           decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
-          child: Center(child: Text(widget.juego.subtitulo.toString(), style: textStyle.titleMedium)),
+          child: Center(child: Text(widget.juego.subtitulo.toString(), style: styleTexto.titleMedium)),
         ));
   }
 
@@ -183,9 +179,9 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
           decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
           child: Column(
             children: [
-              Text(partida.nombreJugador.toString(), style: textStyle.bodyMedium),
-              Text(partida.nombre.toString(), style: textStyle.bodySmall, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
-              Text(partida.fecha.toString(), style: textStyle.bodySmall),
+              Text(partida.nombreJugador.toString(), style: styleTexto.bodyMedium),
+              Text(partida.nombre.toString(), style: styleTexto.bodySmall, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
+              Text(partida.fecha.toString(), style: styleTexto.bodySmall),
             ],
           ),
         ),

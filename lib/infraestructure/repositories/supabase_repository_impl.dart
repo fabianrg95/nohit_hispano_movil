@@ -26,4 +26,9 @@ class SupabaseRepositoryImpl extends SupabaseRepository {
   Future<List<PartidaEntity>> obtenerPartidasPorJuego(int idJuego) {
     return datasource.obtenerPartidasPorJuego(idJuego);
   }
+  
+  @override
+  Future<List<PartidaEntity>> obtenerUltimasPartidas() {
+    return datasource.obtenerUltimasPartidas();
+  }
 }

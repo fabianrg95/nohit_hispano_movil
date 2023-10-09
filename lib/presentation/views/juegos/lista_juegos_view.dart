@@ -3,11 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/juego/juego_dto.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
+import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/views/juegos/detalle_juego_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
-
-late ThemeData tema;
-late Size size;
 
 class ListaJuegosView extends StatelessWidget {
   static const nombre = 'lista-juegos-screen';
@@ -16,8 +14,6 @@ class ListaJuegosView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    tema = Theme.of(context);
-    size = MediaQuery.of(context).size;
 
     return SafeArea(
       child: Scaffold(
@@ -56,13 +52,12 @@ class TapbarJuegosState extends State<TapbarJuegos> with SingleTickerProviderSta
     return Column(children: [
       const SizedBox(height: 5),
       _tabBarJuegos(),
-      SizedBox(
-        height: size.height - 139,
+      Expanded(
         child: TabBarView(controller: tabController, children: const [
           _ListaJuegos(juegosOficiales: true),
           _ListaJuegos(juegosOficiales: false),
         ]),
-      )
+      ),
     ]);
   }
 
@@ -72,9 +67,9 @@ class TapbarJuegosState extends State<TapbarJuegos> with SingleTickerProviderSta
         decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
         child: TabBar(
             controller: tabController,
-            labelStyle: tema.textTheme.titleMedium,
+            labelStyle: styleTexto.titleMedium,
             labelColor: AppTheme.textoBase,
-            unselectedLabelStyle: tema.textTheme.bodySmall,
+            unselectedLabelStyle: styleTexto.bodySmall,
             indicator: BoxDecoration(color: AppTheme.extra, borderRadius: BorderRadius.circular(8.5)),
             indicatorSize: TabBarIndicatorSize.tab,
             padding: const EdgeInsets.all(1),

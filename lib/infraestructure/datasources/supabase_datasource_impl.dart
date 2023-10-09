@@ -44,10 +44,23 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
         .from('partidas')
         .select<List<Map<String, dynamic>>>(
             'id, fecha_partida, nombre_partida, primera_partida_personal, primera_partida_hispano, primera_partida_mundial, offstream, videos_clips, '
-            'jugadores(id, nombre_usuario), '
+            'jugadores(id, nombre_usuario, fecha_primera_partida), '
             'juegos(id, nombre, subtitulo)')
         .eq('juego_id', idJuego)
         .order('id', ascending: true);
+    return respuesta.map((partida) => PartidaEntity.fromJson(partida)).toList();
+  }
+
+  @override
+  Future<List<PartidaEntity>> obtenerUltimasPartidas() async {
+    final List<Map<String, dynamic>> respuesta = await supabase
+        .from('partidas')
+        .select<List<Map<String, dynamic>>>(
+            'id, fecha_partida, nombre_partida, primera_partida_personal, primera_partida_hispano, primera_partida_mundial, offstream, videos_clips, '
+            'jugadores(id, nombre_usuario, nacionalidad(pais, codigo_bandera) ), '
+            'juegos(id, nombre, subtitulo, url_imagen, oficial_team_hitless)')
+        .order('id', ascending: false)
+        .limit(5);
     return respuesta.map((partida) => PartidaEntity.fromJson(partida)).toList();
   }
 }

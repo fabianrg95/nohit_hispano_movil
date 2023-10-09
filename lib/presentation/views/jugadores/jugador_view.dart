@@ -5,12 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
+import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-late ColorScheme color;
-late TextTheme styleTexto;
-late Size size;
 
 class DetalleJugadorView extends ConsumerStatefulWidget {
   final int idJugador;
@@ -31,10 +28,6 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
   @override
   Widget build(BuildContext context) {
     final JugadorDto? jugador = ref.watch(detalleJugadorProvider);
-
-    color = Theme.of(context).colorScheme;
-    styleTexto = Theme.of(context).textTheme;
-    size = MediaQuery.of(context).size;
 
     if (jugador == null || jugador.id == 0 || jugador.id != widget.idJugador) {
       return const PantallaCargaBasica(texto: "Consultando la informacion del jugador");

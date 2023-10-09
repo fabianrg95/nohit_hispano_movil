@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:no_hit/infraestructure/dto/juego/juego_dto.dart';
+import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
-
-late ColorScheme colors;
-late Size size;
 
 class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
@@ -13,8 +11,6 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    colors = Theme.of(context).colorScheme;
-    size = MediaQuery.of(context).size;
 
     return Stack(
       fit: StackFit.passthrough,
@@ -42,7 +38,7 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   Widget buildAppBar(double shrinkOffset) => Opacity(
       opacity: appear(shrinkOffset),
       child: OverflowBar(
-        children: [AppBar(title: Text(juego.nombre), surfaceTintColor: colors.tertiary)],
+        children: [AppBar(title: Text(juego.nombre), surfaceTintColor: color.tertiary)],
       ));
 
   Widget buildJuegoImage(double shrinkOffset) => Opacity(
@@ -53,7 +49,7 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                 height: 200,
                 width: size.width,
                 decoration: BoxDecoration(
-                    color: colors.tertiary,
+                    color: color.tertiary,
                     borderRadius: BorderRadius.vertical(
                       bottom: Radius.circular(radius(shrinkOffset)),
                     ))),
@@ -73,7 +69,7 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
               padding: const EdgeInsets.only(top: 16, left: 16),
               child: Icon(
                 Icons.arrow_back,
-                color: colors.surfaceTint,
+                color: color.surfaceTint,
               ),
             ),
           ],

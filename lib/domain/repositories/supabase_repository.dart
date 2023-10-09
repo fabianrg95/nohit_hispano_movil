@@ -8,4 +8,6 @@ abstract class SupabaseRepository {
   Future<JugadorEntity> obtenerInfromacionJugador(int idJugador);
 
   Future<List<PartidaEntity>> obtenerPartidasPorJuego(int idJuego);
+
+   Future<List<PartidaEntity>> obtenerUltimasPartidas();
 }

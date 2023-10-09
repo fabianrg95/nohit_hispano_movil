@@ -9,6 +9,10 @@ import 'package:no_hit/config/router/app_router.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+late ColorScheme color;
+late TextTheme styleTexto;
+late Size size;
+
 Future<void> main() async {
   await _definirVariablesEntorno();
   _definirLocalizacion();
