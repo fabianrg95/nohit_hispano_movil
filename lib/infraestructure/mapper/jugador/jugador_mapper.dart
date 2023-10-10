@@ -35,6 +35,10 @@ class JugadorMapper {
     return jugadores.map((entity) => entityToDtoBasico(entity)).toList();
   }
 
+  static List<JugadorDto> mapearListaJugadoresDetalle(final List<JugadorEntity> jugadores) {
+    return jugadores.map((entity) => entityToDtoDetalle(entity)).toList();
+  }
+
   static String obtenerGentilicio(final PronombreEntity? pronombre, final NacionalidadEntity? nacionalidad) {
     if (pronombre != null && nacionalidad != null) {
       if (pronombre.genero == 'Neutro') return nacionalidad.gentilicioNeutro!;

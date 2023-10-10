@@ -10,4 +10,8 @@ abstract class SupabaseDatasource {
   Future<List<PartidaEntity>> obtenerPartidasPorJuego(int idJuego);
 
   Future<List<PartidaEntity>> obtenerUltimasPartidas();
+
+  Future<List<JugadorEntity>> obtenerUltimosJugadores();
+
+  Future<PartidaEntity> obtenerInfromacionPartida(int idPartida);
 }
