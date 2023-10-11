@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
-import 'package:no_hit/infraestructure/dto/juego/juego_dto.dart';
+import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/views/juegos/detalle_juego_view.dart';
@@ -14,7 +14,6 @@ class ListaJuegosView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Scaffold(
         drawer: const CustomDraw(),

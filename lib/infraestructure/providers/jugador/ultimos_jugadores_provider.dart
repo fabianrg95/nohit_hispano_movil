@@ -9,10 +9,10 @@ final ultimosJugadoresProvider = StateNotifierProvider<UltimosJugadoresNotifier,
   return UltimosJugadoresNotifier(hitlessRepository.obtenerUltimosJugadores);
 });
 
-typedef GetJugadoresCallback = Future<List<JugadorEntity>> Function();
+typedef GetUltimosJugadoresCallback = Future<List<JugadorEntity>> Function();
 
 class UltimosJugadoresNotifier extends StateNotifier<List<JugadorDto>> {
-  GetJugadoresCallback obtenerUltimosJugadores;
+  GetUltimosJugadoresCallback obtenerUltimosJugadores;
 
   UltimosJugadoresNotifier(this.obtenerUltimosJugadores) : super([]);
 

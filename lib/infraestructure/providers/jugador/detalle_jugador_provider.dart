@@ -4,21 +4,21 @@ import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/mapper/mappers.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 
-final detalleJugadorProvider = StateNotifierProvider<DetalleJugadorNotifier, JugadorDto>((ref) {
+final detalleJugadorProvider = StateNotifierProvider<DetalleJugadorNotifier, Map<int, JugadorDto>>((ref) {
   final hitlessRepository = ref.watch(hitlessRepositoryProvider);
   return DetalleJugadorNotifier(hitlessRepository.obtenerInfromacionJugador);
 });
 
 typedef GetJugadorCallback = Future<JugadorEntity> Function(int idJugador);
 
-class DetalleJugadorNotifier extends StateNotifier<JugadorDto> {
+class DetalleJugadorNotifier extends StateNotifier<Map<int, JugadorDto>> {
   final GetJugadorCallback obtenerInformacionJugador;
 
-  DetalleJugadorNotifier(this.obtenerInformacionJugador) : super(JugadorDto());
+  DetalleJugadorNotifier(this.obtenerInformacionJugador) : super({});
 
   Future<void> loadData(int idJugador) async {
-    if (state.id != idJugador) {
-      state = JugadorMapper.entityToDtoDetalle(await obtenerInformacionJugador(idJugador));
+    if (state[idJugador] == null) {
+      state = {...state, idJugador: JugadorMapper.entityToDtoDetalle(await obtenerInformacionJugador(idJugador))};
     }
   }
 }

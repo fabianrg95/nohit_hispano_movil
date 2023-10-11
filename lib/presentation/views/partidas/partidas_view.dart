@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
-import 'package:no_hit/infraestructure/providers/jugador/ultimos_jugadores_provider.dart';
-import 'package:no_hit/infraestructure/providers/partidas/ultimas_partidas_provider.dart';
+import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/views/jugadores/jugador_view.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
@@ -52,6 +51,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
   AppBar _titulo(BuildContext context) {
     return AppBar(
       leading: IconButton(onPressed: () => Scaffold.of(context).openDrawer(), icon: const Icon(Icons.menu)),
+      title: const Text('No Hit Hispano'),
     );
   }
 
@@ -75,15 +75,12 @@ class PartidasViewState extends ConsumerState<PartidasView> {
           width: size.width,
           margin: const EdgeInsets.only(left: 25, right: 25, top: 10),
           padding: const EdgeInsets.only(top: 10, bottom: 10),
-          decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: false, topRight: false),
+          decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: true, topRight: true),
           child: const Center(child: Text('Jugadores nuevos')),
         ),
-        const SizedBox(height: 10),
         Swiper(
-          viewportFraction: 0.8,
-          scale: 0.9,
           layout: SwiperLayout.TINDER,
-          itemWidth: 500.0,
+          itemWidth: 350.0,
           itemHeight: 150.0,
           autoplayDelay: 5000,
           autoplay: true,
@@ -111,15 +108,13 @@ class PartidasViewState extends ConsumerState<PartidasView> {
           width: size.width,
           margin: const EdgeInsets.only(left: 25, right: 25, top: 10),
           padding: const EdgeInsets.only(top: 10, bottom: 10),
-          decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: false, topRight: false),
+          decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: true, topRight: true),
           child: const Center(child: Text('Ultimas partidas')),
         ),
         Swiper(
-          viewportFraction: 0.8,
-          scale: 0.9,
           layout: SwiperLayout.TINDER,
-          itemWidth: 500.0,
-          itemHeight: 350.0,
+          itemWidth: 350.0,
+          itemHeight: 330.0,
           autoplayDelay: 5000,
           autoplay: true,
           pagination: SwiperPagination(
@@ -138,10 +133,16 @@ class PartidasViewState extends ConsumerState<PartidasView> {
   Widget _slideJuego({required PartidaDto partida}) {
     return GestureDetector(
       onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
-        return FadeTransition(opacity: animation, child: DetallePartidaView(partidaId: partida.id));
+        return FadeTransition(
+            opacity: animation,
+            child: DetallePartidaView(
+              partidaId: partida.id,
+              jugadorId: partida.idJugador,
+            ));
       })),
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.only(top: 10, bottom: 0),
         decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
         child: IntrinsicHeight(
           child: Column(
@@ -171,7 +172,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
           child: Row(
             children: [
               Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.only(top: 10, left: 20),
                 child: BanderaJugador(codigoBandera: jugador.codigoBandera, tamanio: 90),
               ),
               Expanded(

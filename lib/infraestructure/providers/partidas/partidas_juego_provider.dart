@@ -9,10 +9,10 @@ final partidasJuegoProvider = StateNotifierProvider<PartidasJuegoNotifier, Map<i
   return PartidasJuegoNotifier(hitlessRepository.obtenerPartidasPorJuego);
 });
 
-typedef GetJuegosCallback = Future<List<PartidaEntity>> Function(int idJuego);
+typedef GetPartidasJuegoCallback = Future<List<PartidaEntity>> Function(int idJuego);
 
 class PartidasJuegoNotifier extends StateNotifier<Map<int, ResumenJuegoDto>> {
-  GetJuegosCallback obtenerPartidasPorJuegos;
+  GetPartidasJuegoCallback obtenerPartidasPorJuegos;
 
   PartidasJuegoNotifier(this.obtenerPartidasPorJuegos) : super({});
 

@@ -32,7 +32,7 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
         .select<List<Map<String, dynamic>>>('id, nombre_usuario, url_canal_youtube, url_canal_twitch, fecha_primera_partida, '
             'pronombre(pronombre, genero), '
             'nacionalidad(pais, codigo_bandera, gentilicio_masculino, gentilicio_femenino, neutro), '
-            'partidas(id, fecha_partida, nombre_partida, juegos(id, nombre, subtitulo, url_imagen, oficial_team_hitless)))')
+            'partidas(id, fecha_partida, nombre_partida, juegos(id, nombre, subtitulo, url_imagen, oficial_team_hitless), jugadores(id)))')
         .eq('id', idJugador)
         .order('id', foreignTable: 'partidas', ascending: true);
     return respuesta.map((jugador) => JugadorEntity.fromJsonDetalle(jugador)).first;
@@ -77,7 +77,7 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
   }
 
   @override
-  Future<PartidaEntity> obtenerInfromacionPartida(final int idPartida) async {
+  Future<PartidaEntity> obtenerInformacionPartida(final int idPartida) async {
     final List<Map<String, dynamic>> respuesta = await supabase
         .from('partidas')
         .select<List<Map<String, dynamic>>>(

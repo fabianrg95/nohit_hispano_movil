@@ -9,10 +9,10 @@ final ultimasPartidasProvider = StateNotifierProvider<UltimasPartidasNotifier, L
   return UltimasPartidasNotifier(hitlessRepository.obtenerUltimasPartidas);
 });
 
-typedef GetJuegosCallback = Future<List<PartidaEntity>> Function();
+typedef GetUltimasPartidasCallback = Future<List<PartidaEntity>> Function();
 
 class UltimasPartidasNotifier extends StateNotifier<List<PartidaDto>> {
-  GetJuegosCallback obtenerUltimasPartidas;
+  GetUltimasPartidasCallback obtenerUltimasPartidas;
 
   UltimasPartidasNotifier(this.obtenerUltimasPartidas) : super([]);
 

@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
-import 'package:no_hit/infraestructure/providers/partidas/partidas_juego_provider.dart';
+import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/delegates/juegos/cabecera_juego_delegate.dart';
+import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class DetalleJuego extends ConsumerStatefulWidget {
@@ -165,24 +166,35 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
       itemBuilder: (BuildContext context, int index) {
         PartidaDto partida = partidas[index];
         final bool par = index.isOdd;
-        return _tarjetaPartidaJuegoJugador(partida: partida, par: par);
+        return _tarjetaPartidaJuegoJugador(partida: partida, par: par, context: context);
       },
     );
   }
 
-  Widget _tarjetaPartidaJuegoJugador({required PartidaDto partida, required bool par}) {
+  Widget _tarjetaPartidaJuegoJugador({required PartidaDto partida, required bool par, required BuildContext context}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20, left: 10, right: 10),
       child: Transform.rotate(
         angle: -0.02 + Random().nextDouble() * (0.02 - -0.02),
-        child: Container(
-          decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
-          child: Column(
-            children: [
-              Text(partida.nombreJugador.toString(), style: styleTexto.bodyMedium),
-              Text(partida.nombre.toString(), style: styleTexto.bodySmall, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
-              Text(partida.fecha.toString(), style: styleTexto.bodySmall),
-            ],
+        child: GestureDetector(
+          onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+            return FadeTransition(
+                opacity: animation,
+                child: DetallePartidaView(
+                  partidaId: partida.id,
+                  jugadorId: partida.idJugador,
+                ));
+          })),
+          child: Container(
+            decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+            child: Column(
+              children: [
+                Text(partida.nombreJugador.toString(), style: styleTexto.bodyMedium),
+                Text(partida.nombre.toString(),
+                    style: styleTexto.bodySmall, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
+                Text(partida.fecha.toString(), style: styleTexto.bodySmall),
+              ],
+            ),
           ),
         ),
       ),

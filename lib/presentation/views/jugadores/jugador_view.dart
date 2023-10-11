@@ -6,6 +6,7 @@ import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/main.dart';
+import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -27,7 +28,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
 
   @override
   Widget build(BuildContext context) {
-    final JugadorDto? jugador = ref.watch(detalleJugadorProvider);
+    final JugadorDto? jugador = ref.watch(detalleJugadorProvider)[widget.idJugador];
 
     if (jugador == null || jugador.id == 0 || jugador.id != widget.idJugador) {
       return const PantallaCargaBasica(texto: "Consultando la informacion del jugador");
@@ -170,7 +171,7 @@ Widget _informacionPartidasJugador({required List<PartidaDto> partidas}) {
     itemBuilder: (BuildContext context, int index) {
       PartidaDto partida = partidas[index];
       final bool par = index.isOdd;
-      return _tarjetaPartidaJuegoJugador(partida: partida, par: par);
+      return _tarjetaPartidaJuegoJugador(partida: partida, par: par, context: context);
     },
   );
 }
@@ -191,6 +192,10 @@ class _PartidasState extends State<_Partidas> {
   void initState() {
     super.initState();
     partidasJuegoSeleccionado = [];
+
+    if (widget.jugador.juegos.isNotEmpty) {
+      partidasJuegoSeleccionado = widget.jugador.juegos[0].partidas;
+    }
   }
 
   @override
@@ -226,19 +231,29 @@ class _PartidasState extends State<_Partidas> {
   }
 }
 
-Widget _tarjetaPartidaJuegoJugador({required PartidaDto partida, required bool par}) {
+Widget _tarjetaPartidaJuegoJugador({required PartidaDto partida, required bool par, required BuildContext context}) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 20, left: 10, right: 10),
     child: Transform.rotate(
       angle: -0.02 + Random().nextDouble() * (0.02 - -0.02),
-      child: Container(
-        decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
-        child: Column(
-          children: [
-            Text('${partida.tituloJuego.toString()} ${partida.subtituloJuego ?? ''}', style: styleTexto.bodyMedium),
-            Text(partida.nombre.toString(), style: styleTexto.bodySmall, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
-            Text(partida.fecha.toString(), style: styleTexto.bodySmall),
-          ],
+      child: GestureDetector(
+        onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+          return FadeTransition(
+              opacity: animation,
+              child: DetallePartidaView(
+                partidaId: partida.id,
+                jugadorId: partida.idJugador,
+              ));
+        })),
+        child: Container(
+          decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+          child: Column(
+            children: [
+              Text('${partida.tituloJuego.toString()} ${partida.subtituloJuego ?? ''}', style: styleTexto.bodyMedium),
+              Text(partida.nombre.toString(), style: styleTexto.bodySmall, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
+              Text(partida.fecha.toString(), style: styleTexto.bodySmall),
+            ],
+          ),
         ),
       ),
     ),

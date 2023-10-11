@@ -9,10 +9,10 @@ final detallePartidaProvider = StateNotifierProvider<DetallePartidaNotifier, Map
   return DetallePartidaNotifier(hitlessRepository.obtenerInfromacionPartida);
 });
 
-typedef GetJuegosCallback = Future<PartidaEntity> Function(int idPartida);
+typedef GetDetallePartidaCallback = Future<PartidaEntity> Function(int idPartida);
 
 class DetallePartidaNotifier extends StateNotifier<Map<int, PartidaDto>> {
-  GetJuegosCallback obtenerDetallePartida;
+  GetDetallePartidaCallback obtenerDetallePartida;
 
   DetallePartidaNotifier(this.obtenerDetallePartida) : super({});
 

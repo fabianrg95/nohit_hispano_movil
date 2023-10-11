@@ -39,6 +39,6 @@ class SupabaseRepositoryImpl extends SupabaseRepository {
 
   @override
   Future<PartidaEntity> obtenerInfromacionPartida(final int idPartida) {
-    return datasource.obtenerInfromacionPartida(idPartida);
+    return datasource.obtenerInformacionPartida(idPartida);
   }
 }
