@@ -7,7 +7,6 @@ import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/delegates/juegos/cabecera_juego_delegate.dart';
 import 'package:no_hit/presentation/views/jugadores/jugador_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DetallePartidaView extends ConsumerStatefulWidget {
   final int partidaId;
@@ -55,7 +54,13 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
                 delegate: SliverChildBuilderDelegate((context, index) {
               return SingleChildScrollView(
                 child: Column(
-                  children: [_subtitulo(juegoDto), _informacionJugador(detalleJugador), _informacionPartida(detallePartida)],
+                  children: [
+                    _subtitulo(juegoDto),
+                    _informacionJugador(detalleJugador),
+                    _informacionPartida(detallePartida),
+                    _recordPartida(detallePartida),
+                    const SizedBox(height: 20)
+                  ],
                 ),
               );
             }, childCount: 1))
@@ -95,13 +100,13 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
                         Visibility(visible: detalleJugador.pronombre != null, child: Text(detalleJugador.pronombre.toString())),
                         Visibility(visible: detalleJugador.gentilicio != null, child: Text(detalleJugador.gentilicio.toString())),
                         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          _link(detalleJugador.urlYoutube, 'assets/images/youtube.png'),
+                          CustomLinks().link(detalleJugador.urlYoutube, 'assets/images/youtube.png'),
                           Visibility(
                               visible: detalleJugador.urlYoutube != null && detalleJugador.urlTwitch != null,
                               child: VerticalDivider(
                                 color: color.tertiary,
                               )),
-                          _link(detalleJugador.urlTwitch, 'assets/images/twitch.png')
+                          CustomLinks().link(detalleJugador.urlTwitch, 'assets/images/twitch.png')
                         ])
                       ],
                     ),
@@ -122,18 +127,58 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
       decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
       child: IntrinsicHeight(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Center(child: Text('Informacion Partida')),
             const SizedBox(height: 10),
             Divider(color: color.tertiary, thickness: 2, height: 1),
             const SizedBox(height: 10),
-            Text(detallePartida.nombre.toString()),
+            Text(detallePartida.nombre.toString(), textAlign: TextAlign.center),
             Text(detallePartida.fecha.toString()),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _recordPartida(final PartidaDto detallePartida) {
+    return Container(
+      margin: const EdgeInsets.only(left: 25, right: 25, top: 10),
+      decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+      child: IntrinsicHeight(
+        child: Column(
+          children: [
             const SizedBox(height: 10),
-            Text('Primera Partida Jugador: ${detallePartida.primeraPartidaJugador == true ? 'Si' : 'No'}'),
-            Text('Primera Partida Hispano: ${detallePartida.primeraPartidaHispano == true ? 'Si' : 'No'}'),
-            Text('Primera Partida Mundial: ${detallePartida.primeraPartidaMundo == true ? 'Si' : 'No'}'),
+            const Center(child: Text('¿Primera Partida?')),
             const SizedBox(height: 10),
+            Divider(color: color.tertiary, thickness: 2, height: 1),
+            IntrinsicHeight(
+              child: Row(
+                children: [
+                  ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
+                    const SizedBox(height: 10),
+                    Text(detallePartida.primeraPartidaJugador == true ? 'Si' : 'No', style: styleTexto.titleLarge),
+                    const Text('Jugador'),
+                    const SizedBox(height: 10),
+                  ]),
+                  VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
+                  ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
+                    const SizedBox(height: 10),
+                    Text(detallePartida.primeraPartidaHispano == true ? 'Si' : 'No', style: styleTexto.titleLarge),
+                    const Text('Hispano'),
+                    const SizedBox(height: 10),
+                  ]),
+                  VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
+                  ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
+                    const SizedBox(height: 10),
+                    Text(detallePartida.primeraPartidaMundo == true ? 'Si' : 'No', style: styleTexto.titleLarge),
+                    const Text('Mundial'),
+                    const SizedBox(height: 10),
+                  ]),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -150,21 +195,5 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
           decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
           child: Center(child: Text(juegoDto.subtitulo.toString(), style: styleTexto.titleMedium)),
         ));
-  }
-
-  Future<void> _lanzarUrl(String url) async {
-    if (!await launchUrl(Uri.parse(url))) {
-      throw Exception('no puede ser lanzada la url $url');
-    }
-  }
-
-  Visibility _link(final String? url, final String urlImagen) {
-    return Visibility(
-      visible: url != null,
-      child: GestureDetector(
-        onTap: () => _lanzarUrl(url.toString()),
-        child: Image.asset(urlImagen, width: 30, height: 30),
-      ),
-    );
   }
 }

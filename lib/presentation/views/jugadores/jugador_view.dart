@@ -8,7 +8,6 @@ import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DetalleJugadorView extends ConsumerStatefulWidget {
   final int idJugador;
@@ -74,32 +73,16 @@ Widget _informacionJugador(JugadorDto jugador) {
           Visibility(visible: jugador.pronombre != null, child: Text(jugador.pronombre.toString())),
           Visibility(visible: jugador.gentilicio != null, child: Text(jugador.gentilicio.toString())),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            _link(jugador.urlYoutube, 'assets/images/youtube.png'),
+            CustomLinks().link(jugador.urlYoutube, 'assets/images/youtube.png'),
             Visibility(
                 visible: jugador.urlYoutube != null && jugador.urlTwitch != null,
                 child: VerticalDivider(
                   color: color.tertiary,
                 )),
-            _link(jugador.urlTwitch, 'assets/images/twitch.png')
+            CustomLinks().link(jugador.urlTwitch, 'assets/images/twitch.png')
           ])
         ],
       ));
-}
-
-Visibility _link(final String? url, final String urlImagen) {
-  return Visibility(
-    visible: url != null,
-    child: GestureDetector(
-      onTap: () => _lanzarUrl(url.toString()),
-      child: Image.asset(urlImagen, width: 30, height: 30),
-    ),
-  );
-}
-
-Future<void> _lanzarUrl(String url) async {
-  if (!await launchUrl(Uri.parse(url))) {
-    throw Exception('no puede ser lanzada la url $url');
-  }
 }
 
 Widget _resumenPartidas({required JugadorDto jugador}) {
@@ -112,12 +95,12 @@ Widget _resumenPartidas({required JugadorDto jugador}) {
           IntrinsicHeight(
             child: Row(
               children: [
-                _muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
+                ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
                   Text(jugador.juegos.length.toString(), style: styleTexto.titleLarge),
                   Text('Juego${jugador.juegos.length != 1 ? 's' : ''}')
                 ]),
                 VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
-                _muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
+                ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
                   Text(jugador.cantidadPartidas.toString(), style: styleTexto.titleLarge),
                   Text('Partida${jugador.cantidadPartidas != 1 ? 's' : ''}')
                 ])
@@ -125,7 +108,7 @@ Widget _resumenPartidas({required JugadorDto jugador}) {
             ),
           ),
           Divider(color: color.tertiary, thickness: 2, height: 1),
-          _muestraInformacion(alineacion: CrossAxisAlignment.start, items: [
+          ViewData().muestraInformacion(alineacion: CrossAxisAlignment.start, items: [
             Text('${jugador.primeraPartida!.tituloJuego.toString()} ${jugador.primeraPartida!.subtituloJuego ?? ''}', style: styleTexto.bodyMedium),
             Text(jugador.primeraPartida!.nombre.toString(),
                 style: styleTexto.bodySmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
@@ -141,7 +124,7 @@ Widget _resumenPartidas({required JugadorDto jugador}) {
           ),
           Visibility(
               visible: jugador.primeraPartida!.id != jugador.ultimaPartida!.id,
-              child: _muestraInformacion(alineacion: CrossAxisAlignment.end, items: [
+              child: ViewData().muestraInformacion(alineacion: CrossAxisAlignment.end, items: [
                 Text('${jugador.ultimaPartida!.tituloJuego.toString()} ${jugador.ultimaPartida!.subtituloJuego ?? ''}', style: styleTexto.bodyMedium),
                 Text(jugador.ultimaPartida!.nombre.toString(),
                     style: styleTexto.bodySmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
@@ -150,15 +133,6 @@ Widget _resumenPartidas({required JugadorDto jugador}) {
               ]))
         ],
       ),
-    ),
-  );
-}
-
-Widget _muestraInformacion({required List<Widget> items, required CrossAxisAlignment alineacion}) {
-  return Expanded(
-    child: Padding(
-      padding: const EdgeInsets.only(bottom: 5, left: 5, right: 5),
-      child: Row(children: [Expanded(child: Column(crossAxisAlignment: alineacion, children: items))]),
     ),
   );
 }

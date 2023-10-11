@@ -4,3 +4,5 @@ export 'juegos/item_juego.dart';
 export 'jugador/bandera_jugador.dart';
 export 'jugador/item_jugador.dart';
 export 'commons/pantalla_carga_basica.dart';
+export 'commons/custom_links.dart';
+export 'commons/custom_view_data.dart';

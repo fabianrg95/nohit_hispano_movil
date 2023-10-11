@@ -1,5 +1,6 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
@@ -41,6 +42,8 @@ class PartidasViewState extends ConsumerState<PartidasView> {
     if ((listaUltimasPartidas == null || listaUltimasPartidas!.isEmpty) && (listaUltimosJugadores == null || listaUltimosJugadores!.isEmpty)) {
       return const PantallaCargaBasica(texto: 'Consultando ultimas partidas');
     }
+
+    FlutterNativeSplash.remove();
 
     return Scaffold(
       appBar: _titulo(context),
