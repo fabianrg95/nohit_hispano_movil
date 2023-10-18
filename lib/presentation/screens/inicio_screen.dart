@@ -14,7 +14,7 @@ class InicioScreen extends StatelessWidget {
     return Scaffold(
       key: scaffoldKey,
       drawer: const CustomDraw(),
-      body: Builder(builder: (context) => const PartidasView()),
+      body: Builder(builder: (context) => const InicioView()),
     );
   }
 }

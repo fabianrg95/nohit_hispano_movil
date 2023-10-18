@@ -6,7 +6,7 @@ import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class ListaJugadoresView extends ConsumerStatefulWidget {
-  static const nombre = 'lista-juegadores-screen';
+  static const nombre = 'lista-jugadores-screen';
   const ListaJugadoresView({super.key});
 
   @override
@@ -27,13 +27,13 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
     listaJugadores = ref.watch(jugadorProvider);
 
     if (listaJugadores.isEmpty) {
-      return const PantallaCargaBasica(texto: 'Contando hits');
+      return const PantallaCargaBasica(texto: 'Consultando Jugadores');
     }
 
     return SafeArea(
       child: Scaffold(
-        drawer: const CustomDraw(),
-        appBar: AppBar(actions: [_accionBuscar(context)], title: const Text('Jugadores'), centerTitle: true),
+        //drawer: const CustomDraw(),
+        appBar: AppBar(actions: [_accionBuscar(context)], title: const Text('Jugadores')),
         body: _contenidoPagina(),
       ),
     );

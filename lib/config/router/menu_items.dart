@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:no_hit/presentation/views/juegos/lista_juegos_view.dart';
-import 'package:no_hit/presentation/views/jugadores/lista_jugadores_view.dart';
-import 'package:no_hit/presentation/views/partidas/partidas_view.dart';
+import 'package:no_hit/presentation/views/views.dart';
 
 enum MenuItem {
   inicio(
+    title: 'inicio',
+    link: '/inicio',
+    page: InicioView(),
+    icon: Icons.home_max_outlined,
+  ),
+  partidas(
     title: 'Partidas',
     link: '/partidas',
     page: PartidasView(),
@@ -20,7 +24,19 @@ enum MenuItem {
     title: 'Jugadores',
     link: '/jugadores',
     page: ListaJugadoresView(),
-    icon: Icons.person_2_outlined,
+    icon: Icons.groups_2_outlined,
+  ),
+  informacion(
+    title: 'Informacion',
+    link: '/informacion',
+    page: InformacionView(),
+    icon: Icons.info_outline,
+  ),
+  contacto(
+    title: 'Contacto',
+    link: '/contacto',
+    page: InformacionView(),
+    icon: Icons.engineering_outlined,
   );
 
   final String title;

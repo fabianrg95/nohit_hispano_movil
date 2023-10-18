@@ -11,14 +11,12 @@ class PantallaCargaBasica extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const CircularProgressIndicator(strokeWidth: 2),
-            Text(texto)
-          ]),
-    ));
+      body: Center(
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [const CircularProgressIndicator(strokeWidth: 2), Text(texto, textAlign: TextAlign.center)]),
+      ),
+    );
   }
 }

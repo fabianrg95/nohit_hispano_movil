@@ -88,4 +88,22 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
         .limit(1);
     return PartidaEntity.fromJson(respuesta.first);
   }
+
+  @override
+  Future<int> obtenerCantidadJugadores() async {
+    final respuesta = await supabase.from('jugadores').select('id', const FetchOptions(count: CountOption.exact, head: true));
+    return respuesta.count;
+  }
+
+  @override
+  Future<int> obtenerCantidadPartidas() async {
+    final respuesta = await supabase.from('partidas').select('id', const FetchOptions(count: CountOption.exact, head: true));
+    return respuesta.count;
+  }
+
+  @override
+  Future<int> obtenerCantidadJuegos() async {
+    final respuesta = await supabase.from('juegos').select('id', const FetchOptions(count: CountOption.exact, head: true));
+    return respuesta.count;
+  }
 }

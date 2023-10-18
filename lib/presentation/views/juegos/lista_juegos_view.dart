@@ -16,8 +16,36 @@ class ListaJuegosView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        drawer: const CustomDraw(),
-        appBar: AppBar(title: const Text('Juegos'), centerTitle: true),
+        //drawer: const CustomDraw(),
+        appBar: AppBar(title: const Text('Juegos'), centerTitle: true, actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: GestureDetector(
+                onTap: () => showModalBottomSheet(
+                      context: context,
+                      backgroundColor: color.primary,
+                      showDragHandle: true,
+                      useSafeArea: true,
+                      builder: (context) => Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: SizedBox(
+                            width: double.infinity,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Lista de Juegos', style: styleTexto.titleLarge),
+                                const Text(
+                                    'Aca encontraras los juegos en los cuales por lo menos una persona de habla hispana logro sacar un reto No-Hit, los juegos se encuentran separados en 2 listas, una lista oficial del Team Hitless y una lista con los juegos que no son oficiales en el Team Hitless.'),
+                                const Text('Puedes seleccionar cualquier juego en las listas para poder ver a detalle las partidas de dicho juego.')
+                              ],
+                            )),
+                      ),
+                    ),
+                child: const Icon(
+                  Icons.question_mark_outlined,
+                )),
+          )
+        ]),
         body: const TapbarJuegos(),
       ),
     );

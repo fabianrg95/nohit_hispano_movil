@@ -1,6 +1,11 @@
 import 'package:no_hit/domain/entities/entities.dart';
 
 abstract class SupabaseDatasource {
+
+  Future<int> obtenerCantidadJugadores();
+  Future<int> obtenerCantidadPartidas();
+  Future<int> obtenerCantidadJuegos();
+
   Future<List<JuegoEntity>> obtenerJuegos(bool oficialTeamHitless);
 
   Future<List<JugadorEntity>> obtenerJugadores();

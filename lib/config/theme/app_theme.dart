@@ -20,11 +20,14 @@ class AppTheme {
         cardTheme: const CardTheme(color: complemento),
         listTileTheme: const ListTileThemeData(textColor: textoBase),
         appBarTheme: const AppBarTheme(
-            backgroundColor: extra,
-            centerTitle: true,
-            foregroundColor: textoBase,
-            surfaceTintColor: extra,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)))),
+          //backgroundColor: extra,
+          //foregroundColor: textoBase,
+          backgroundColor: base,
+          centerTitle: false,
+          foregroundColor: extra,
+          surfaceTintColor: extra,
+          //shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)))
+        ),
       );
 
   static BoxDecoration decorationContainerBasic(

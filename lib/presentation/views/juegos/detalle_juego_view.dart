@@ -133,16 +133,20 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
     }
   }
 
-  Visibility _subtitulo() {
-    return Visibility(
-        visible: widget.juego.subtitulo != null,
-        child: Container(
-          width: size.width,
-          margin: const EdgeInsets.only(left: 25, right: 25),
-          padding: const EdgeInsets.only(top: 10, bottom: 10),
-          decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
-          child: Center(child: Text(widget.juego.subtitulo.toString(), style: styleTexto.titleMedium)),
-        ));
+  Widget _subtitulo() {
+    return Container(
+      width: size.width,
+      margin: const EdgeInsets.only(left: 25, right: 25),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+      child: Column(children: [
+        Text(widget.juego.nombre.toString(), style: styleTexto.titleLarge),
+        Visibility(
+          visible: widget.juego.subtitulo != null,
+          child: Text(widget.juego.subtitulo.toString(), style: styleTexto.titleMedium),
+        ),
+      ]),
+    );
   }
 
   Widget _muestraInformacion({required List<Widget> items, required CrossAxisAlignment alineacion}) {

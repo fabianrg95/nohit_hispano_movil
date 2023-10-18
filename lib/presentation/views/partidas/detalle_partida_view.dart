@@ -185,15 +185,19 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
     );
   }
 
-  Visibility _subtitulo(final JuegoDto juegoDto) {
-    return Visibility(
-        visible: juegoDto.subtitulo != null,
-        child: Container(
-          width: size.width,
-          margin: const EdgeInsets.only(left: 25, right: 25),
-          padding: const EdgeInsets.only(top: 10, bottom: 10),
-          decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
-          child: Center(child: Text(juegoDto.subtitulo.toString(), style: styleTexto.titleMedium)),
-        ));
+  Widget _subtitulo(final JuegoDto juegoDto) {
+    return Container(
+      width: size.width,
+      margin: const EdgeInsets.only(left: 25, right: 25),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+      child: Column(children: [
+        Text(juegoDto.nombre.toString(), style: styleTexto.titleLarge),
+        Visibility(
+          visible: juegoDto.subtitulo != null,
+          child: Text(juegoDto.subtitulo.toString(), style: styleTexto.titleMedium),
+        ),
+      ]),
+    );
   }
 }

@@ -1,18 +1,21 @@
 import 'package:go_router/go_router.dart';
 import 'package:no_hit/presentation/screens/inicio_screen.dart';
-import 'package:no_hit/presentation/views/juegos/lista_juegos_view.dart';
-// import 'package:no_hit/presentation/screens/inicio_screen.dart';
-// import 'package:no_hit/presentation/views/juegos/juegos_view.dart';
-import 'package:no_hit/presentation/views/jugadores/lista_jugadores_view.dart';
+import 'package:no_hit/presentation/views/contacto/contacto_view.dart';
+import 'package:no_hit/presentation/views/views.dart';
 
 // GoRouter configuration
 final appRouter = GoRouter(
-  initialLocation: '/partidas',
+  initialLocation: '/inicio',
   routes: [
     GoRoute(
-      path: '/partidas',
+      path: '/inicio',
       name: InicioScreen.nombre,
       builder: (context, state) => const InicioScreen(),
+    ),
+    GoRoute(
+      path: '/partidas',
+      name: PartidasView.nombre,
+      builder: (context, state) => const PartidasView(),
     ),
     GoRoute(
       path: '/juegos',
@@ -23,6 +26,16 @@ final appRouter = GoRouter(
       path: '/jugadores',
       name: ListaJugadoresView.nombre,
       builder: (context, state) => const ListaJugadoresView(),
+    ),
+    GoRoute(
+      path: '/informacion',
+      name: InformacionView.nombre,
+      builder: (context, state) => const InformacionView(),
+    ),
+    GoRoute(
+      path: '/contacto',
+      name: ContactoView.nombre,
+      builder: (context, state) => const ContactoView(),
     ),
   ],
 );
