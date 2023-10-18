@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
@@ -19,13 +20,11 @@ class PartidasView extends ConsumerStatefulWidget {
 
 class PartidasViewState extends ConsumerState<PartidasView> {
   List<PartidaDto>? listaUltimasPartidas = [];
-  List<JugadorDto>? listaUltimosJugadores = [];
 
   @override
   void initState() {
     super.initState();
     ref.read(ultimasPartidasProvider.notifier).loadData();
-    ref.read(ultimosJugadoresProvider.notifier).loadData();
   }
 
   @override
@@ -35,18 +34,11 @@ class PartidasViewState extends ConsumerState<PartidasView> {
     size = MediaQuery.of(context).size;
 
     listaUltimasPartidas = ref.watch(ultimasPartidasProvider);
-    listaUltimosJugadores = ref.watch(ultimosJugadoresProvider);
-
-    if ((listaUltimasPartidas == null || listaUltimasPartidas!.isEmpty) && (listaUltimosJugadores == null || listaUltimosJugadores!.isEmpty)) {
-      return const PantallaCargaBasica(texto: 'Consultando ultimas partidas');
-    }
-
-    FlutterNativeSplash.remove();
 
     return Scaffold(
       //drawer: const CustomDraw(),
       appBar: _titulo(context),
-      body: _contenido(listaUltimasPartidas, listaUltimosJugadores),
+      body: _contenido(listaUltimasPartidas),
     );
   }
 
@@ -56,9 +48,9 @@ class PartidasViewState extends ConsumerState<PartidasView> {
     );
   }
 
-  Widget _contenido(final List<PartidaDto>? listaUltimasPartidas, final List<JugadorDto>? listaUltimosJugadores) {
-    if (listaUltimasPartidas == null) {
-      return const SizedBox(height: 1);
+  Widget _contenido(final List<PartidaDto>? listaUltimasPartidas) {
+    if (listaUltimasPartidas == null || listaUltimasPartidas.isEmpty) {
+      return const PantallaCargaBasica(texto: 'Consultando ultimas partidas');
     }
 
     return ListView.builder(
@@ -84,22 +76,23 @@ class PartidasViewState extends ConsumerState<PartidasView> {
           margin: const EdgeInsets.only(top: 5, bottom: 5, right: 10, left: 70),
           padding: const EdgeInsets.all(10),
           width: double.infinity,
-          height: 175,
+          height: 185,
           decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
           child: IntrinsicHeight(
             child: Padding(
-              padding: const EdgeInsets.only(left: 40, top: 20),
+              padding: const EdgeInsets.only(left: 40, top: 10),
               child: Column(
                 children: [
                   Text(partida.nombreJugador.toString(), style: styleTexto.titleMedium),
-                  Text('Logro una partida en', style: styleTexto.labelSmall),
-                  Text(partida.tituloJuego.toString(), style: styleTexto.titleMedium),
+                  Text('Logro una partida en:', style: styleTexto.labelSmall),
+                  const Expanded(flex: 1, child: SizedBox(height: 1)),
+                  Text(partida.tituloJuego.toString(), style: styleTexto.titleSmall),
                   Visibility(
                     visible: partida.subtituloJuego != null,
-                    child: Text(partida.subtituloJuego.toString(), style: styleTexto.titleSmall),
+                    child: Text(partida.subtituloJuego.toString(), style: styleTexto.labelSmall),
                   ),
-                  const Expanded(child: SizedBox(height: 1)),
-                  Text(partida.fecha.toString()),
+                  const Expanded(flex: 3, child: SizedBox(height: 1)),
+                  Text(HumanFormat.fecha(partida.fecha.toString()), style: styleTexto.labelSmall),
                 ],
               ),
             ),
@@ -110,7 +103,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
           child: ImagenJuego(
             juego: partida.tituloJuego.toString(),
             urlImagen: partida.urlImagenJuego,
-            tamanio: 150,
+            tamanio: 185,
           ),
         ),
       ]),

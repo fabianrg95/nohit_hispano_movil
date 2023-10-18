@@ -50,7 +50,6 @@ class _ItemJuego extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
         decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
         margin: const EdgeInsets.all(10),

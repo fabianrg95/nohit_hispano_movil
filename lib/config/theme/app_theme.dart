@@ -33,10 +33,10 @@ class AppTheme {
   static BoxDecoration decorationContainerBasic(
       {required bool topLeft, required bool bottomLeft, required bool bottomRight, required bool topRight}) {
     BorderRadius borderRadius = BorderRadius.only(
-        bottomLeft: Radius.circular(bottomLeft ? 10 : 0),
-        bottomRight: Radius.circular(bottomRight ? 10 : 0),
-        topLeft: Radius.circular(topLeft ? 10 : 0),
-        topRight: Radius.circular(topRight ? 10 : 0));
+        bottomLeft: Radius.circular(bottomLeft ? 15 : 0),
+        bottomRight: Radius.circular(bottomRight ? 15 : 0),
+        topLeft: Radius.circular(topLeft ? 15 : 0),
+        topRight: Radius.circular(topRight ? 15 : 0));
 
     return BoxDecoration(
       color: complemento,

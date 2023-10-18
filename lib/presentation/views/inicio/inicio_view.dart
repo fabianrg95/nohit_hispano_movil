@@ -116,8 +116,8 @@ class InicioViewState extends ConsumerState<InicioView> {
                       child: Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 10, 10),
                         child: GestureDetector(
-                          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                            return const ListaJugadoresView();
+                          onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+                            return FadeTransition(opacity: animation, child: const ListaJugadoresView());
                           })),
                           child: Text(
                             'Ver todos >',
@@ -222,8 +222,8 @@ class InicioViewState extends ConsumerState<InicioView> {
                       child: Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 10, 10),
                         child: GestureDetector(
-                          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                            return const PartidasView();
+                          onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+                            return FadeTransition(opacity: animation, child: const PartidasView());
                           })),
                           child: Text(
                             'Ver todas >',

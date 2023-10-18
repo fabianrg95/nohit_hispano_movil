@@ -17,7 +17,7 @@ class ListaJuegosView extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         //drawer: const CustomDraw(),
-        appBar: AppBar(title: const Text('Juegos'), centerTitle: true, actions: [
+        appBar: AppBar(title: const Text('Juegos'), actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: GestureDetector(
@@ -97,9 +97,9 @@ class TapbarJuegosState extends State<TapbarJuegos> with SingleTickerProviderSta
             labelStyle: styleTexto.titleMedium,
             labelColor: AppTheme.textoBase,
             unselectedLabelStyle: styleTexto.bodySmall,
-            indicator: BoxDecoration(color: AppTheme.extra, borderRadius: BorderRadius.circular(8.5)),
+            indicator: BoxDecoration(color: AppTheme.extra, borderRadius: BorderRadius.circular(9.5)),
             indicatorSize: TabBarIndicatorSize.tab,
-            padding: const EdgeInsets.all(1),
+            padding: const EdgeInsets.all(2),
             tabs: const [Tab(text: 'Oficiales'), Tab(text: 'No oficiales')]));
   }
 }
