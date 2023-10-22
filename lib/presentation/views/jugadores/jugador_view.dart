@@ -45,7 +45,6 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
 AppBar _cabecera(final JugadorDto jugador) {
   return AppBar(
       title: Text(jugador.nombre!),
-      centerTitle: true,
       actions: [Padding(padding: const EdgeInsets.only(right: 5), child: BanderaJugador(codigoBandera: jugador.codigoBandera))]);
 }
 
@@ -55,7 +54,7 @@ Widget _contenido(final JugadorDto jugador) {
       Container(
         margin: EdgeInsets.symmetric(horizontal: size.width * 0.06),
         padding: const EdgeInsets.only(top: 10, bottom: 10),
-        decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: false, topRight: false),
+        decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: true, topRight: true),
         child: _informacionJugador(jugador),
       ),
       _resumenPartidas(jugador: jugador),
@@ -88,7 +87,7 @@ Widget _informacionJugador(JugadorDto jugador) {
 Widget _resumenPartidas({required JugadorDto jugador}) {
   return IntrinsicHeight(
     child: Container(
-      margin: const EdgeInsets.only(left: 25, right: 25, top: 10),
+      margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
       decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: true, topRight: true),
       child: Column(
         children: [

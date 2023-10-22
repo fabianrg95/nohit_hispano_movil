@@ -80,12 +80,11 @@ class PartidasViewState extends ConsumerState<PartidasView> {
           decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
           child: IntrinsicHeight(
             child: Padding(
-              padding: const EdgeInsets.only(left: 40, top: 10),
+              padding: const EdgeInsets.only(left: 60, top: 10),
               child: Column(
                 children: [
                   Text(partida.nombreJugador.toString(), style: styleTexto.titleMedium),
-                  Text('Logro una partida en:', style: styleTexto.labelSmall),
-                  const Expanded(flex: 1, child: SizedBox(height: 1)),
+                  const Expanded(flex: 2, child: SizedBox(height: 1)),
                   Text(partida.tituloJuego.toString(), style: styleTexto.titleSmall),
                   Visibility(
                     visible: partida.subtituloJuego != null,

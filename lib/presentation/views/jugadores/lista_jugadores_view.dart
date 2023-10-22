@@ -1,8 +1,12 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
+import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/delegates/jugadores/buscar_jugadores_delegate.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
+import 'package:no_hit/presentation/views/jugadores/jugador_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class ListaJugadoresView extends ConsumerStatefulWidget {
@@ -15,18 +19,21 @@ class ListaJugadoresView extends ConsumerStatefulWidget {
 
 class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
   List<JugadorDto> listaJugadores = [];
+  List<JugadorDto> ultimosJugadores = [];
 
   @override
   void initState() {
     super.initState();
     ref.read(jugadorProvider.notifier).loadData();
+    ref.read(ultimosJugadoresProvider.notifier).loadData();
   }
 
   @override
   Widget build(BuildContext context) {
     listaJugadores = ref.watch(jugadorProvider);
+    ultimosJugadores = ref.watch(ultimosJugadoresProvider);
 
-    if (listaJugadores.isEmpty) {
+    if (listaJugadores.isEmpty && ultimosJugadores.isEmpty) {
       return const PantallaCargaBasica(texto: 'Consultando Jugadores');
     }
 
@@ -52,10 +59,57 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
   }
 
   Widget _contenidoPagina() {
-    return ListView.builder(
-        itemCount: listaJugadores.length,
-        itemBuilder: (context, index) {
-          return ItemJugador(jugador: listaJugadores[index]);
-        });
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(
+        children: [
+          Container(
+            decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+            margin: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+            padding: const EdgeInsets.only(top: 10),
+            child: Column(
+              children: [
+                const Text('Jugadores nuevos '),
+                SizedBox(
+                    height: 120,
+                    child: Swiper(
+                      viewportFraction: 0.8,
+                      scale: 1,
+                      autoplayDelay: 5000,
+                      autoplay: true,
+                      pagination: SwiperPagination(
+                        builder: DotSwiperPaginationBuilder(activeColor: color.surfaceTint, color: color.tertiary),
+                      ),
+                      itemCount: ultimosJugadores.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+                            return FadeTransition(opacity: animation, child: DetalleJugadorView(idJugador: ultimosJugadores[index].id!));
+                          })),
+                          child: Container(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Column(
+                                children: [
+                                  BanderaJugador(codigoBandera: ultimosJugadores[index].codigoBandera),
+                                  Text(ultimosJugadores[index].nombre!, style: styleTexto.titleLarge, maxLines: 2)
+                                ],
+                              )),
+                        );
+                      },
+                    )),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: listaJugadores.length,
+              itemBuilder: (context, index) {
+                return ItemJugador(jugador: listaJugadores[index]);
+              }),
+        ],
+      ),
+    );
   }
 }

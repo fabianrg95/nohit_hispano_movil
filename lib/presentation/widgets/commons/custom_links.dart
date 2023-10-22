@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomLinks {
-  Widget link(final String? url, final String urlImagen) {
+  Widget link(final String? url, final String urlImagen, {final double tamanio = 30}) {
     return Visibility(
       visible: url != null,
       child: GestureDetector(
         onTap: () => _lanzarUrl(url.toString()),
-        child: Image.asset(urlImagen, width: 30, height: 30),
+        child: Image.asset(urlImagen, width: tamanio, height: tamanio),
       ),
     );
   }

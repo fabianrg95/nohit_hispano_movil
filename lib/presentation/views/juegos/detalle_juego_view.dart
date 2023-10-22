@@ -92,7 +92,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
     if (resumenPartidasJuego.partidas.isNotEmpty) {
       return IntrinsicHeight(
         child: Container(
-          margin: const EdgeInsets.only(left: 25, right: 25),
+          margin: const EdgeInsets.only(left: 10, right: 10),
           padding: const EdgeInsets.only(top: 5),
           decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: true, topRight: true),
           child: IntrinsicHeight(

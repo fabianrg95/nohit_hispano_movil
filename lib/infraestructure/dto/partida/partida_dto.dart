@@ -11,6 +11,8 @@ class PartidaDto {
   bool? primeraPartidaHispano;
   bool? primeraPartidaMundo;
   String? urlImagenJuego;
+  List<String> listaVideosCompletos = [];
+  List<String> listaVideosClips = [];
 
   PartidaDto(
       {required this.id,

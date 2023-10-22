@@ -59,6 +59,8 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
                     _informacionJugador(detalleJugador),
                     _informacionPartida(detallePartida),
                     _recordPartida(detallePartida),
+                    _videos(detallePartida.listaVideosCompletos, 'Videos completos', "La partida no tiene videos."),
+                    _videos(detallePartida.listaVideosClips, 'Clips', "La partida no tiene clips."),
                     const SizedBox(height: 20)
                   ],
                 ),
@@ -76,7 +78,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
         return FadeTransition(opacity: animation, child: DetalleJugadorView(idJugador: detalleJugador.id!));
       })),
       child: Container(
-        margin: const EdgeInsets.only(left: 25, right: 25, top: 10),
+        margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
         child: IntrinsicHeight(
@@ -122,7 +124,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
 
   Widget _informacionPartida(final PartidaDto detallePartida) {
     return Container(
-      margin: const EdgeInsets.only(left: 25, right: 25, top: 10),
+      margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
       padding: const EdgeInsets.only(top: 10, bottom: 10),
       decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
       child: IntrinsicHeight(
@@ -135,16 +137,63 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
             Divider(color: color.tertiary, thickness: 2, height: 1),
             const SizedBox(height: 10),
             Text(detallePartida.nombre.toString(), textAlign: TextAlign.center),
-            Text(detallePartida.fecha.toString()),
+            Text(detallePartida.fecha.toString())
           ],
         ),
       ),
     );
   }
 
+  Widget _videos(final List<String> videos, final String titulo, final String mensajeVacio) {
+    return Container(
+      margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+      child: IntrinsicHeight(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(child: Text(titulo)),
+            const SizedBox(height: 10),
+            Divider(color: color.tertiary, thickness: 2, height: 1),
+            const SizedBox(height: 10),
+            if (videos.isNotEmpty)
+              SizedBox(
+                height: 50,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemCount: videos.length,
+                      itemBuilder: (context, index) {
+                        return link(videos[index]);
+                      },
+                    )
+                  ],
+                ),
+              )
+            else
+              Text(mensajeVacio, textAlign: TextAlign.center),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget link(final String linkVideo) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10),
+      child: CustomLinks().link(linkVideo, 'assets/images/${linkVideo.contains("youtu") ? "youtube.png" : "twitch.png"}', tamanio: 50),
+    );
+  }
+
   Widget _recordPartida(final PartidaDto detallePartida) {
     return Container(
-      margin: const EdgeInsets.only(left: 25, right: 25, top: 10),
+      margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
       decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
       child: IntrinsicHeight(
         child: Column(
