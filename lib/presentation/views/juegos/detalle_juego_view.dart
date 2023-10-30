@@ -88,19 +88,18 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
     );
   }
 
-  Widget _primeraUltimaPartida(ResumenJuegoDto resumenPartidasJuego) {
+  Widget _primeraUltimaPartida(final ResumenJuegoDto resumenPartidasJuego) {
     if (resumenPartidasJuego.partidas.isNotEmpty) {
       return IntrinsicHeight(
         child: Container(
           margin: const EdgeInsets.only(left: 10, right: 10),
-          padding: const EdgeInsets.only(top: 5),
           decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: true, topRight: true),
           child: IntrinsicHeight(
             child: Column(children: [
               _muestraInformacion(alineacion: CrossAxisAlignment.start, items: [
                 Text(resumenPartidasJuego.primeraPartida!.nombreJugador.toString(), style: styleTexto.bodyMedium),
                 Text(resumenPartidasJuego.primeraPartida!.nombre.toString(),
-                    style: styleTexto.bodySmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+                    style: styleTexto.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis),
                 Text(resumenPartidasJuego.primeraPartida!.fecha.toString(), style: styleTexto.bodySmall),
                 Text(
                   'Primera ${resumenPartidasJuego.primeraPartida!.id == resumenPartidasJuego.ultimaPartida!.id ? 'y unica' : ''} partida',
@@ -114,10 +113,9 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
               Visibility(
                   visible: resumenPartidasJuego.primeraPartida!.id != resumenPartidasJuego.ultimaPartida!.id,
                   child: _muestraInformacion(alineacion: CrossAxisAlignment.end, items: [
-                    const SizedBox(height: 4),
                     Text(resumenPartidasJuego.partidas.last.nombreJugador.toString(), style: styleTexto.bodyMedium),
                     Text(resumenPartidasJuego.partidas.last.nombre.toString(),
-                        style: styleTexto.bodySmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        style: styleTexto.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis),
                     Text(resumenPartidasJuego.partidas.last.fecha.toString(), style: styleTexto.bodySmall),
                     Text(
                       'Ultima partida',
@@ -152,7 +150,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
   Widget _muestraInformacion({required List<Widget> items, required CrossAxisAlignment alineacion}) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 5, left: 5, right: 5),
+        padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
         child: Row(children: [Expanded(child: Column(crossAxisAlignment: alineacion, children: items))]),
       ),
     );

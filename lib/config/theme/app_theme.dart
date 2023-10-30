@@ -31,7 +31,7 @@ class AppTheme {
       );
 
   static BoxDecoration decorationContainerBasic(
-      {required bool topLeft, required bool bottomLeft, required bool bottomRight, required bool topRight}) {
+      {required bool topLeft, required bool bottomLeft, required bool bottomRight, required bool topRight, Color backgroud = complemento}) {
     BorderRadius borderRadius = BorderRadius.only(
         bottomLeft: Radius.circular(bottomLeft ? 15 : 0),
         bottomRight: Radius.circular(bottomRight ? 15 : 0),
@@ -39,7 +39,7 @@ class AppTheme {
         topRight: Radius.circular(topRight ? 15 : 0));
 
     return BoxDecoration(
-      color: complemento,
+      color: backgroud,
       borderRadius: borderRadius,
       border: Border.all(color: extra, width: 2),
       //boxShadow: const [BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 5, offset: Offset(0, 0))],

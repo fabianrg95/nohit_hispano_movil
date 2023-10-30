@@ -4,8 +4,8 @@ import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/main.dart';
-import 'package:no_hit/presentation/delegates/juegos/cabecera_juego_delegate.dart';
-import 'package:no_hit/presentation/views/jugadores/jugador_view.dart';
+import 'package:no_hit/presentation/delegates/delegates.dart';
+import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class DetallePartidaView extends ConsumerStatefulWidget {
@@ -235,18 +235,25 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
   }
 
   Widget _subtitulo(final JuegoDto juegoDto) {
-    return Container(
-      width: size.width,
-      margin: const EdgeInsets.only(left: 25, right: 25),
-      padding: const EdgeInsets.only(top: 10, bottom: 10),
-      decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
-      child: Column(children: [
-        Text(juegoDto.nombre.toString(), style: styleTexto.titleLarge),
-        Visibility(
-          visible: juegoDto.subtitulo != null,
-          child: Text(juegoDto.subtitulo.toString(), style: styleTexto.titleMedium),
-        ),
-      ]),
+    return GestureDetector(
+      onTap: () => Navigator.of(context).push(PageRouteBuilder(
+        pageBuilder: (context, animation, __) {
+          return FadeTransition(opacity: animation, child: DetalleJuego(juego: juegoDto));
+        },
+      )),
+      child: Container(
+        width: size.width,
+        margin: const EdgeInsets.only(left: 25, right: 25),
+        padding: const EdgeInsets.only(top: 10, bottom: 10),
+        decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+        child: Column(children: [
+          Text(juegoDto.nombre.toString(), style: styleTexto.titleLarge),
+          Visibility(
+            visible: juegoDto.subtitulo != null,
+            child: Text(juegoDto.subtitulo.toString(), style: styleTexto.titleMedium),
+          ),
+        ]),
+      ),
     );
   }
 }
