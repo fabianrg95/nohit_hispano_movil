@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
@@ -45,17 +46,20 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
 AppBar _cabecera(final JugadorDto jugador) {
   return AppBar(
       title: Text(jugador.nombre!),
-      actions: [Padding(padding: const EdgeInsets.only(right: 5), child: BanderaJugador(codigoBandera: jugador.codigoBandera))]);
+      actions: [Padding(padding: const EdgeInsets.only(right: 5), child: BanderaJugador(codigoBandera: jugador.codigoBandera, defaultNegro: true,))]);
 }
 
 Widget _contenido(final JugadorDto jugador) {
   return ListView(
     children: [
-      Container(
-        margin: EdgeInsets.symmetric(horizontal: size.width * 0.06),
-        padding: const EdgeInsets.only(top: 10, bottom: 10),
-        decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: true, topRight: true),
-        child: _informacionJugador(jugador),
+      Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: size.width * 0.06),
+          padding: const EdgeInsets.only(top: 10, bottom: 10),
+          decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: true, topRight: true),
+          child: _informacionJugador(jugador),
+        ),
       ),
       _resumenPartidas(jugador: jugador),
       _Partidas(jugador: jugador)
@@ -86,52 +90,63 @@ Widget _informacionJugador(JugadorDto jugador) {
 
 Widget _resumenPartidas({required JugadorDto jugador}) {
   return IntrinsicHeight(
-    child: Container(
-      margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
-      decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: true, topRight: true),
-      child: Column(
-        children: [
-          IntrinsicHeight(
-            child: Row(
+    child: Column(
+      children: [
+        IntrinsicHeight(
+          child: Row(
+            children: [
+              ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
+                const SizedBox(height: 5),
+                Text(jugador.juegos.length.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
+                Text('Partida${jugador.cantidadPartidas != 1 ? 's' : ''}')
+              ]),
+              VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
+              ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
+                const SizedBox(height: 5),
+                Text(jugador.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
+                Text('Juego${jugador.juegos.length != 1 ? 's' : ''}')
+              ]),
+            ],
+          ),
+        ),
+        IntrinsicHeight(
+          child: Container(
+            margin: const EdgeInsets.only(left: 10, right: 10),
+            padding: const EdgeInsets.only(top: 10),
+            decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: true, topRight: true),
+            child: Column(
               children: [
-                ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
-                  Text(jugador.juegos.length.toString(), style: styleTexto.titleLarge),
-                  Text('Juego${jugador.juegos.length != 1 ? 's' : ''}')
+                ViewData().muestraInformacion(alineacion: CrossAxisAlignment.start, items: [
+                  Text('${jugador.primeraPartida!.tituloJuego.toString()} ${jugador.primeraPartida!.subtituloJuego ?? ''}',
+                      style: styleTexto.titleMedium),
+                  Text(jugador.primeraPartida!.nombre.toString(),
+                      style: styleTexto.labelSmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+                  Text(jugador.primeraPartida!.fecha.toString(), style: styleTexto.labelSmall),
+                  Text(
+                    'Primera ${jugador.primeraPartida!.id == jugador.ultimaPartida!.id ? 'y unica' : ''} partida',
+                    style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado),
+                  )
                 ]),
-                VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
-                ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
-                  Text(jugador.cantidadPartidas.toString(), style: styleTexto.titleLarge),
-                  Text('Partida${jugador.cantidadPartidas != 1 ? 's' : ''}')
-                ])
+                Visibility(
+                  visible: jugador.primeraPartida!.id != jugador.ultimaPartida!.id,
+                  child: Divider(color: color.tertiary, thickness: 2, height: 1),
+                ),
+                const SizedBox(height: 10),
+                Visibility(
+                    visible: jugador.primeraPartida!.id != jugador.ultimaPartida!.id,
+                    child: ViewData().muestraInformacion(alineacion: CrossAxisAlignment.end, items: [
+                      Text('${jugador.ultimaPartida!.tituloJuego.toString()} ${jugador.ultimaPartida!.subtituloJuego ?? ''}',
+                          style: styleTexto.titleMedium),
+                      Text(jugador.ultimaPartida!.nombre.toString(),
+                          style: styleTexto.labelSmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+                      Text(jugador.ultimaPartida!.fecha.toString(), style: styleTexto.labelSmall),
+                      Text('Ultima partida', style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado))
+                    ]))
               ],
             ),
           ),
-          Divider(color: color.tertiary, thickness: 2, height: 1),
-          ViewData().muestraInformacion(alineacion: CrossAxisAlignment.start, items: [
-            Text('${jugador.primeraPartida!.tituloJuego.toString()} ${jugador.primeraPartida!.subtituloJuego ?? ''}', style: styleTexto.bodyMedium),
-            Text(jugador.primeraPartida!.nombre.toString(),
-                style: styleTexto.bodySmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
-            Text(jugador.primeraPartida!.fecha.toString(), style: styleTexto.bodySmall),
-            Text(
-              'Primera ${jugador.primeraPartida!.id == jugador.ultimaPartida!.id ? 'y unica' : ''} partida',
-              style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado),
-            )
-          ]),
-          Visibility(
-            visible: jugador.primeraPartida!.id != jugador.ultimaPartida!.id,
-            child: Divider(color: color.tertiary, thickness: 2, height: 1),
-          ),
-          Visibility(
-              visible: jugador.primeraPartida!.id != jugador.ultimaPartida!.id,
-              child: ViewData().muestraInformacion(alineacion: CrossAxisAlignment.end, items: [
-                Text('${jugador.ultimaPartida!.tituloJuego.toString()} ${jugador.ultimaPartida!.subtituloJuego ?? ''}', style: styleTexto.bodyMedium),
-                Text(jugador.ultimaPartida!.nombre.toString(),
-                    style: styleTexto.bodySmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
-                Text(jugador.ultimaPartida!.fecha.toString(), style: styleTexto.bodySmall),
-                Text('Ultima partida', style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado))
-              ]))
-        ],
-      ),
+        ),
+      ],
     ),
   );
 }
@@ -219,15 +234,32 @@ Widget _tarjetaPartidaJuegoJugador({required PartidaDto partida, required bool p
               ));
         })),
         child: Container(
-          decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
-          child: Column(
-            children: [
-              Text('${partida.tituloJuego.toString()} ${partida.subtituloJuego ?? ''}', style: styleTexto.bodyMedium),
-              Text(partida.nombre.toString(), style: styleTexto.bodySmall, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
-              Text(partida.fecha.toString(), style: styleTexto.bodySmall),
-            ],
-          ),
-        ),
+            decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(HumanFormat.fechaMes(partida.fecha.toString())),
+                      Text(HumanFormat.fechaDia(partida.fecha.toString())),
+                      Text(HumanFormat.fechaAnio(partida.fecha.toString()))
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Column(children: [
+                      Text('${partida.tituloJuego.toString()} ${partida.subtituloJuego ?? ''}', style: styleTexto.bodyMedium),
+                      Text(partida.nombre.toString(),
+                          style: styleTexto.labelSmall, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis)
+                    ]),
+                  ),
+                ),
+              ],
+            )),
       ),
     ),
   );

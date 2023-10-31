@@ -6,7 +6,7 @@ class AppTheme {
   static const Color extra = Color(0xff282821);
   static const Color textoBase = Color(0xffF8D35B);
   static const Color textoComplemento = Color(0xff282821);
-  static const Color textoResaltado = Color(0xff7EA89F);
+  static const Color textoResaltado = Color(0xff34566E);
 
   //estilo general
   final ColorScheme _colorScheme =

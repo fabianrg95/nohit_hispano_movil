@@ -69,11 +69,13 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
             padding: const EdgeInsets.only(top: 10),
             child: Column(
               children: [
-                const Text('Jugadores nuevos '),
+                Text('Jugadores nuevos', style: styleTexto.titleMedium),
+                const SizedBox(height: 10),
+                Divider(color: color.tertiary, thickness: 2, height: 1),
                 SizedBox(
                     height: 120,
                     child: Swiper(
-                      viewportFraction: 0.8,
+                      viewportFraction: 1,
                       scale: 1,
                       autoplayDelay: 5000,
                       autoplay: true,

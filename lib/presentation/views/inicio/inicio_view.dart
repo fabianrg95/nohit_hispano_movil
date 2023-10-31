@@ -78,103 +78,26 @@ class InicioViewState extends ConsumerState<InicioView> {
       child: Column(
         children: [
           Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
-            Expanded(
+            GestureDetector(
+              onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+                return FadeTransition(opacity: animation, child: const PartidasView());
+              })),
               child: Container(
-                margin: const EdgeInsets.only(left: 10, top: 10, right: 5),
+                margin: const EdgeInsets.only(left: 10, top: 10, right: 10),
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                width: size.width * 0.5,
                 decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Align(
-                          alignment: const AlignmentDirectional(-1.00, 0.00),
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 0, 0),
-                            child: Text(
-                              'Jugadores',
-                              style: styleTexto.titleSmall,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                          child: Text(
-                            totalJugadores.toString(),
-                            style: styleTexto.displaySmall,
-                          ),
-                        ),
-                      ],
-                    ),
+                    Text(totalPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
+                    Text('Partidas', style: styleTexto.titleMedium),
                     Align(
                       alignment: const AlignmentDirectional(1.00, 0.00),
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 10, 10),
-                        child: GestureDetector(
-                          onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
-                            return FadeTransition(opacity: animation, child: const ListaJugadoresView());
-                          })),
-                          child: Text(
-                            'Ver todos >',
-                            style: styleTexto.labelSmall,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
-                decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Align(
-                          alignment: const AlignmentDirectional(-1.00, 0.00),
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 0, 0),
-                            child: Text(
-                              'Juegos',
-                              style: styleTexto.titleSmall,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
-                          child: Text(
-                            totalJuegos.toString(),
-                            style: styleTexto.displaySmall,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Align(
-                      alignment: const AlignmentDirectional(1.00, 0.00),
-                      child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 10, 10),
-                        child: GestureDetector(
-                          onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
-                            return FadeTransition(opacity: animation, child: const ListaJuegosView());
-                          })),
-                          child: Text(
-                            'Ver todos >',
-                            style: styleTexto.labelSmall,
-                          ),
+                        padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 10, 0),
+                        child: Text(
+                          'Ver todos >',
+                          style: styleTexto.labelSmall,
                         ),
                       ),
                     ),
@@ -185,58 +108,63 @@ class InicioViewState extends ConsumerState<InicioView> {
           ]),
           Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
             Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
-                decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Align(
-                          alignment: const AlignmentDirectional(-1.00, 0.00),
-                          child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 0, 0),
-                            child: Text(
-                              'Partidas',
-                              style: styleTexto.titleSmall,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+                  return FadeTransition(opacity: animation, child: const ListaJugadoresView());
+                })),
+                child: Container(
+                  margin: const EdgeInsets.only(left: 10, top: 10, right: 5),
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+                  child: Column(
+                    children: [
+                      Text(totalJugadores.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
+                      Text('Jugadores', style: styleTexto.titleMedium),
+                      Align(
+                        alignment: const AlignmentDirectional(1.00, 0.00),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 10, 0),
                           child: Text(
-                            totalPartidas.toString(),
-                            style: styleTexto.displaySmall,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Align(
-                      alignment: const AlignmentDirectional(1.00, 0.00),
-                      child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 10, 10),
-                        child: GestureDetector(
-                          onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
-                            return FadeTransition(opacity: animation, child: const PartidasView());
-                          })),
-                          child: Text(
-                            'Ver todas >',
+                            'Ver todos >',
                             style: styleTexto.labelSmall,
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ])
+            Expanded(
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+                  return FadeTransition(opacity: animation, child: const ListaJuegosView());
+                })),
+                child: Container(
+                  margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+                  child: Column(
+                    children: [
+                      Text(totalJuegos.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
+                      Text('Juegos', style: styleTexto.titleMedium),
+                      Align(
+                        alignment: const AlignmentDirectional(1.00, 0.00),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 10, 0),
+                          child: Text(
+                            'Ver todos >',
+                            style: styleTexto.labelSmall,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ]),
+          const SizedBox(height: 10)
         ],
       ),
     );

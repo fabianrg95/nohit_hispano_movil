@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
@@ -70,13 +71,13 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
               children: [
                 _muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
                   const SizedBox(height: 5),
-                  Text(resumenPartidasJuego.cantidadPartidas.toString(), style: styleTexto.titleLarge),
+                  Text(resumenPartidasJuego.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
                   Text('Partida${resumenPartidasJuego.cantidadPartidas != 1 ? 's' : ''}')
                 ]),
                 VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
                 _muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
                   const SizedBox(height: 5),
-                  Text(resumenPartidasJuego.cantidadJugadores.toString(), style: styleTexto.titleLarge),
+                  Text(resumenPartidasJuego.cantidadJugadores.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
                   Text('Jugador${resumenPartidasJuego.cantidadJugadores != 1 ? 'es' : ''}')
                 ]),
               ],
@@ -97,12 +98,12 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
           child: IntrinsicHeight(
             child: Column(children: [
               _muestraInformacion(alineacion: CrossAxisAlignment.start, items: [
-                Text(resumenPartidasJuego.primeraPartida!.nombreJugador.toString(), style: styleTexto.bodyMedium),
+                Text(resumenPartidasJuego.primeraPartida!.nombreJugador.toString(), style: styleTexto.titleMedium),
                 Text(resumenPartidasJuego.primeraPartida!.nombre.toString(),
                     style: styleTexto.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis),
                 Text(resumenPartidasJuego.primeraPartida!.fecha.toString(), style: styleTexto.bodySmall),
                 Text(
-                  'Primera ${resumenPartidasJuego.primeraPartida!.id == resumenPartidasJuego.ultimaPartida!.id ? 'y unica' : ''} partida',
+                  'Primera ${resumenPartidasJuego.primeraPartida!.id == resumenPartidasJuego.ultimaPartida!.id ? 'y unica ' : ''}partida',
                   style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado),
                 )
               ]),
@@ -113,14 +114,11 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
               Visibility(
                   visible: resumenPartidasJuego.primeraPartida!.id != resumenPartidasJuego.ultimaPartida!.id,
                   child: _muestraInformacion(alineacion: CrossAxisAlignment.end, items: [
-                    Text(resumenPartidasJuego.partidas.last.nombreJugador.toString(), style: styleTexto.bodyMedium),
+                    Text(resumenPartidasJuego.partidas.last.nombreJugador.toString(), style: styleTexto.titleMedium),
                     Text(resumenPartidasJuego.partidas.last.nombre.toString(),
                         style: styleTexto.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis),
                     Text(resumenPartidasJuego.partidas.last.fecha.toString(), style: styleTexto.bodySmall),
-                    Text(
-                      'Ultima partida',
-                      style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado),
-                    )
+                    Text('Ultima partida', style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado))
                   ]))
             ]),
           ),
@@ -141,7 +139,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
         Text(widget.juego.nombre.toString(), style: styleTexto.titleLarge),
         Visibility(
           visible: widget.juego.subtitulo != null,
-          child: Text(widget.juego.subtitulo.toString(), style: styleTexto.titleMedium),
+          child: Text(widget.juego.subtitulo.toString(), style: styleTexto.titleSmall),
         ),
       ]),
     );
@@ -189,12 +187,29 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
           })),
           child: Container(
             decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
-            child: Column(
+            child: Row(
               children: [
-                Text(partida.nombreJugador.toString(), style: styleTexto.bodyMedium),
-                Text(partida.nombre.toString(),
-                    style: styleTexto.bodySmall, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
-                Text(partida.fecha.toString(), style: styleTexto.bodySmall),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(HumanFormat.fechaMes(partida.fecha.toString())),
+                      Text(HumanFormat.fechaDia(partida.fecha.toString())),
+                      Text(HumanFormat.fechaAnio(partida.fecha.toString()))
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Column(children: [
+                      Text(partida.nombreJugador.toString(), style: styleTexto.titleMedium),
+                      Text(partida.nombre.toString(),
+                          style: styleTexto.labelSmall, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis)
+                    ]),
+                  ),
+                ),
               ],
             ),
           ),

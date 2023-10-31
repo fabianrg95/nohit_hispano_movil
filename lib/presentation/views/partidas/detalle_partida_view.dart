@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
@@ -84,23 +85,28 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
         child: IntrinsicHeight(
           child: Column(
             children: [
-              const Center(child: Text('Informacion Jugador')),
+              Center(child: Text('Informacion Jugador', style: styleTexto.titleMedium)),
               const SizedBox(height: 10),
               Divider(color: color.tertiary, thickness: 2, height: 1),
               Row(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 10, left: 30),
-                    child: BanderaJugador(codigoBandera: detalleJugador.codigoBandera, tamanio: 60, defaultNegro: true),
+                    child: BanderaJugador(codigoBandera: detalleJugador.codigoBandera, tamanio: 70, defaultNegro: true),
                   ),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(detalleJugador.nombre.toString()),
-                        Visibility(visible: detalleJugador.pronombre != null, child: Text(detalleJugador.pronombre.toString())),
-                        Visibility(visible: detalleJugador.gentilicio != null, child: Text(detalleJugador.gentilicio.toString())),
+                        const SizedBox(height: 10),
+                        Text(detalleJugador.nombre.toString(), style: styleTexto.bodyLarge),
+                        Visibility(
+                            visible: detalleJugador.pronombre != null,
+                            child: Text(detalleJugador.pronombre.toString(), style: styleTexto.labelSmall)),
+                        Visibility(
+                            visible: detalleJugador.gentilicio != null,
+                            child: Text(detalleJugador.gentilicio.toString(), style: styleTexto.labelSmall)),
                         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                           CustomLinks().link(detalleJugador.urlYoutube, 'assets/images/youtube.png'),
                           Visibility(
@@ -132,12 +138,27 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Center(child: Text('Informacion Partida')),
+            Center(child: Text('Informacion Partida', style: styleTexto.titleMedium)),
             const SizedBox(height: 10),
             Divider(color: color.tertiary, thickness: 2, height: 1),
             const SizedBox(height: 10),
-            Text(detallePartida.nombre.toString(), textAlign: TextAlign.center),
-            Text(detallePartida.fecha.toString())
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(HumanFormat.fechaMes(detallePartida.fecha.toString())),
+                      Text(HumanFormat.fechaDia(detallePartida.fecha.toString())),
+                      Text(HumanFormat.fechaAnio(detallePartida.fecha.toString()))
+                    ],
+                  ),
+                ),
+                Expanded(child: Center(child: Text(detallePartida.nombre.toString(), textAlign: TextAlign.center, style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado))))
+              ],
+            )
           ],
         ),
       ),
@@ -154,7 +175,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(child: Text(titulo)),
+            Center(child: Text(titulo, style: styleTexto.titleMedium)),
             const SizedBox(height: 10),
             Divider(color: color.tertiary, thickness: 2, height: 1),
             const SizedBox(height: 10),
@@ -177,7 +198,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
                 ),
               )
             else
-              Text(mensajeVacio, textAlign: TextAlign.center),
+              Text(mensajeVacio, textAlign: TextAlign.center, style: styleTexto.labelSmall),
           ],
         ),
       ),
@@ -194,12 +215,14 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
   Widget _recordPartida(final PartidaDto detallePartida) {
     return Container(
       margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
       decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
       child: IntrinsicHeight(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 10),
-            const Center(child: Text('¿Primera Partida?')),
+            Center(child: Text('¿Primera Partida?', style: styleTexto.titleMedium)),
             const SizedBox(height: 10),
             Divider(color: color.tertiary, thickness: 2, height: 1),
             IntrinsicHeight(
@@ -207,21 +230,24 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
                 children: [
                   ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
                     const SizedBox(height: 10),
-                    Text(detallePartida.primeraPartidaJugador == true ? 'Si' : 'No', style: styleTexto.titleLarge),
+                    Text(detallePartida.primeraPartidaJugador == true ? 'Si' : 'No',
+                        style: styleTexto.titleLarge?.copyWith(color: AppTheme.textoResaltado)),
                     const Text('Jugador'),
                     const SizedBox(height: 10),
                   ]),
                   VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
                   ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
                     const SizedBox(height: 10),
-                    Text(detallePartida.primeraPartidaHispano == true ? 'Si' : 'No', style: styleTexto.titleLarge),
+                    Text(detallePartida.primeraPartidaHispano == true ? 'Si' : 'No',
+                        style: styleTexto.titleLarge?.copyWith(color: AppTheme.textoResaltado)),
                     const Text('Hispano'),
                     const SizedBox(height: 10),
                   ]),
                   VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
                   ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
                     const SizedBox(height: 10),
-                    Text(detallePartida.primeraPartidaMundo == true ? 'Si' : 'No', style: styleTexto.titleLarge),
+                    Text(detallePartida.primeraPartidaMundo == true ? 'Si' : 'No',
+                        style: styleTexto.titleLarge?.copyWith(color: AppTheme.textoResaltado)),
                     const Text('Mundial'),
                     const SizedBox(height: 10),
                   ]),

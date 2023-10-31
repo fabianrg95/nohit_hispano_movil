@@ -15,6 +15,11 @@ class HumanFormat {
     return DateFormat.d('es-CO').format(parsedDate).toString();
   }
 
+  static String fechaAnio(String fecha) {
+    var parsedDate = DateTime.parse(fecha);
+    return DateFormat.y('es-CO').format(parsedDate).toString();
+  }
+
   static String fechaMes(String fecha) {
     var parsedDate = DateTime.parse(fecha);
     return capitalize(DateFormat.MMM('es-CO').format(parsedDate).toString());

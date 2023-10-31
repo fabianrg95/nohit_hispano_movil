@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
@@ -72,10 +71,10 @@ class PartidasViewState extends ConsumerState<PartidasView> {
             ));
       })),
       child: Container(
-        margin: const EdgeInsets.only(top: 5, bottom: 5, right: 10, left: 10),
+        margin: const EdgeInsets.only(top: 5, bottom: 5, right: 20, left: 20),
         padding: const EdgeInsets.all(10),
         width: double.infinity,
-        height: 250,
+        height: 270,
         decoration: BoxDecoration(
             color: AppTheme.base,
             borderRadius: const BorderRadius.only(
@@ -113,15 +112,13 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                   RichText(
                       text: TextSpan(style: styleTexto.titleMedium?.copyWith(fontWeight: FontWeight.w100), children: [
                     TextSpan(text: partida.tituloJuego),
-                    TextSpan(text: partida.subtituloJuego != null ? " ${partida.subtituloJuego!}" : '', style: styleTexto.bodySmall)
+                    TextSpan(text: partida.subtituloJuego != null ? " ${partida.subtituloJuego!}" : '', style: styleTexto.labelSmall)
                   ])),
-                  Text("Por ${partida.nombreJugador!}", style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado)),
+                  Text("Por ${partida.nombreJugador!}", style: styleTexto.titleSmall?.copyWith(color: AppTheme.textoResaltado)),
                   Container(
                       margin: const EdgeInsets.only(top: 15, bottom: 5),
                       padding: const EdgeInsets.only(top: 5, bottom: 5, right: 10, left: 10),
                       width: double.infinity,
-                      decoration: AppTheme.decorationContainerBasic(
-                          topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, backgroud: AppTheme.base),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
