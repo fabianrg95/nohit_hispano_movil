@@ -175,7 +175,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
       itemBuilder: (BuildContext context, int index) {
         PartidaDto partida = partidas[index];
         final bool par = index.isOdd;
-        return _tarjetaPartidaJuegoJugador(partida: partida, par: par, context: context, partidaUnica: partidas.length==1);
+        return _tarjetaPartidaJuegoJugador(partida: partida, par: par, context: context, partidaUnica: partidas.length == 1);
       },
     );
   }
@@ -213,9 +213,11 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
                 Expanded(
                   child: Center(
                     child: Column(children: [
-                      Text(partida.nombreJugador.toString(), style: styleTexto.titleMedium),
-                      Text(partida.nombre.toString(),
-                          style: styleTexto.labelSmall, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis)
+                      Center(child: Text(partida.nombreJugador.toString(), style: styleTexto.titleMedium, textAlign: TextAlign.center)),
+                      Center(
+                        child: Text(partida.nombre.toString(),
+                            style: styleTexto.labelSmall, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
+                      )
                     ]),
                   ),
                 ),

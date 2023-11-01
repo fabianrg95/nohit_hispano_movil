@@ -100,7 +100,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(height: 10),
-                        Text(detalleJugador.nombre.toString(), style: styleTexto.bodyLarge),
+                        Center(child: Text(detalleJugador.nombre.toString(), style: styleTexto.bodyLarge, textAlign: TextAlign.center)),
                         Visibility(
                             visible: detalleJugador.pronombre != null,
                             child: Text(detalleJugador.pronombre.toString(), style: styleTexto.labelSmall)),
@@ -156,7 +156,10 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
                     ],
                   ),
                 ),
-                Expanded(child: Center(child: Text(detallePartida.nombre.toString(), textAlign: TextAlign.center, style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado))))
+                Expanded(
+                    child: Center(
+                        child: Text(detallePartida.nombre.toString(),
+                            textAlign: TextAlign.center, style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado))))
               ],
             )
           ],

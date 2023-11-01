@@ -273,9 +273,13 @@ Widget _tarjetaPartidaJuegoJugador({required PartidaDto partida, required bool p
                 Expanded(
                   child: Center(
                     child: Column(children: [
-                      Text('${partida.tituloJuego.toString()} ${partida.subtituloJuego ?? ''}', style: styleTexto.bodyMedium),
-                      Text(partida.nombre.toString(),
-                          style: styleTexto.labelSmall, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis)
+                      Center(
+                          child: Text('${partida.tituloJuego.toString()} ${partida.subtituloJuego ?? ''}',
+                              style: styleTexto.bodyMedium, textAlign: TextAlign.center)),
+                      Center(
+                        child: Text(partida.nombre.toString(),
+                            style: styleTexto.labelSmall, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
+                      )
                     ]),
                   ),
                 ),
