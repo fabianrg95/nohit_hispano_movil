@@ -69,14 +69,12 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
           IntrinsicHeight(
             child: Row(
               children: [
-                _muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
-                  const SizedBox(height: 5),
+                ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
                   Text(resumenPartidasJuego.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
                   Text('Partida${resumenPartidasJuego.cantidadPartidas != 1 ? 's' : ''}')
                 ]),
                 VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
-                _muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
-                  const SizedBox(height: 5),
+                ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
                   Text(resumenPartidasJuego.cantidadJugadores.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
                   Text('Jugador${resumenPartidasJuego.cantidadJugadores != 1 ? 'es' : ''}')
                 ]),
@@ -97,29 +95,49 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
           decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: true, topRight: true),
           child: IntrinsicHeight(
             child: Column(children: [
-              _muestraInformacion(alineacion: CrossAxisAlignment.start, items: [
-                Text(resumenPartidasJuego.primeraPartida!.nombreJugador.toString(), style: styleTexto.titleMedium),
-                Text(resumenPartidasJuego.primeraPartida!.nombre.toString(),
-                    style: styleTexto.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis),
-                Text(resumenPartidasJuego.primeraPartida!.fecha.toString(), style: styleTexto.bodySmall),
-                Text(
-                  'Primera ${resumenPartidasJuego.primeraPartida!.id == resumenPartidasJuego.ultimaPartida!.id ? 'y unica ' : ''}partida',
-                  style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado),
-                )
-              ]),
+              ViewData().muestraInformacion(
+                  alineacion: CrossAxisAlignment.start,
+                  items: [
+                    Text(resumenPartidasJuego.primeraPartida!.nombreJugador.toString(), style: styleTexto.titleMedium),
+                    Text(resumenPartidasJuego.primeraPartida!.nombre.toString(),
+                        style: styleTexto.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis),
+                    Text(resumenPartidasJuego.primeraPartida!.fecha.toString(), style: styleTexto.bodySmall),
+                    Text(
+                      'Primera ${resumenPartidasJuego.primeraPartida!.id == resumenPartidasJuego.ultimaPartida!.id ? 'y unica ' : ''}partida',
+                      style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado),
+                    )
+                  ],
+                  redireccion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+                        return FadeTransition(
+                            opacity: animation,
+                            child: DetallePartidaView(
+                              partidaId: resumenPartidasJuego.primeraPartida!.id,
+                              jugadorId: resumenPartidasJuego.primeraPartida!.idJugador,
+                            ));
+                      }))),
               Visibility(
                 visible: resumenPartidasJuego.primeraPartida!.id != resumenPartidasJuego.ultimaPartida!.id,
                 child: Divider(color: color.tertiary, thickness: 2, height: 1),
               ),
               Visibility(
                   visible: resumenPartidasJuego.primeraPartida!.id != resumenPartidasJuego.ultimaPartida!.id,
-                  child: _muestraInformacion(alineacion: CrossAxisAlignment.end, items: [
-                    Text(resumenPartidasJuego.partidas.last.nombreJugador.toString(), style: styleTexto.titleMedium),
-                    Text(resumenPartidasJuego.partidas.last.nombre.toString(),
-                        style: styleTexto.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis),
-                    Text(resumenPartidasJuego.partidas.last.fecha.toString(), style: styleTexto.bodySmall),
-                    Text('Ultima partida', style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado))
-                  ]))
+                  child: ViewData().muestraInformacion(
+                      alineacion: CrossAxisAlignment.end,
+                      items: [
+                        Text(resumenPartidasJuego.ultimaPartida!.nombreJugador.toString(), style: styleTexto.titleMedium),
+                        Text(resumenPartidasJuego.ultimaPartida!.nombre.toString(),
+                            style: styleTexto.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        Text(resumenPartidasJuego.ultimaPartida!.fecha.toString(), style: styleTexto.bodySmall),
+                        Text('Ultima partida', style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado))
+                      ],
+                      redireccion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+                            return FadeTransition(
+                                opacity: animation,
+                                child: DetallePartidaView(
+                                  partidaId: resumenPartidasJuego.ultimaPartida!.id,
+                                  jugadorId: resumenPartidasJuego.ultimaPartida!.idJugador,
+                                ));
+                          }))))
             ]),
           ),
         ),
@@ -145,15 +163,6 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
     );
   }
 
-  Widget _muestraInformacion({required List<Widget> items, required CrossAxisAlignment alineacion}) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
-        child: Row(children: [Expanded(child: Column(crossAxisAlignment: alineacion, children: items))]),
-      ),
-    );
-  }
-
   Widget _listaPartidas(List<PartidaDto>? partidas) {
     if (partidas == null || partidas.isEmpty) {
       return const SizedBox(height: 1);
@@ -166,16 +175,16 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
       itemBuilder: (BuildContext context, int index) {
         PartidaDto partida = partidas[index];
         final bool par = index.isOdd;
-        return _tarjetaPartidaJuegoJugador(partida: partida, par: par, context: context);
+        return _tarjetaPartidaJuegoJugador(partida: partida, par: par, context: context, partidaUnica: partidas.length==1);
       },
     );
   }
 
-  Widget _tarjetaPartidaJuegoJugador({required PartidaDto partida, required bool par, required BuildContext context}) {
+  Widget _tarjetaPartidaJuegoJugador({required PartidaDto partida, required bool par, required BuildContext context, required bool partidaUnica}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20, left: 10, right: 10),
       child: Transform.rotate(
-        angle: -0.02 + Random().nextDouble() * (0.02 - -0.02),
+        angle: partidaUnica ? 0 : -0.02 + Random().nextDouble() * (0.02 - -0.02),
         child: GestureDetector(
           onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
             return FadeTransition(
