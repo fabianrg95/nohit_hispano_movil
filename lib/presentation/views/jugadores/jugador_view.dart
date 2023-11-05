@@ -172,71 +172,53 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
   }
 }
 
-class _Partidas extends StatefulWidget {
+class _Partidas extends StatelessWidget {
   final JugadorDto jugador;
 
   const _Partidas({required this.jugador});
 
   @override
-  State<_Partidas> createState() => _PartidasState();
-}
-
-class _PartidasState extends State<_Partidas> {
-  late List<PartidaDto> partidasJuegoSeleccionado;
-
-  @override
-  void initState() {
-    super.initState();
-    partidasJuegoSeleccionado = [];
-
-    if (widget.jugador.juegos.isNotEmpty) {
-      partidasJuegoSeleccionado = widget.jugador.juegos[0].partidas;
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 170,
-          child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: widget.jugador.juegos.length,
-              itemBuilder: (context, index) {
-                final JuegoDto juego = widget.jugador.juegos[index];
-                return SizedBox(
-                    width: 170,
-                    child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            partidasJuegoSeleccionado = juego.partidas;
-                          });
-                        },
-                        child: CardJuego(juego: juego, accion: null)));
-              }),
-        ),
-        _informacionPartidasJugador(partidas: partidasJuegoSeleccionado)
-      ],
-    );
+    return ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: jugador.juegos.length,
+        itemBuilder: (context, index) {
+          final JuegoDto juego = jugador.juegos[index];
+          return GestureDetector(
+              onTap: () => _informacionPartidasJugador(partidas: juego.partidas, context: context),
+              child: CardJuego(juego: juego, accion: null, posicionInversa: index.isOdd));
+        });
   }
 
-  Widget _informacionPartidasJugador({required List<PartidaDto> partidas}) {
-    return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: partidas.isEmpty ? 0 : partidas.length,
-      itemBuilder: (BuildContext context, int index) {
-        PartidaDto partida = partidas[index];
-        final bool par = index.isOdd;
-        return _tarjetaPartidaJuegoJugador(partida: partida, par: par, context: context, partidaUnica: partidas.length == 1);
-      },
-    );
+  Future _informacionPartidasJugador({required List<PartidaDto> partidas, required BuildContext context}) {
+    return showModalBottomSheet(
+        context: context,
+        backgroundColor: color.primary,
+        showDragHandle: true,
+        useSafeArea: true,
+        isScrollControlled: true,
+        enableDrag: true,
+        builder: (context) => ListView(children: [
+              Center(child: Text(partidas.first.tituloJuego!, style: styleTexto.titleLarge)),
+              if (partidas.first.subtituloJuego != null) Center(child: Text(partidas.first.subtituloJuego!, style: styleTexto.titleSmall)),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.only(right: 10, left: 10),
+                child: Divider(color: color.tertiary.withOpacity(0.5), thickness: 2, height: 1),
+              ),
+              const SizedBox(height: 20),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: partidas.isEmpty ? 0 : partidas.length,
+                itemBuilder: (BuildContext context, int index) {
+                  PartidaDto partida = partidas[index];
+                  final bool par = index.isOdd;
+                  return _tarjetaPartidaJuegoJugador(partida: partida, par: par, context: context, partidaUnica: partidas.length == 1);
+                },
+              )
+            ]));
   }
 }
 
@@ -270,15 +252,13 @@ Widget _tarjetaPartidaJuegoJugador({required PartidaDto partida, required bool p
                     ],
                   ),
                 ),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Center(
                     child: Column(children: [
                       Center(
-                          child: Text('${partida.tituloJuego.toString()} ${partida.subtituloJuego ?? ''}',
-                              style: styleTexto.bodyMedium, textAlign: TextAlign.center)),
-                      Center(
                         child: Text(partida.nombre.toString(),
-                            style: styleTexto.labelSmall, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
+                            style: styleTexto.labelMedium, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
                       )
                     ]),
                   ),

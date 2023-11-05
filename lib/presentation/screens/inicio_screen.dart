@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:no_hit/presentation/views/views.dart';
-import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class InicioScreen extends StatelessWidget {
   static const String nombre = 'inicio_screen';
@@ -13,7 +12,7 @@ class InicioScreen extends StatelessWidget {
 
     return Scaffold(
       key: scaffoldKey,
-      drawer: const CustomDraw(),
+      // drawer: const CustomDraw(),
       body: Builder(builder: (context) => const InicioView()),
     );
   }
