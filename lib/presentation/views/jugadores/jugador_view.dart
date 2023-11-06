@@ -130,7 +130,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                           style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado),
                         )
                       ],
-                      redireccion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+                      accion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
                             return FadeTransition(
                                 opacity: animation,
                                 child: DetallePartidaView(
@@ -154,7 +154,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                             Text(jugador.ultimaPartida!.fecha.toString(), style: styleTexto.labelSmall),
                             Text('Ultima partida', style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado))
                           ],
-                          redireccion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+                          accion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
                                 return FadeTransition(
                                     opacity: animation,
                                     child: DetallePartidaView(
@@ -198,27 +198,33 @@ class _Partidas extends StatelessWidget {
         showDragHandle: true,
         useSafeArea: true,
         isScrollControlled: true,
+        isDismissible: true,
         enableDrag: true,
-        builder: (context) => ListView(children: [
-              Center(child: Text(partidas.first.tituloJuego!, style: styleTexto.titleLarge)),
-              if (partidas.first.subtituloJuego != null) Center(child: Text(partidas.first.subtituloJuego!, style: styleTexto.titleSmall)),
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.only(right: 10, left: 10),
-                child: Divider(color: color.tertiary.withOpacity(0.5), thickness: 2, height: 1),
-              ),
-              const SizedBox(height: 20),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: partidas.isEmpty ? 0 : partidas.length,
-                itemBuilder: (BuildContext context, int index) {
-                  PartidaDto partida = partidas[index];
-                  final bool par = index.isOdd;
-                  return _tarjetaPartidaJuegoJugador(partida: partida, par: par, context: context, partidaUnica: partidas.length == 1);
-                },
-              )
-            ]));
+        builder: (context) => DraggableScrollableSheet(
+              initialChildSize: 1,
+              expand: false,
+              builder: (context, scrollController) => ListView(controller: scrollController, children: [
+                Center(child: Text(partidas.first.tituloJuego!, style: styleTexto.titleLarge)),
+                if (partidas.first.subtituloJuego != null) Center(child: Text(partidas.first.subtituloJuego!, style: styleTexto.titleSmall)),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10, left: 10),
+                  child: Divider(color: color.tertiary.withOpacity(0.5), thickness: 2, height: 1),
+                ),
+                const SizedBox(height: 20),
+                ListView.builder(
+                  controller: scrollController,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: partidas.isEmpty ? 0 : partidas.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    PartidaDto partida = partidas[index];
+                    final bool par = index.isOdd;
+                    return _tarjetaPartidaJuegoJugador(partida: partida, par: par, context: context, partidaUnica: partidas.length == 1);
+                  },
+                )
+              ]),
+            ));
   }
 }
 

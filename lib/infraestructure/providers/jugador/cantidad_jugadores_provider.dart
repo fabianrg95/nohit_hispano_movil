@@ -15,7 +15,7 @@ class TotalJugadoresNotifier extends StateNotifier<int> {
   TotalJugadoresNotifier(this.obtenerTotalJugadores) : super(0);
 
   Future<void> loadData() async {
-    if (loadingdata == true || state > 0) {
+    if (loadingdata == true) {
       return;
     }
     loadingdata = true;

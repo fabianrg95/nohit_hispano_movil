@@ -19,17 +19,40 @@ class InicioView extends ConsumerStatefulWidget {
   InicioViewState createState() => InicioViewState();
 }
 
-class InicioViewState extends ConsumerState<InicioView> {
+class InicioViewState extends ConsumerState<InicioView> with SingleTickerProviderStateMixin {
   int totalJugadores = 0;
   int totalPartidas = 0;
   int totalJuegos = 0;
 
+  late AnimationController _controller;
+
   @override
   void initState() {
     super.initState();
-    ref.read(totalJugadoresProvider.notifier).loadData();
-    ref.read(totalPartidasProvider.notifier).loadData();
-    ref.read(totalJuegosProvider.notifier).loadData();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
+    _controller.forward(from: 0.0);
+
+    _actualizarConteos();
+  }
+
+  Future<void> _actualizarConteos() async {
+    setState(() {
+      ref.read(totalJugadoresProvider.notifier).loadData();
+      ref.read(totalPartidasProvider.notifier).loadData();
+      ref.read(totalJuegosProvider.notifier).loadData();
+      _controller.reset();
+      _controller.forward(from: 0.0);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -50,26 +73,37 @@ class InicioViewState extends ConsumerState<InicioView> {
 
     return SafeArea(
       child: Scaffold(
-        body: contenido(totalJugadores, totalPartidas, context),
+        body: RefreshIndicator(
+            onRefresh: () => _actualizarConteos(),
+            color: AppTheme.textoBase,
+            backgroundColor: AppTheme.extra,
+            child: contenido(totalJugadores, totalPartidas, context)),
       ),
     );
   }
 
   Widget contenido(final int cantidadTotalJugadores, final int cantidadTotalPartidas, BuildContext context) {
-    return Column(
-      children: [
-        Image.asset('assets/images/panel_negro.png', width: 260),
-        Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
-          child: Text(
-            'Una partida No hit/hitless consiste en completar un juego de principio a fin sin recibir ningún golpe de un enemigo o una trampa.',
-            textAlign: TextAlign.center,
-            style: styleTexto.bodyMedium,
-          ),
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      child: SizedBox(
+        height: size.height - MediaQuery.of(context).padding.top,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Image.asset('assets/images/panel_negro.png', height: 160),
+            Padding(
+              padding: const EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
+              child: Text(
+                'Una partida No hit/hitless consiste en completar un juego de principio a fin sin recibir ningún golpe de un enemigo o una trampa.',
+                textAlign: TextAlign.center,
+                style: styleTexto.bodyMedium,
+              ),
+            ),
+            const Expanded(flex: 1, child: SizedBox(height: 1)),
+            _informacionHispano(context),
+          ],
         ),
-        const Expanded(child: SizedBox(height: 1)),
-        _informacionHispano(context),
-      ],
+      ),
     );
   }
 
@@ -89,7 +123,10 @@ class InicioViewState extends ConsumerState<InicioView> {
                 decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
                 child: Column(
                   children: [
-                    Text(totalPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
+                    AnimatedBuilder(
+                        animation: _controller,
+                        builder: (context, child) => Text((totalPartidas * _controller.value).toInt().toString(),
+                            style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado))),
                     Text('Partidas', style: styleTexto.titleMedium),
                     Align(
                       alignment: const AlignmentDirectional(1.00, 0.00),
@@ -118,7 +155,10 @@ class InicioViewState extends ConsumerState<InicioView> {
                   decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
                   child: Column(
                     children: [
-                      Text(totalJugadores.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
+                      AnimatedBuilder(
+                          animation: _controller,
+                          builder: (context, child) => Text((totalJugadores * _controller.value).toInt().toString(),
+                              style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado))),
                       Text('Jugadores', style: styleTexto.titleMedium),
                       Align(
                         alignment: const AlignmentDirectional(1.00, 0.00),
@@ -146,7 +186,10 @@ class InicioViewState extends ConsumerState<InicioView> {
                   decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
                   child: Column(
                     children: [
-                      Text(totalJuegos.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
+                      AnimatedBuilder(
+                          animation: _controller,
+                          builder: (context, child) => Text((totalJuegos * _controller.value).toInt().toString(),
+                              style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado))),
                       Text('Juegos', style: styleTexto.titleMedium),
                       Align(
                         alignment: const AlignmentDirectional(1.00, 0.00),

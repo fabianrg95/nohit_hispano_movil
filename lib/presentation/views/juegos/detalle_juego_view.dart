@@ -43,12 +43,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
                 delegate: SliverChildBuilderDelegate((context, index) {
               return SingleChildScrollView(
                 child: Column(
-                  children: [
-                    _subtitulo(),
-                    _resumenPartidas(resumenPartidasJuego),
-                    const SizedBox(height: 10),
-                    _listaPartidas(resumenPartidasJuego?.partidas.reversed.toList())
-                  ],
+                  children: [_subtitulo(), _resumenPartidas(resumenPartidasJuego), const SizedBox(height: 10)],
                 ),
               );
             }, childCount: 1))
@@ -69,10 +64,39 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
           IntrinsicHeight(
             child: Row(
               children: [
-                ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
-                  Text(resumenPartidasJuego.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
-                  Text('Partida${resumenPartidasJuego.cantidadPartidas != 1 ? 's' : ''}')
-                ]),
+                ViewData().muestraInformacion(
+                  alineacion: CrossAxisAlignment.center,
+                  items: [
+                    Text(resumenPartidasJuego.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
+                    Text('Partida${resumenPartidasJuego.cantidadPartidas != 1 ? 's' : ''}')
+                  ],
+                  accion: () => showModalBottomSheet(
+                    context: context,
+                    backgroundColor: color.primary,
+                    showDragHandle: true,
+                    useSafeArea: true,
+                    isScrollControlled: true,
+                    isDismissible: true,
+                    enableDrag: true,
+                    builder: (context) => DraggableScrollableSheet(
+                      expand: false,
+                      initialChildSize: 1,
+                      builder: (context, scrollController) => ListView(
+                        controller: scrollController,
+                        children: [
+                          Center(child: Text("Partidas", style: styleTexto.titleLarge)),
+                          const SizedBox(height: 10),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10, left: 10),
+                            child: Divider(color: color.tertiary.withOpacity(0.5), thickness: 2, height: 1),
+                          ),
+                          const SizedBox(height: 20),
+                          _listaPartidas(resumenPartidasJuego.partidas.reversed.toList(), scrollController)
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
                 VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
                 ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
                   Text(resumenPartidasJuego.cantidadJugadores.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
@@ -107,7 +131,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
                       style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado),
                     )
                   ],
-                  redireccion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+                  accion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
                         return FadeTransition(
                             opacity: animation,
                             child: DetallePartidaView(
@@ -130,7 +154,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
                         Text(resumenPartidasJuego.ultimaPartida!.fecha.toString(), style: styleTexto.bodySmall),
                         Text('Ultima partida', style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado))
                       ],
-                      redireccion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+                      accion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
                             return FadeTransition(
                                 opacity: animation,
                                 child: DetallePartidaView(
@@ -163,19 +187,21 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
     );
   }
 
-  Widget _listaPartidas(List<PartidaDto>? partidas) {
+  Widget _listaPartidas(final List<PartidaDto>? partidas, final ScrollController scrollController) {
     if (partidas == null || partidas.isEmpty) {
-      return const SizedBox(height: 1);
+      return const Center(
+        child: Text("El juego no posee partidas."),
+      );
     }
 
     return ListView.builder(
-      physics: const NeverScrollableScrollPhysics(),
+      controller: scrollController,
       shrinkWrap: true,
-      itemCount: partidas.isEmpty ? 0 : partidas.length,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: partidas.length,
       itemBuilder: (BuildContext context, int index) {
         PartidaDto partida = partidas[index];
-        final bool par = index.isOdd;
-        return _tarjetaPartidaJuegoJugador(partida: partida, par: par, context: context, partidaUnica: partidas.length == 1);
+        return _tarjetaPartidaJuegoJugador(partida: partida, par: index.isOdd, context: context, partidaUnica: partidas.length == 1);
       },
     );
   }

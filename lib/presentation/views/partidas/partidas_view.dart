@@ -28,10 +28,6 @@ class PartidasViewState extends ConsumerState<PartidasView> {
 
   @override
   Widget build(BuildContext context) {
-    color = Theme.of(context).colorScheme;
-    styleTexto = Theme.of(context).textTheme;
-    size = MediaQuery.of(context).size;
-
     listaUltimasPartidas = ref.watch(ultimasPartidasProvider);
 
     return Scaffold(
@@ -83,7 +79,6 @@ class PartidasViewState extends ConsumerState<PartidasView> {
             image: DecorationImage(
                 image: NetworkImage(partida.urlImagenJuego!),
                 fit: BoxFit.fitWidth,
-                opacity: 0.7,
                 colorFilter: const ColorFilter.mode(AppTheme.base, BlendMode.modulate))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
