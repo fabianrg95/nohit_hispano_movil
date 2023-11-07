@@ -14,11 +14,15 @@ class ListaJuegosView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final bool visualizarEnLista = ref.watch(visualListaJuegosNotifierProvider);
     return SafeArea(
       child: Scaffold(
         //drawer: const CustomDraw(),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: color.tertiary,
+          foregroundColor: color.surfaceTint,
           onPressed: () => ref.read(visualListaJuegosNotifierProvider.notifier).cambiarVisualizacionListaJuegos(),
+          child: Icon(visualizarEnLista ? Icons.grid_view_outlined : Icons.format_list_bulleted_outlined),
         ),
         appBar: AppBar(title: const Text('Juegos'), actions: [
           Padding(
@@ -144,13 +148,15 @@ class TabViewJuegosState extends ConsumerState<_ListaJuegos> {
         itemBuilder: (BuildContext context, int index) {
           final JuegoDto juego = juegos[index];
           return CardJuego(
-              juego: juego,
-              accion: () => Navigator.of(context).push(PageRouteBuilder(
-                    pageBuilder: (context, animation, __) {
-                      return FadeTransition(opacity: animation, child: DetalleJuego(juego: juego));
-                    },
-                  )),
-              posicionInversa: index.isOdd);
+            juego: juego,
+            accion: () => Navigator.of(context).push(PageRouteBuilder(
+              pageBuilder: (context, animation, __) {
+                return FadeTransition(opacity: animation, child: DetalleJuego(juego: juego));
+              },
+            )),
+            posicionInversa: index.isOdd,
+            visualizacionMinima: !widget.verEnLista,
+          );
         },
       );
     } else {
@@ -164,12 +170,14 @@ class TabViewJuegosState extends ConsumerState<_ListaJuegos> {
         itemBuilder: (BuildContext context, int index) {
           final JuegoDto juego = juegos[index];
           return CardJuego(
-              juego: juego,
-              accion: () => Navigator.of(context).push(PageRouteBuilder(
-                    pageBuilder: (context, animation, __) {
-                      return FadeTransition(opacity: animation, child: DetalleJuego(juego: juego));
-                    },
-                  )));
+            juego: juego,
+            accion: () => Navigator.of(context).push(PageRouteBuilder(
+              pageBuilder: (context, animation, __) {
+                return FadeTransition(opacity: animation, child: DetalleJuego(juego: juego));
+              },
+            )),
+            visualizacionMinima: !widget.verEnLista,
+          );
         },
       );
     }

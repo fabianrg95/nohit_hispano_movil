@@ -10,22 +10,34 @@ class CardJuego extends StatelessWidget {
   final bool animarImagen;
   final double tamanio;
   final bool posicionInversa;
-  const CardJuego({super.key, required this.juego, this.accion, this.animarImagen = true, this.tamanio = 170, this.posicionInversa = false});
+  final bool visualizacionMinima;
+  const CardJuego(
+      {super.key,
+      required this.juego,
+      this.accion,
+      this.animarImagen = true,
+      this.tamanio = 170,
+      this.posicionInversa = false,
+      this.visualizacionMinima = false});
 
   @override
   Widget build(BuildContext context) {
     if (accion != null) {
       return GestureDetector(
         onTap: () => accion!(),
-        child: _itemJuego(juego: juego, tamanio: tamanio, inversa: posicionInversa),
+        child: visualizacionMinima
+            ? _ItemJuegoGrilla(juego: juego, animarImagen: animarImagen)
+            : _itemJuegoLista(juego: juego, tamanio: tamanio, inversa: posicionInversa),
       );
     } else {
-      return _itemJuego(juego: juego, tamanio: tamanio, inversa: posicionInversa);
+      return visualizacionMinima
+          ? _ItemJuegoGrilla(juego: juego, animarImagen: animarImagen)
+          : _itemJuegoLista(juego: juego, tamanio: tamanio, inversa: posicionInversa);
     }
   }
 }
 
-Widget _itemJuego({required final JuegoDto juego, required final double tamanio, required final bool inversa}) {
+Widget _itemJuegoLista({required final JuegoDto juego, required final double tamanio, required final bool inversa}) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 10),
     child: SizedBox(
@@ -77,4 +89,31 @@ Widget _itemJuego({required final JuegoDto juego, required final double tamanio,
       ),
     ),
   );
+}
+
+class _ItemJuegoGrilla extends StatelessWidget {
+  const _ItemJuegoGrilla({
+    required this.juego,
+    required this.animarImagen,
+  });
+
+  final JuegoDto juego;
+  final bool animarImagen;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        decoration: AppTheme().decorationContainerBasic(
+            topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
+        margin: const EdgeInsets.all(10),
+        child: Center(
+          child: Hero(
+            tag: juego.nombre + (juego.subtitulo == null ? juego.subtitulo.toString() : juego.id.toString()),
+            child: ImagenJuego(
+              juego: juego.nombre,
+              urlImagen: juego.urlImagen,
+            ),
+          ),
+        ));
+  }
 }
