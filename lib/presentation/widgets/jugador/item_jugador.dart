@@ -15,7 +15,6 @@ class ItemJugador extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
         child: GestureDetector(
@@ -23,9 +22,10 @@ class ItemJugador extends StatelessWidget {
             return FadeTransition(opacity: animation, child: DetalleJugadorView(idJugador: jugador.id!));
           })),
           child: Container(
-            decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: true, topRight: true),
+            decoration: AppTheme().decorationContainerBasic(
+                bottomLeft: true, bottomRight: true, topLeft: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
             child: ListTile(
-              trailing: BanderaJugador(codigoBandera: jugador.codigoBandera, tamanio: 38, defaultNegro: true),
+              trailing: BanderaJugador(codigoBandera: jugador.codigoBandera, tamanio: 38),
               title: Text(jugador.nombre!, style: styleTexto.titleMedium, maxLines: 2),
             ),
           ),

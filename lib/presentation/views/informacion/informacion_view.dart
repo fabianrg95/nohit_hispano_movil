@@ -13,7 +13,6 @@ class _InformacionViewState extends State<InformacionView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const CustomDraw(),
       appBar: _titulo(context),
     );
   }

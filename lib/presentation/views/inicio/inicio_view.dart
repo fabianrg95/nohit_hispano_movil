@@ -8,6 +8,7 @@ import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/views/juegos/lista_juegos_view.dart';
 import 'package:no_hit/presentation/views/jugadores/lista_jugadores_view.dart';
 import 'package:no_hit/presentation/views/partidas/partidas_view.dart';
+import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class InicioView extends ConsumerStatefulWidget {
@@ -23,6 +24,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
   int totalJugadores = 0;
   int totalPartidas = 0;
   int totalJuegos = 0;
+  bool esTemaClaro = true;
 
   late AnimationController _controller;
 
@@ -64,6 +66,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
     totalJugadores = ref.watch(totalJugadoresProvider);
     totalPartidas = ref.watch(totalPartidasProvider);
     totalJuegos = ref.watch(totalJuegosProvider);
+    esTemaClaro = ref.watch(themeNotifierProvider).esTemaClaro;
 
     if (totalJugadores == 0 || totalPartidas == 0 || totalJuegos == 0) {
       return const PantallaCargaBasica(texto: 'Consultando informacion inicial');
@@ -75,8 +78,8 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
       child: Scaffold(
         body: RefreshIndicator(
             onRefresh: () => _actualizarConteos(),
-            color: AppTheme.textoBase,
-            backgroundColor: AppTheme.extra,
+            color: color.surfaceTint,
+            backgroundColor: color.tertiary,
             child: contenido(totalJugadores, totalPartidas, context)),
       ),
     );
@@ -90,7 +93,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            Image.asset('assets/images/panel_negro.png', height: 160),
+            Image.asset('assets/images/panel_${color.brightness == Brightness.dark ? 'blanco' : 'negro'}.png', height: 160),
             Padding(
               padding: const EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
               child: Text(
@@ -120,13 +123,14 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                 margin: const EdgeInsets.only(left: 10, top: 10, right: 10),
                 padding: const EdgeInsets.only(top: 10, bottom: 10),
                 width: size.width * 0.5,
-                decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+                decoration: AppTheme().decorationContainerBasic(
+                    topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
                 child: Column(
                   children: [
                     AnimatedBuilder(
                         animation: _controller,
                         builder: (context, child) => Text((totalPartidas * _controller.value).toInt().toString(),
-                            style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado))),
+                            style: styleTexto.displaySmall?.copyWith(color: color.outline))),
                     Text('Partidas', style: styleTexto.titleMedium),
                     Align(
                       alignment: const AlignmentDirectional(1.00, 0.00),
@@ -152,13 +156,14 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                 child: Container(
                   margin: const EdgeInsets.only(left: 10, top: 10, right: 5),
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+                  decoration: AppTheme().decorationContainerBasic(
+                      topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
                   child: Column(
                     children: [
                       AnimatedBuilder(
                           animation: _controller,
                           builder: (context, child) => Text((totalJugadores * _controller.value).toInt().toString(),
-                              style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado))),
+                              style: styleTexto.displaySmall?.copyWith(color: color.outline))),
                       Text('Jugadores', style: styleTexto.titleMedium),
                       Align(
                         alignment: const AlignmentDirectional(1.00, 0.00),
@@ -183,13 +188,14 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                 child: Container(
                   margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+                  decoration: AppTheme().decorationContainerBasic(
+                      topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
                   child: Column(
                     children: [
                       AnimatedBuilder(
                           animation: _controller,
                           builder: (context, child) => Text((totalJuegos * _controller.value).toInt().toString(),
-                              style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado))),
+                              style: styleTexto.displaySmall?.copyWith(color: color.outline))),
                       Text('Juegos', style: styleTexto.titleMedium),
                       Align(
                         alignment: const AlignmentDirectional(1.00, 0.00),
@@ -207,6 +213,43 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
               ),
             ),
           ]),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 3,
+                child: GestureDetector(
+                  onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+                    return FadeTransition(opacity: animation, child: const InformacionView());
+                  })),
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    decoration: AppTheme().decorationContainerBasic(
+                        topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
+                    child: Column(
+                      children: [
+                        Text('Información', style: styleTexto.titleMedium),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () => ref.read(themeNotifierProvider.notifier).toggleDarkmode(),
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    decoration: AppTheme().decorationContainerBasic(
+                        topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
+                    child: Icon(esTemaClaro ? Icons.dark_mode_outlined : Icons.light_mode_outlined),
+                  ),
+                ),
+              )
+            ],
+          ),
           const SizedBox(height: 10)
         ],
       ),

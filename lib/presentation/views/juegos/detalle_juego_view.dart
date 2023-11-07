@@ -67,7 +67,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
                 ViewData().muestraInformacion(
                   alineacion: CrossAxisAlignment.center,
                   items: [
-                    Text(resumenPartidasJuego.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
+                    Text(resumenPartidasJuego.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: color.outline)),
                     Text('Partida${resumenPartidasJuego.cantidadPartidas != 1 ? 's' : ''}')
                   ],
                   accion: () => showModalBottomSheet(
@@ -99,7 +99,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
                 ),
                 VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
                 ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
-                  Text(resumenPartidasJuego.cantidadJugadores.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
+                  Text(resumenPartidasJuego.cantidadJugadores.toString(), style: styleTexto.displaySmall?.copyWith(color: color.outline)),
                   Text('Jugador${resumenPartidasJuego.cantidadJugadores != 1 ? 'es' : ''}')
                 ]),
               ],
@@ -116,7 +116,8 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
       return IntrinsicHeight(
         child: Container(
           margin: const EdgeInsets.only(left: 10, right: 10),
-          decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: true, topRight: true),
+          decoration: AppTheme().decorationContainerBasic(
+              bottomLeft: true, bottomRight: true, topLeft: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
           child: IntrinsicHeight(
             child: Column(children: [
               ViewData().muestraInformacion(
@@ -128,7 +129,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
                     Text(resumenPartidasJuego.primeraPartida!.fecha.toString(), style: styleTexto.bodySmall),
                     Text(
                       'Primera ${resumenPartidasJuego.primeraPartida!.id == resumenPartidasJuego.ultimaPartida!.id ? 'y unica ' : ''}partida',
-                      style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado),
+                      style: styleTexto.bodyLarge?.copyWith(color: color.outline),
                     )
                   ],
                   accion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
@@ -152,7 +153,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
                         Text(resumenPartidasJuego.ultimaPartida!.nombre.toString(),
                             style: styleTexto.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis),
                         Text(resumenPartidasJuego.ultimaPartida!.fecha.toString(), style: styleTexto.bodySmall),
-                        Text('Ultima partida', style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado))
+                        Text('Ultima partida', style: styleTexto.bodyLarge?.copyWith(color: color.outline))
                       ],
                       accion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
                             return FadeTransition(
@@ -176,7 +177,8 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
       width: size.width,
       margin: const EdgeInsets.only(left: 25, right: 25),
       padding: const EdgeInsets.only(top: 10, bottom: 10),
-      decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+      decoration: AppTheme().decorationContainerBasic(
+          topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
       child: Column(children: [
         Text(widget.juego.nombre.toString(), style: styleTexto.titleLarge),
         Visibility(
@@ -221,7 +223,8 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
                 ));
           })),
           child: Container(
-            decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+            decoration: AppTheme().decorationContainerBasic(
+                topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
             child: Row(
               children: [
                 Padding(

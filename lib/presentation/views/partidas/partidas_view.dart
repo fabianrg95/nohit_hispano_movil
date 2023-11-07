@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
@@ -72,21 +74,19 @@ class PartidasViewState extends ConsumerState<PartidasView> {
         width: double.infinity,
         height: 270,
         decoration: BoxDecoration(
-            color: AppTheme.base,
+            color: color.primary,
             borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15), topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-            border: Border.all(color: AppTheme.extra, width: 2),
-            image: DecorationImage(
-                image: NetworkImage(partida.urlImagenJuego!),
-                fit: BoxFit.fitWidth,
-                colorFilter: const ColorFilter.mode(AppTheme.base, BlendMode.modulate))),
+            border: Border.all(color: color.tertiary, width: 2),
+            image: DecorationImage(image: NetworkImage(partida.urlImagenJuego!), fit: BoxFit.fitWidth)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               width: 55,
               height: 55,
-              decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+              decoration: AppTheme().decorationContainerBasic(
+                  topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -100,7 +100,8 @@ class PartidasViewState extends ConsumerState<PartidasView> {
             Container(
               padding: const EdgeInsets.only(top: 5, bottom: 5, right: 10, left: 10),
               width: double.infinity,
-              decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+              decoration: AppTheme().decorationContainerBasic(
+                  topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -109,7 +110,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                     TextSpan(text: partida.tituloJuego),
                     TextSpan(text: partida.subtituloJuego != null ? " ${partida.subtituloJuego!}" : '', style: styleTexto.labelSmall)
                   ])),
-                  Text("Por ${partida.nombreJugador!}", style: styleTexto.titleSmall?.copyWith(color: AppTheme.textoResaltado)),
+                  Text("Por ${partida.nombreJugador!}", style: styleTexto.titleSmall?.copyWith(color: color.outline)),
                   Container(
                       margin: const EdgeInsets.only(top: 15, bottom: 5),
                       padding: const EdgeInsets.only(top: 5, bottom: 5, right: 10, left: 10),

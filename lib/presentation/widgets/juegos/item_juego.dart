@@ -41,7 +41,8 @@ Widget _itemJuego({required final JuegoDto juego, required final double tamanio,
                   width: double.infinity,
                   padding: const EdgeInsets.all(10),
                   margin: const EdgeInsets.only(left: 10, right: 10),
-                  decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+                  decoration: AppTheme().decorationContainerBasic(
+                      topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
                   child: Column(
                     crossAxisAlignment: inversa == true ? CrossAxisAlignment.start : CrossAxisAlignment.end,
                     mainAxisAlignment: inversa == true ? MainAxisAlignment.start : MainAxisAlignment.end,

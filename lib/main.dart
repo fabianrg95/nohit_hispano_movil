@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:no_hit/config/contants/environment.dart';
 import 'package:no_hit/config/router/app_router.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
+import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 late ColorScheme color;
@@ -24,15 +25,16 @@ Future<void> main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final AppTheme appTheme = ref.watch( themeNotifierProvider );
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      theme: AppTheme().getTheme(),
+      theme: appTheme.getTheme(),
       routerConfig: appRouter,
     );
   }

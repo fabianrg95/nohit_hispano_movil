@@ -81,7 +81,8 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
       child: Container(
         margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
         padding: const EdgeInsets.only(top: 10, bottom: 10),
-        decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+        decoration: AppTheme().decorationContainerBasic(
+            topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
         child: IntrinsicHeight(
           child: Column(
             children: [
@@ -92,7 +93,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 10, left: 30),
-                    child: BanderaJugador(codigoBandera: detalleJugador.codigoBandera, tamanio: 70, defaultNegro: true),
+                    child: BanderaJugador(codigoBandera: detalleJugador.codigoBandera, tamanio: 70),
                   ),
                   Expanded(
                     child: Column(
@@ -132,7 +133,8 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
     return Container(
       margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
       padding: const EdgeInsets.only(top: 10, bottom: 10),
-      decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+      decoration: AppTheme().decorationContainerBasic(
+          topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
       child: IntrinsicHeight(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -159,7 +161,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
                 Expanded(
                     child: Center(
                         child: Text(detallePartida.nombre.toString(),
-                            textAlign: TextAlign.center, style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado))))
+                            textAlign: TextAlign.center, style: styleTexto.bodyLarge?.copyWith(color: color.outline))))
               ],
             )
           ],
@@ -172,7 +174,8 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
     return Container(
       margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
       padding: const EdgeInsets.only(top: 10, bottom: 10),
-      decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+      decoration: AppTheme().decorationContainerBasic(
+          topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
       child: IntrinsicHeight(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -219,7 +222,8 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
     return Container(
       margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
       padding: const EdgeInsets.only(top: 10, bottom: 10),
-      decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+      decoration: AppTheme().decorationContainerBasic(
+          topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
       child: IntrinsicHeight(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -233,24 +237,21 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
                 children: [
                   ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
                     const SizedBox(height: 10),
-                    Text(detallePartida.primeraPartidaJugador == true ? 'Si' : 'No',
-                        style: styleTexto.titleLarge?.copyWith(color: AppTheme.textoResaltado)),
+                    Text(detallePartida.primeraPartidaJugador == true ? 'Si' : 'No', style: styleTexto.titleLarge?.copyWith(color: color.outline)),
                     const Text('Jugador'),
                     const SizedBox(height: 10),
                   ]),
                   VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
                   ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
                     const SizedBox(height: 10),
-                    Text(detallePartida.primeraPartidaHispano == true ? 'Si' : 'No',
-                        style: styleTexto.titleLarge?.copyWith(color: AppTheme.textoResaltado)),
+                    Text(detallePartida.primeraPartidaHispano == true ? 'Si' : 'No', style: styleTexto.titleLarge?.copyWith(color: color.outline)),
                     const Text('Hispano'),
                     const SizedBox(height: 10),
                   ]),
                   VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
                   ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
                     const SizedBox(height: 10),
-                    Text(detallePartida.primeraPartidaMundo == true ? 'Si' : 'No',
-                        style: styleTexto.titleLarge?.copyWith(color: AppTheme.textoResaltado)),
+                    Text(detallePartida.primeraPartidaMundo == true ? 'Si' : 'No', style: styleTexto.titleLarge?.copyWith(color: color.outline)),
                     const Text('Mundial'),
                     const SizedBox(height: 10),
                   ]),
@@ -274,7 +275,8 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
         width: size.width,
         margin: const EdgeInsets.only(left: 25, right: 25),
         padding: const EdgeInsets.only(top: 10, bottom: 10),
-        decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+        decoration: AppTheme().decorationContainerBasic(
+            topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
         child: Column(children: [
           Text(juegoDto.nombre.toString(), style: styleTexto.titleLarge),
           Visibility(

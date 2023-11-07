@@ -91,13 +91,14 @@ class TapbarJuegosState extends State<TapbarJuegos> with SingleTickerProviderSta
   Container _tabBarJuegos() {
     return Container(
         margin: const EdgeInsets.symmetric(horizontal: 10),
-        decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+        decoration: AppTheme().decorationContainerBasic(
+            topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
         child: TabBar(
             controller: tabController,
             labelStyle: styleTexto.titleMedium,
-            labelColor: AppTheme.textoBase,
+            labelColor: color.surfaceTint,
             unselectedLabelStyle: styleTexto.bodySmall,
-            indicator: BoxDecoration(color: AppTheme.extra, borderRadius: BorderRadius.circular(9.5)),
+            indicator: BoxDecoration(color: color.tertiary, borderRadius: BorderRadius.circular(9.5)),
             indicatorSize: TabBarIndicatorSize.tab,
             padding: const EdgeInsets.all(2),
             tabs: const [Tab(text: 'Oficiales'), Tab(text: 'No oficiales')]));
@@ -140,7 +141,8 @@ class TabViewJuegosState extends ConsumerState<_ListaJuegos> {
                   pageBuilder: (context, animation, __) {
                     return FadeTransition(opacity: animation, child: DetalleJuego(juego: juego));
                   },
-                )), posicionInversa: index.isOdd);
+                )),
+            posicionInversa: index.isOdd);
       },
     );
 

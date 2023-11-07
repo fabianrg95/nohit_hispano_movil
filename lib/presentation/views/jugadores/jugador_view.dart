@@ -43,14 +43,9 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
   }
 
   AppBar _cabecera(final JugadorDto jugador) {
-    return AppBar(title: Text(jugador.nombre!), actions: [
-      Padding(
-          padding: const EdgeInsets.only(right: 5),
-          child: BanderaJugador(
-            codigoBandera: jugador.codigoBandera,
-            defaultNegro: true,
-          ))
-    ]);
+    return AppBar(
+        title: Text(jugador.nombre!),
+        actions: [Padding(padding: const EdgeInsets.only(right: 5), child: BanderaJugador(codigoBandera: jugador.codigoBandera))]);
   }
 
   Widget _contenido(final JugadorDto jugador) {
@@ -61,7 +56,8 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: size.width * 0.06),
             padding: const EdgeInsets.only(top: 10, bottom: 10),
-            decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: true, topRight: true),
+            decoration: AppTheme().decorationContainerBasic(
+                bottomLeft: true, bottomRight: true, topLeft: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
             child: _informacionJugador(jugador),
           ),
         ),
@@ -100,12 +96,12 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
             child: Row(
               children: [
                 ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
-                  Text(jugador.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
+                  Text(jugador.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: color.outline)),
                   Text('Partida${jugador.cantidadPartidas != 1 ? 's' : ''}')
                 ]),
                 VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
                 ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
-                  Text(jugador.juegos.length.toString(), style: styleTexto.displaySmall?.copyWith(color: AppTheme.textoResaltado)),
+                  Text(jugador.juegos.length.toString(), style: styleTexto.displaySmall?.copyWith(color: color.outline)),
                   Text('Juego${jugador.juegos.length != 1 ? 's' : ''}')
                 ]),
               ],
@@ -114,7 +110,8 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
           IntrinsicHeight(
             child: Container(
               margin: const EdgeInsets.only(left: 10, right: 10),
-              decoration: AppTheme.decorationContainerBasic(bottomLeft: true, bottomRight: true, topLeft: true, topRight: true),
+              decoration: AppTheme().decorationContainerBasic(
+                  bottomLeft: true, bottomRight: true, topLeft: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
               child: Column(
                 children: [
                   ViewData().muestraInformacion(
@@ -127,7 +124,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                         Text(jugador.primeraPartida!.fecha.toString(), style: styleTexto.labelSmall),
                         Text(
                           'Primera ${jugador.primeraPartida!.id == jugador.ultimaPartida!.id ? 'y unica ' : ''}partida',
-                          style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado),
+                          style: styleTexto.bodyLarge?.copyWith(color: color.outline),
                         )
                       ],
                       accion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
@@ -152,7 +149,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                             Text(jugador.ultimaPartida!.nombre.toString(),
                                 style: styleTexto.labelSmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
                             Text(jugador.ultimaPartida!.fecha.toString(), style: styleTexto.labelSmall),
-                            Text('Ultima partida', style: styleTexto.bodyLarge?.copyWith(color: AppTheme.textoResaltado))
+                            Text('Ultima partida', style: styleTexto.bodyLarge?.copyWith(color: color.outline))
                           ],
                           accion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
                                 return FadeTransition(
@@ -243,7 +240,8 @@ Widget _tarjetaPartidaJuegoJugador({required PartidaDto partida, required bool p
               ));
         })),
         child: Container(
-            decoration: AppTheme.decorationContainerBasic(topLeft: true, bottomLeft: true, bottomRight: true, topRight: true),
+            decoration: AppTheme().decorationContainerBasic(
+                topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
             child: Row(
               children: [
                 Padding(
