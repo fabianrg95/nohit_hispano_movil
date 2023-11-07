@@ -5,9 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/main.dart';
-import 'package:no_hit/presentation/views/juegos/lista_juegos_view.dart';
-import 'package:no_hit/presentation/views/jugadores/lista_jugadores_view.dart';
-import 'package:no_hit/presentation/views/partidas/partidas_view.dart';
 import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 

@@ -7,16 +7,19 @@ import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
-class ListaJuegosView extends StatelessWidget {
+class ListaJuegosView extends ConsumerWidget {
   static const nombre = 'lista-juegos-screen';
 
   const ListaJuegosView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     return SafeArea(
       child: Scaffold(
         //drawer: const CustomDraw(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => ref.read(visualListaJuegosNotifierProvider.notifier).cambiarVisualizacionListaJuegos(),
+        ),
         appBar: AppBar(title: const Text('Juegos'), actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
@@ -52,15 +55,16 @@ class ListaJuegosView extends StatelessWidget {
   }
 }
 
-class TapbarJuegos extends StatefulWidget {
+class TapbarJuegos extends ConsumerStatefulWidget {
   const TapbarJuegos({super.key});
 
   @override
   TapbarJuegosState createState() => TapbarJuegosState();
 }
 
-class TapbarJuegosState extends State<TapbarJuegos> with SingleTickerProviderStateMixin {
+class TapbarJuegosState extends ConsumerState<TapbarJuegos> with SingleTickerProviderStateMixin {
   late TabController tabController;
+  bool visualizarEnLista = true;
 
   @override
   void initState() {
@@ -76,13 +80,15 @@ class TapbarJuegosState extends State<TapbarJuegos> with SingleTickerProviderSta
 
   @override
   Widget build(BuildContext context) {
+    visualizarEnLista = ref.watch(visualListaJuegosNotifierProvider);
+
     return Column(children: [
       const SizedBox(height: 5),
       _tabBarJuegos(),
       Expanded(
-        child: TabBarView(controller: tabController, children: const [
-          _ListaJuegos(juegosOficiales: true),
-          _ListaJuegos(juegosOficiales: false),
+        child: TabBarView(controller: tabController, children: [
+          _ListaJuegos(juegosOficiales: true, verEnLista: visualizarEnLista),
+          _ListaJuegos(juegosOficiales: false, verEnLista: visualizarEnLista),
         ]),
       ),
     ]);
@@ -107,8 +113,9 @@ class TapbarJuegosState extends State<TapbarJuegos> with SingleTickerProviderSta
 
 class _ListaJuegos extends ConsumerStatefulWidget {
   final bool juegosOficiales;
+  final bool verEnLista;
 
-  const _ListaJuegos({required this.juegosOficiales});
+  const _ListaJuegos({required this.juegosOficiales, required this.verEnLista});
 
   @override
   TabViewJuegosState createState() => TabViewJuegosState();
@@ -131,38 +138,40 @@ class TabViewJuegosState extends ConsumerState<_ListaJuegos> {
       );
     }
 
-    return ListView.builder(
-      itemCount: juegos.length,
-      itemBuilder: (BuildContext context, int index) {
-        final JuegoDto juego = juegos[index];
-        return CardJuego(
-            juego: juego,
-            accion: () => Navigator.of(context).push(PageRouteBuilder(
-                  pageBuilder: (context, animation, __) {
-                    return FadeTransition(opacity: animation, child: DetalleJuego(juego: juego));
-                  },
-                )),
-            posicionInversa: index.isOdd);
-      },
-    );
-
-    // return GridView.builder(
-    //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-    //     crossAxisCount: 2,
-    //     //mainAxisExtent: 300 //tamaño alto de cada item
-    //   ),
-    //   itemCount: juegos.length,
-    //   shrinkWrap: true,
-    //   itemBuilder: (BuildContext context, int index) {
-    //     final JuegoDto juego = juegos[index];
-    //     return CardJuego(
-    //         juego: juego,
-    //         accion: () => Navigator.of(context).push(PageRouteBuilder(
-    //               pageBuilder: (context, animation, __) {
-    //                 return FadeTransition(opacity: animation, child: DetalleJuego(juego: juego));
-    //               },
-    //             )));
-    //   },
-    // );
+    if (widget.verEnLista) {
+      return ListView.builder(
+        itemCount: juegos.length,
+        itemBuilder: (BuildContext context, int index) {
+          final JuegoDto juego = juegos[index];
+          return CardJuego(
+              juego: juego,
+              accion: () => Navigator.of(context).push(PageRouteBuilder(
+                    pageBuilder: (context, animation, __) {
+                      return FadeTransition(opacity: animation, child: DetalleJuego(juego: juego));
+                    },
+                  )),
+              posicionInversa: index.isOdd);
+        },
+      );
+    } else {
+      return GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          //mainAxisExtent: 300 //tamaño alto de cada item
+        ),
+        itemCount: juegos.length,
+        shrinkWrap: true,
+        itemBuilder: (BuildContext context, int index) {
+          final JuegoDto juego = juegos[index];
+          return CardJuego(
+              juego: juego,
+              accion: () => Navigator.of(context).push(PageRouteBuilder(
+                    pageBuilder: (context, animation, __) {
+                      return FadeTransition(opacity: animation, child: DetalleJuego(juego: juego));
+                    },
+                  )));
+        },
+      );
+    }
   }
 }

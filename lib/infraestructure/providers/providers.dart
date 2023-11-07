@@ -10,3 +10,4 @@ export 'partidas/detalle_partida_provider.dart';
 export 'partidas/partidas_juego_provider.dart';
 export 'partidas/ultimas_partidas_provider.dart';
 export 'commons/tema_provider.dart';
+export 'commons/visual_lista_juegos_provider.dart';
