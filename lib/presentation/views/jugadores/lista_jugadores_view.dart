@@ -24,8 +24,8 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
   @override
   void initState() {
     super.initState();
-    ref.read(jugadorProvider.notifier).loadData();
-    ref.read(ultimosJugadoresProvider.notifier).loadData();
+    ref.read(jugadorProvider.notifier).loadData(false);
+    ref.read(ultimosJugadoresProvider.notifier).loadData(false);
   }
 
   @override
@@ -41,9 +41,17 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
       child: Scaffold(
         //drawer: const CustomDraw(),
         appBar: AppBar(actions: [_accionBuscar(context)], title: const Text('Jugadores')),
-        body: _contenidoPagina(),
+        body: RefreshIndicator(
+            onRefresh: () => _actualizarPartidas(), color: color.surfaceTint, backgroundColor: color.tertiary, child: _contenidoPagina()),
       ),
     );
+  }
+
+  Future<void> _actualizarPartidas() async {
+    setState(() {
+      ref.read(jugadorProvider.notifier).loadData(true);
+      ref.read(ultimosJugadoresProvider.notifier).loadData(true);
+    });
   }
 
   Widget _accionBuscar(BuildContext context) {

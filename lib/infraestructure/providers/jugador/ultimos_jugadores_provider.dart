@@ -16,8 +16,8 @@ class UltimosJugadoresNotifier extends StateNotifier<List<JugadorDto>> {
 
   UltimosJugadoresNotifier(this.obtenerUltimosJugadores) : super([]);
 
-  Future<void> loadData() async {
-    if (state.isEmpty) {
+  Future<void> loadData(final bool reload) async {
+    if (state.isEmpty || reload == true) {
       state = JugadorMapper.mapearListaJugadoresDetalle(await obtenerUltimosJugadores());
     }
   }

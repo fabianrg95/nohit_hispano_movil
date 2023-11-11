@@ -16,8 +16,8 @@ class UltimasPartidasNotifier extends StateNotifier<List<PartidaDto>> {
 
   UltimasPartidasNotifier(this.obtenerUltimasPartidas) : super([]);
 
-  Future<void> loadData() async {
-    if (state.isNotEmpty) return;
+  Future<void> loadData(final bool reload) async {
+    if (state.isNotEmpty && reload == false) return;
     final List<PartidaEntity> lista = await obtenerUltimasPartidas();
     state = PartidaMapper.mapearListaPartidas(lista);
   }

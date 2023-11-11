@@ -18,13 +18,13 @@ class JugadorNotifier extends StateNotifier<List<JugadorDto>> {
 
   JugadorNotifier(this.obtenerJugadores) : super([]);
 
-  Future<void> loadData() async {
+  Future<void> loadData(final bool reload) async {
     if (loadingdata == true) {
       return;
     }
     loadingdata = true;
 
-    if (state.isEmpty) {
+    if (state.isEmpty || reload == true) {
       state = JugadorMapper.mapearListaJugadores(await obtenerJugadores());
     }
     loadingdata = false;

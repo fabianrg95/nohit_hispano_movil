@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:no_hit/config/router/menu_items.dart';
+import 'package:no_hit/infraestructure/enums/menu/menu_items.dart';
 import 'package:no_hit/main.dart';
 
 class CustomDraw extends StatelessWidget {

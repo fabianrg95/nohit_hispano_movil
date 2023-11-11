@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
@@ -25,7 +23,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
   @override
   void initState() {
     super.initState();
-    ref.read(ultimasPartidasProvider.notifier).loadData();
+    ref.read(ultimasPartidasProvider.notifier).loadData(false);
   }
 
   @override
@@ -35,8 +33,15 @@ class PartidasViewState extends ConsumerState<PartidasView> {
     return Scaffold(
       //drawer: const CustomDraw(),
       appBar: _titulo(context),
-      body: _contenido(listaUltimasPartidas),
+      body: RefreshIndicator(
+          onRefresh: () => _actualizarPartidas(), color: color.surfaceTint, backgroundColor: color.tertiary, child: _contenido(listaUltimasPartidas)),
     );
+  }
+
+  Future<void> _actualizarPartidas() async {
+    setState(() {
+      ref.read(ultimasPartidasProvider.notifier).loadData(true);
+    });
   }
 
   AppBar _titulo(BuildContext context) {
