@@ -72,13 +72,12 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
       child: Column(
         children: [
           Container(
-            decoration: AppTheme().decorationContainerBasic(
-                topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
+            decoration: ViewData().decorationContainerBasic(),
             margin: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
             padding: const EdgeInsets.only(top: 10),
             child: Column(
               children: [
-                Text('Jugadores nuevos', style: styleTexto.titleMedium),
+                Text('Jugadores nuevos', style: styleTexto.titleLarge),
                 const SizedBox(height: 10),
                 Divider(color: color.tertiary, thickness: 2, height: 1),
                 SizedBox(

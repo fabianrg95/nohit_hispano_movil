@@ -3,18 +3,19 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
-import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/delegates/juegos/cabecera_juego_delegate.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
+import 'package:no_hit/presentation/widgets/partida/partida.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class DetalleJuego extends ConsumerStatefulWidget {
   final JuegoDto juego;
+  final String heroTag;
 
-  const DetalleJuego({super.key, required this.juego});
+  const DetalleJuego({super.key, required this.juego, required this.heroTag});
 
   @override
   DetalleJuegoState createState() => DetalleJuegoState();
@@ -38,12 +39,13 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
         body: CustomScrollView(
           physics: const ClampingScrollPhysics(),
           slivers: [
-            SliverPersistentHeader(delegate: CustomSliverAppBarDelegate(juego: widget.juego, expandedHeight: size.height * 0.35), pinned: true),
+            SliverPersistentHeader(
+                delegate: CustomSliverAppBarDelegate(juego: widget.juego, expandedHeight: size.height * 0.35, heroTag: widget.heroTag), pinned: true),
             SliverList(
                 delegate: SliverChildBuilderDelegate((context, index) {
               return SingleChildScrollView(
                 child: Column(
-                  children: [_subtitulo(), _resumenPartidas(resumenPartidasJuego), const SizedBox(height: 10)],
+                  children: [JuegoCommons().subtitulo(widget.juego, null), _resumenPartidas(resumenPartidasJuego), const SizedBox(height: 10)],
                 ),
               );
             }, childCount: 1))
@@ -72,8 +74,6 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
                   ],
                   accion: () => showModalBottomSheet(
                     context: context,
-                    backgroundColor: color.primary,
-                    showDragHandle: true,
                     useSafeArea: true,
                     isScrollControlled: true,
                     isDismissible: true,
@@ -116,8 +116,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
       return IntrinsicHeight(
         child: Container(
           margin: const EdgeInsets.only(left: 10, right: 10),
-          decoration: AppTheme().decorationContainerBasic(
-              bottomLeft: true, bottomRight: true, topLeft: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
+          decoration: ViewData().decorationContainerBasic(),
           child: IntrinsicHeight(
             child: Column(children: [
               ViewData().muestraInformacion(
@@ -136,9 +135,12 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
                         return FadeTransition(
                             opacity: animation,
                             child: DetallePartidaView(
-                              partidaId: resumenPartidasJuego.primeraPartida!.id,
-                              jugadorId: resumenPartidasJuego.primeraPartida!.idJugador,
-                            ));
+                                partidaId: resumenPartidasJuego.primeraPartida!.id,
+                                jugadorId: resumenPartidasJuego.primeraPartida!.idJugador,
+                                heroTag: widget.heroTag,
+                                idJuego: resumenPartidasJuego.primeraPartida!.idJuego,
+                                nombreJuego: resumenPartidasJuego.primeraPartida!.tituloJuego.toString(),
+                                urlImagenJuego: ""));
                       }))),
               Visibility(
                 visible: resumenPartidasJuego.primeraPartida!.id != resumenPartidasJuego.ultimaPartida!.id,
@@ -161,6 +163,10 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
                                 child: DetallePartidaView(
                                   partidaId: resumenPartidasJuego.ultimaPartida!.id,
                                   jugadorId: resumenPartidasJuego.ultimaPartida!.idJugador,
+                                  heroTag: widget.heroTag,
+                                  idJuego: resumenPartidasJuego.ultimaPartida!.idJuego,
+                                  nombreJuego: resumenPartidasJuego.ultimaPartida!.tituloJuego.toString(),
+                                  urlImagenJuego: "",
                                 ));
                           }))))
             ]),
@@ -170,23 +176,6 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
     } else {
       return const SizedBox(height: 1);
     }
-  }
-
-  Widget _subtitulo() {
-    return Container(
-      width: size.width,
-      margin: const EdgeInsets.only(left: 25, right: 25),
-      padding: const EdgeInsets.only(top: 10, bottom: 10),
-      decoration: AppTheme().decorationContainerBasic(
-          topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
-      child: Column(children: [
-        Text(widget.juego.nombre.toString(), style: styleTexto.titleLarge),
-        Visibility(
-          visible: widget.juego.subtitulo != null,
-          child: Text(widget.juego.subtitulo.toString(), style: styleTexto.titleSmall),
-        ),
-      ]),
-    );
   }
 
   Widget _listaPartidas(final List<PartidaDto>? partidas, final ScrollController scrollController) {
@@ -203,58 +192,9 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
       itemCount: partidas.length,
       itemBuilder: (BuildContext context, int index) {
         PartidaDto partida = partidas[index];
-        return _tarjetaPartidaJuegoJugador(partida: partida, par: index.isOdd, context: context, partidaUnica: partidas.length == 1);
+        return PartidaCommons()
+            .tarjetaPartidaJuegoJugador(partida: partida, context: context, partidaUnica: partidas.length == 1, mostrarJugador: true);
       },
-    );
-  }
-
-  Widget _tarjetaPartidaJuegoJugador({required PartidaDto partida, required bool par, required BuildContext context, required bool partidaUnica}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20, left: 10, right: 10),
-      child: Transform.rotate(
-        angle: partidaUnica ? 0 : -0.02 + Random().nextDouble() * (0.02 - -0.02),
-        child: GestureDetector(
-          onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
-            return FadeTransition(
-                opacity: animation,
-                child: DetallePartidaView(
-                  partidaId: partida.id,
-                  jugadorId: partida.idJugador,
-                ));
-          })),
-          child: Container(
-            decoration: AppTheme().decorationContainerBasic(
-                topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(HumanFormat.fechaMes(partida.fecha.toString())),
-                      Text(HumanFormat.fechaDia(partida.fecha.toString())),
-                      Text(HumanFormat.fechaAnio(partida.fecha.toString()))
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: Column(children: [
-                      Center(child: Text(partida.nombreJugador.toString(), style: styleTexto.titleMedium, textAlign: TextAlign.center)),
-                      Center(
-                        child: Text(partida.nombre.toString(),
-                            style: styleTexto.labelSmall, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
-                      )
-                    ]),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

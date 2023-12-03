@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/jugador/jugador_dto.dart';
 import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/views/jugadores/jugador_view.dart';
@@ -22,8 +21,7 @@ class ItemJugador extends StatelessWidget {
             return FadeTransition(opacity: animation, child: DetalleJugadorView(idJugador: jugador.id!));
           })),
           child: Container(
-            decoration: AppTheme().decorationContainerBasic(
-                bottomLeft: true, bottomRight: true, topLeft: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
+            decoration: ViewData().decorationContainerBasic(),
             child: ListTile(
               trailing: BanderaJugador(codigoBandera: jugador.codigoBandera, tamanio: 38),
               title: Text(jugador.nombre!, style: styleTexto.titleMedium, maxLines: 2),

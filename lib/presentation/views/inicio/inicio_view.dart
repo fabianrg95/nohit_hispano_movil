@@ -120,8 +120,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                 margin: const EdgeInsets.only(left: 10, top: 10, right: 10),
                 padding: const EdgeInsets.only(top: 10, bottom: 10),
                 width: size.width * 0.5,
-                decoration: AppTheme().decorationContainerBasic(
-                    topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
+                decoration: ViewData().decorationContainerBasic(),
                 child: Column(
                   children: [
                     AnimatedBuilder(
@@ -153,8 +152,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                 child: Container(
                   margin: const EdgeInsets.only(left: 10, top: 10, right: 5),
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  decoration: AppTheme().decorationContainerBasic(
-                      topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
+                  decoration: ViewData().decorationContainerBasic(),
                   child: Column(
                     children: [
                       AnimatedBuilder(
@@ -185,8 +183,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                 child: Container(
                   margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  decoration: AppTheme().decorationContainerBasic(
-                      topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
+                  decoration: ViewData().decorationContainerBasic(),
                   child: Column(
                     children: [
                       AnimatedBuilder(
@@ -223,8 +220,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                   child: Container(
                     margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
                     padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    decoration: AppTheme().decorationContainerBasic(
-                        topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
+                    decoration: ViewData().decorationContainerBasic(),
                     child: Column(
                       children: [
                         Text('Información', style: styleTexto.titleMedium),
@@ -239,8 +235,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                   child: Container(
                     margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
                     padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    decoration: AppTheme().decorationContainerBasic(
-                        topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
+                    decoration: ViewData().decorationContainerBasic(),
                     child: Icon(esTemaClaro ? Icons.dark_mode_outlined : Icons.light_mode_outlined),
                   ),
                 ),

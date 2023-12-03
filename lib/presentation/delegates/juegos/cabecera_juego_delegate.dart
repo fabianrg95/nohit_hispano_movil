@@ -5,17 +5,17 @@ import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
-  final JuegoDto juego;
+  final JuegoDto? juego;
+  final String heroTag;
 
-  const CustomSliverAppBarDelegate({required this.juego, required this.expandedHeight});
+  const CustomSliverAppBarDelegate({required this.juego, required this.expandedHeight, required this.heroTag});
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-
     return Stack(
       fit: StackFit.passthrough,
       children: [
-        buildJuegoImage(shrinkOffset),
+        buildJuegoImage(shrinkOffset, heroTag),
         buildAppBar(shrinkOffset),
       ],
     );
@@ -38,10 +38,10 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   Widget buildAppBar(double shrinkOffset) => Opacity(
       opacity: appear(shrinkOffset),
       child: OverflowBar(
-        children: [AppBar(title: Text(juego.nombre), surfaceTintColor: color.tertiary)],
+        children: [AppBar(title: Text(juego != null ? juego!.nombre : ""), surfaceTintColor: color.tertiary)],
       ));
 
-  Widget buildJuegoImage(double shrinkOffset) => Opacity(
+  Widget buildJuegoImage(double shrinkOffset, final String heroTag) => Opacity(
         opacity: desappear(shrinkOffset),
         child: Stack(
           children: [
@@ -56,10 +56,10 @@ class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
             Align(
               alignment: AlignmentDirectional.bottomCenter,
               child: Hero(
-                tag: juego.nombre + (juego.subtitulo == null ? juego.subtitulo.toString() : juego.id.toString()),
+                tag: heroTag,
                 child: ImagenJuego(
-                  juego: juego.nombre,
-                  urlImagen: juego.urlImagen,
+                  juego: juego != null ? juego!.nombre : "",
+                  urlImagen: juego != null ? juego!.urlImagen : "",
                   animarImagen: false,
                   tamanio: 250,
                 ),

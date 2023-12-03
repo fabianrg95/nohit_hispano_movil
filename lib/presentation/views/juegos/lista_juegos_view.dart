@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/main.dart';
@@ -30,8 +29,6 @@ class ListaJuegosView extends ConsumerWidget {
             child: GestureDetector(
                 onTap: () => showModalBottomSheet(
                       context: context,
-                      backgroundColor: color.primary,
-                      showDragHandle: true,
                       useSafeArea: true,
                       builder: (context) => Padding(
                         padding: const EdgeInsets.all(12),
@@ -101,8 +98,7 @@ class TapbarJuegosState extends ConsumerState<TapbarJuegos> with SingleTickerPro
   Container _tabBarJuegos() {
     return Container(
         margin: const EdgeInsets.symmetric(horizontal: 10),
-        decoration: AppTheme().decorationContainerBasic(
-            topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
+        decoration: ViewData().decorationContainerBasic(),
         child: TabBar(
             controller: tabController,
             labelStyle: styleTexto.titleMedium,
@@ -151,7 +147,12 @@ class TabViewJuegosState extends ConsumerState<_ListaJuegos> {
             juego: juego,
             accion: () => Navigator.of(context).push(PageRouteBuilder(
               pageBuilder: (context, animation, __) {
-                return FadeTransition(opacity: animation, child: DetalleJuego(juego: juego));
+                return FadeTransition(
+                    opacity: animation,
+                    child: DetalleJuego(
+                      juego: juego,
+                      heroTag: juego.id.toString(),
+                    ));
               },
             )),
             posicionInversa: index.isOdd,
@@ -173,7 +174,12 @@ class TabViewJuegosState extends ConsumerState<_ListaJuegos> {
             juego: juego,
             accion: () => Navigator.of(context).push(PageRouteBuilder(
               pageBuilder: (context, animation, __) {
-                return FadeTransition(opacity: animation, child: DetalleJuego(juego: juego));
+                return FadeTransition(
+                    opacity: animation,
+                    child: DetalleJuego(
+                      juego: juego,
+                      heroTag: juego.id.toString(),
+                    ));
               },
             )),
             visualizacionMinima: !widget.verEnLista,

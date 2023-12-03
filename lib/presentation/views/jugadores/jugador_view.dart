@@ -8,6 +8,7 @@ import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
+import 'package:no_hit/presentation/widgets/partida/partida.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class DetalleJugadorView extends ConsumerStatefulWidget {
@@ -56,36 +57,14 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: size.width * 0.06),
             padding: const EdgeInsets.only(top: 10, bottom: 10),
-            decoration: AppTheme().decorationContainerBasic(
-                bottomLeft: true, bottomRight: true, topLeft: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
-            child: _informacionJugador(jugador),
+            decoration: ViewData().decorationContainerBasic(),
+            child: JugadorCommons().informacionJugadorLite(jugador),
           ),
         ),
         _resumenPartidas(jugador: jugador),
         _Partidas(jugador: jugador)
       ],
     );
-  }
-
-  Widget _informacionJugador(JugadorDto jugador) {
-    return Visibility(
-        visible: jugador.mostrarInformacion,
-        replacement: const Center(child: Text('Jugador sin informacion')),
-        child: Column(
-          children: [
-            Visibility(visible: jugador.pronombre != null, child: Text(jugador.pronombre.toString())),
-            Visibility(visible: jugador.gentilicio != null, child: Text(jugador.gentilicio.toString())),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              CustomLinks().link(jugador.urlYoutube, 'assets/images/youtube.png'),
-              Visibility(
-                  visible: jugador.urlYoutube != null && jugador.urlTwitch != null,
-                  child: VerticalDivider(
-                    color: color.tertiary,
-                  )),
-              CustomLinks().link(jugador.urlTwitch, 'assets/images/twitch.png')
-            ])
-          ],
-        ));
   }
 
   Widget _resumenPartidas({required JugadorDto jugador}) {
@@ -110,8 +89,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
           IntrinsicHeight(
             child: Container(
               margin: const EdgeInsets.only(left: 10, right: 10),
-              decoration: AppTheme().decorationContainerBasic(
-                  bottomLeft: true, bottomRight: true, topLeft: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
+              decoration: ViewData().decorationContainerBasic(),
               child: Column(
                 children: [
                   ViewData().muestraInformacion(
@@ -133,6 +111,10 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                                 child: DetallePartidaView(
                                   partidaId: jugador.primeraPartida!.id,
                                   jugadorId: jugador.primeraPartida!.idJugador,
+                                  heroTag: jugador.primeraPartida!.id.toString(),
+                                   idJuego: jugador.primeraPartida!.idJuego,
+                                  nombreJuego: jugador.primeraPartida!.tituloJuego.toString(),
+                                  urlImagenJuego: ""
                                 ));
                           }))),
                   Visibility(
@@ -155,9 +137,12 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                                 return FadeTransition(
                                     opacity: animation,
                                     child: DetallePartidaView(
-                                      partidaId: jugador.ultimaPartida!.id,
-                                      jugadorId: jugador.ultimaPartida!.idJugador,
-                                    ));
+                                        partidaId: jugador.ultimaPartida!.id,
+                                        jugadorId: jugador.ultimaPartida!.idJugador,
+                                        heroTag: jugador.ultimaPartida!.id.toString(),
+                                        idJuego: jugador.ultimaPartida!.idJuego,
+                                        nombreJuego: jugador.ultimaPartida!.tituloJuego.toString(),
+                                        urlImagenJuego: ""));
                               }))))
                 ],
               ),
@@ -191,8 +176,6 @@ class _Partidas extends StatelessWidget {
   Future _informacionPartidasJugador({required List<PartidaDto> partidas, required BuildContext context}) {
     return showModalBottomSheet(
         context: context,
-        backgroundColor: color.primary,
-        showDragHandle: true,
         useSafeArea: true,
         isScrollControlled: true,
         isDismissible: true,
@@ -216,60 +199,10 @@ class _Partidas extends StatelessWidget {
                   itemCount: partidas.isEmpty ? 0 : partidas.length,
                   itemBuilder: (BuildContext context, int index) {
                     PartidaDto partida = partidas[index];
-                    final bool par = index.isOdd;
-                    return _tarjetaPartidaJuegoJugador(partida: partida, par: par, context: context, partidaUnica: partidas.length == 1);
+                    return PartidaCommons().tarjetaPartidaJuegoJugador(partida: partida, context: context, partidaUnica: partidas.length == 1);
                   },
                 )
               ]),
             ));
   }
-}
-
-Widget _tarjetaPartidaJuegoJugador({required PartidaDto partida, required bool par, required BuildContext context, required bool partidaUnica}) {
-  return Padding(
-    padding: const EdgeInsets.only(bottom: 20, left: 10, right: 10),
-    child: Transform.rotate(
-      angle: partidaUnica ? 0 : -0.02 + Random().nextDouble() * (0.02 - -0.02),
-      child: GestureDetector(
-        onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
-          return FadeTransition(
-              opacity: animation,
-              child: DetallePartidaView(
-                partidaId: partida.id,
-                jugadorId: partida.idJugador,
-              ));
-        })),
-        child: Container(
-            decoration: AppTheme().decorationContainerBasic(
-                topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(HumanFormat.fechaMes(partida.fecha.toString())),
-                      Text(HumanFormat.fechaDia(partida.fecha.toString())),
-                      Text(HumanFormat.fechaAnio(partida.fecha.toString()))
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Center(
-                    child: Column(children: [
-                      Center(
-                        child: Text(partida.nombre.toString(),
-                            style: styleTexto.labelMedium, textAlign: TextAlign.center, maxLines: 2, overflow: TextOverflow.ellipsis),
-                      )
-                    ]),
-                  ),
-                ),
-              ],
-            )),
-      ),
-    ),
-  );
 }
