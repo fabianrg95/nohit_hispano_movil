@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class InformacionView extends StatefulWidget {
   static const nombre = 'informacion-screen';
