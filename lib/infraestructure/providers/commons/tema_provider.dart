@@ -18,7 +18,7 @@ class ThemeNotifier extends StateNotifier<AppTheme> {
 
   void cargarTemaSeleccionado() async {
     bool isDarkmode2 = await localStorage.obtenerEsTemaClaro();
-    print('cargar tema seleccionado ${isDarkmode2}');
+    print('cargar tema seleccionado $isDarkmode2');
     state = AppTheme(esTemaClaro: isDarkmode2);
   }
 
