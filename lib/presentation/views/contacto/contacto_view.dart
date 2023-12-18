@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class ContactoView extends StatelessWidget {
   static const nombre = 'contacto-screen';
@@ -8,7 +7,7 @@ class ContactoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const CustomDraw(),
+      // drawer: const CustomNavigation(),
       appBar: _titulo(context),
     );
   }

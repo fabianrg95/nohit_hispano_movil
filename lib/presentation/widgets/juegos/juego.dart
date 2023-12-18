@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 
 class JuegoCommons {
-  Widget subtitulo(final JuegoDto juego, final Function? redireccion) {
+  Widget subtitulo(final JuegoDto juego, final Function? redireccion, final BuildContext context) {
+    final ColorScheme color = Theme.of(context).colorScheme;
+    final TextTheme styleTexto = Theme.of(context).textTheme;
+
     return GestureDetector(
         onTap: () => redireccion != null ? redireccion() : null,
         child: Container(
-          width: size.width,
+          width: MediaQuery.of(context).size.width,
           margin: const EdgeInsets.only(left: 25, right: 25),
           padding: const EdgeInsets.only(top: 10, bottom: 10),
-          decoration: ViewData().decorationContainerBasic(),
+          decoration: ViewData().decorationContainerBasic(color: color),
           child: Column(children: [
             Text(juego.nombre.toString(), style: styleTexto.titleLarge),
             if (juego.subtitulo != null) Text(juego.subtitulo.toString(), style: styleTexto.titleSmall)

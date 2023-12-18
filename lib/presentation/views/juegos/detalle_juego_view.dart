@@ -1,11 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
-import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/delegates/juegos/cabecera_juego_delegate.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
 import 'package:no_hit/presentation/widgets/partida/partida.dart';
@@ -23,6 +19,8 @@ class DetalleJuego extends ConsumerStatefulWidget {
 
 class DetalleJuegoState extends ConsumerState<DetalleJuego> {
   final double tamanioImagen = 150;
+  late ColorScheme color;
+  late TextTheme styleTexto;
 
   @override
   void initState() {
@@ -31,21 +29,35 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final ResumenJuegoDto? resumenPartidasJuego = ref.watch(partidasJuegoProvider)[widget.juego.id];
+    color = Theme.of(context).colorScheme;
+    styleTexto = Theme.of(context).textTheme;
 
     return SafeArea(
       child: Scaffold(
+        drawer: const CustomNavigation(),
         body: CustomScrollView(
           physics: const ClampingScrollPhysics(),
           slivers: [
             SliverPersistentHeader(
-                delegate: CustomSliverAppBarDelegate(juego: widget.juego, expandedHeight: size.height * 0.35, heroTag: widget.heroTag), pinned: true),
+                delegate: CustomSliverAppBarDelegate(
+                    juego: widget.juego, expandedHeight: MediaQuery.of(context).size.height * 0.35, heroTag: widget.heroTag),
+                pinned: true),
             SliverList(
                 delegate: SliverChildBuilderDelegate((context, index) {
               return SingleChildScrollView(
                 child: Column(
-                  children: [JuegoCommons().subtitulo(widget.juego, null), _resumenPartidas(resumenPartidasJuego), const SizedBox(height: 10)],
+                  children: [
+                    JuegoCommons().subtitulo(widget.juego, null, context),
+                    _resumenPartidas(resumenPartidasJuego),
+                    const SizedBox(height: 10)
+                  ],
                 ),
               );
             }, childCount: 1))
@@ -116,7 +128,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
       return IntrinsicHeight(
         child: Container(
           margin: const EdgeInsets.only(left: 10, right: 10),
-          decoration: ViewData().decorationContainerBasic(),
+          decoration: ViewData().decorationContainerBasic(color: color),
           child: IntrinsicHeight(
             child: Column(children: [
               ViewData().muestraInformacion(

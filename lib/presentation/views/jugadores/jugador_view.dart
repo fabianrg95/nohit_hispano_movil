@@ -1,12 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:no_hit/config/helpers/human_format.dart';
-import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
-import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
 import 'package:no_hit/presentation/widgets/partida/partida.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
@@ -21,6 +16,9 @@ class DetalleJugadorView extends ConsumerStatefulWidget {
 }
 
 class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
+  late ColorScheme color;
+  late TextTheme styleTexto;
+
   @override
   void initState() {
     super.initState();
@@ -30,6 +28,8 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
   @override
   Widget build(BuildContext context) {
     final JugadorDto? jugador = ref.watch(detalleJugadorProvider)[widget.idJugador];
+    color = Theme.of(context).colorScheme;
+    styleTexto = Theme.of(context).textTheme;
 
     if (jugador == null || jugador.id == 0 || jugador.id != widget.idJugador) {
       return const PantallaCargaBasica(texto: "Consultando la informacion del jugador");
@@ -37,6 +37,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
 
     return SafeArea(
       child: Scaffold(
+        drawer: const CustomNavigation(),
         appBar: _cabecera(jugador),
         body: _contenido(jugador),
       ),
@@ -55,9 +56,9 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: size.width * 0.06),
+            margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.06),
             padding: const EdgeInsets.only(top: 10, bottom: 10),
-            decoration: ViewData().decorationContainerBasic(),
+            decoration: ViewData().decorationContainerBasic(color: color),
             child: JugadorCommons().informacionJugadorLite(jugador),
           ),
         ),
@@ -89,7 +90,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
           IntrinsicHeight(
             child: Container(
               margin: const EdgeInsets.only(left: 10, right: 10),
-              decoration: ViewData().decorationContainerBasic(),
+              decoration: ViewData().decorationContainerBasic(color: color),
               child: Column(
                 children: [
                   ViewData().muestraInformacion(
@@ -109,13 +110,12 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                             return FadeTransition(
                                 opacity: animation,
                                 child: DetallePartidaView(
-                                  partidaId: jugador.primeraPartida!.id,
-                                  jugadorId: jugador.primeraPartida!.idJugador,
-                                  heroTag: jugador.primeraPartida!.id.toString(),
-                                   idJuego: jugador.primeraPartida!.idJuego,
-                                  nombreJuego: jugador.primeraPartida!.tituloJuego.toString(),
-                                  urlImagenJuego: ""
-                                ));
+                                    partidaId: jugador.primeraPartida!.id,
+                                    jugadorId: jugador.primeraPartida!.idJugador,
+                                    heroTag: jugador.primeraPartida!.id.toString(),
+                                    idJuego: jugador.primeraPartida!.idJuego,
+                                    nombreJuego: jugador.primeraPartida!.tituloJuego.toString(),
+                                    urlImagenJuego: ""));
                           }))),
                   Visibility(
                     visible: jugador.primeraPartida!.id != jugador.ultimaPartida!.id,
@@ -161,6 +161,7 @@ class _Partidas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = Theme.of(context).colorScheme;
     return ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -174,6 +175,9 @@ class _Partidas extends StatelessWidget {
   }
 
   Future _informacionPartidasJugador({required List<PartidaDto> partidas, required BuildContext context}) {
+    final ColorScheme color = Theme.of(context).colorScheme;
+    final TextTheme styleTexto = Theme.of(context).textTheme;
+
     return showModalBottomSheet(
         context: context,
         useSafeArea: true,

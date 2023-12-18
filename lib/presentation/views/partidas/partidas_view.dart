@@ -1,9 +1,9 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
-import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
@@ -18,6 +18,7 @@ class PartidasView extends ConsumerStatefulWidget {
 
 class PartidasViewState extends ConsumerState<PartidasView> {
   List<PartidaDto>? listaUltimasPartidas = [];
+  late ColorScheme color;
 
   @override
   void initState() {
@@ -28,12 +29,17 @@ class PartidasViewState extends ConsumerState<PartidasView> {
   @override
   Widget build(BuildContext context) {
     listaUltimasPartidas = ref.watch(ultimasPartidasProvider);
+    color = Theme.of(context).colorScheme;
 
     return Scaffold(
-      //drawer: const CustomDraw(),
+      drawer: const CustomNavigation(),
       appBar: _titulo(context),
       body: RefreshIndicator(
-          onRefresh: () => _actualizarPartidas(), color: color.surfaceTint, backgroundColor: color.tertiary, child: _contenido(listaUltimasPartidas)),
+        onRefresh: () => _actualizarPartidas(),
+        color: color.surfaceTint,
+        backgroundColor: color.tertiary,
+        child: _contenido(listaUltimasPartidas),
+      ),
     );
   }
 
@@ -45,7 +51,8 @@ class PartidasViewState extends ConsumerState<PartidasView> {
 
   AppBar _titulo(BuildContext context) {
     return AppBar(
-      title: const Text('Partidas'),
+      title: const Text('Ultimas Partidas'),
+      forceMaterialTransparency: true,
     );
   }
 
@@ -54,15 +61,20 @@ class PartidasViewState extends ConsumerState<PartidasView> {
       return const PantallaCargaBasica(texto: 'Consultando ultimas partidas');
     }
 
-    return ListView.builder(
-      itemCount: listaUltimasPartidas.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _itemPartida(partida: listaUltimasPartidas[index]);
-      },
-    );
+    return Swiper(
+        autoplayDelay: 5000,
+        autoplay: true,
+        autoplayDisableOnInteraction: true,
+        itemCount: listaUltimasPartidas.length,
+        itemBuilder: (context, index) {
+          return _itemPartida(partida: listaUltimasPartidas[index], context: context);
+        });
   }
 
-  Widget _itemPartida({required PartidaDto partida}) {
+  Widget _itemPartida({required PartidaDto partida, required BuildContext context}) {
+    final ColorScheme color = Theme.of(context).colorScheme;
+    final TextTheme estiloTexto = Theme.of(context).textTheme;
+
     final String heroTag = partida.id.toString() +
         partida.tituloJuego.toString() +
         (partida.subtituloJuego == null ? partida.subtituloJuego.toString() : partida.idJuego.toString());
@@ -81,16 +93,9 @@ class PartidasViewState extends ConsumerState<PartidasView> {
       })),
       child: Container(
         margin: const EdgeInsets.only(top: 5, bottom: 5, right: 20, left: 20),
-        width: double.infinity,
-        height: 270,
-        decoration: BoxDecoration(
-            color: color.primary,
-            borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15), topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-            border: Border.all(color: color.tertiary, width: 2)),
         child: Stack(children: [
           SizedBox(
-              width: size.width,
+              width: MediaQuery.of(context).size.width,
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Hero(tag: heroTag, child: Image.network(partida.urlImagenJuego!, fit: BoxFit.fitWidth)))),
@@ -102,13 +107,13 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                 Container(
                   width: 55,
                   height: 55,
-                  decoration: ViewData().decorationContainerBasic(),
+                  decoration: ViewData().decorationContainerBasic(color: color),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(HumanFormat.fechaMes(partida.fecha.toString()), style: styleTexto.bodySmall),
-                      Text(HumanFormat.fechaDia(partida.fecha.toString()), style: styleTexto.bodyLarge)
+                      Text(HumanFormat.fechaMes(partida.fecha.toString()), style: estiloTexto.bodySmall),
+                      Text(HumanFormat.fechaDia(partida.fecha.toString()), style: estiloTexto.bodyLarge)
                     ],
                   ),
                 ),
@@ -116,16 +121,16 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                 Container(
                   padding: const EdgeInsets.only(top: 5, bottom: 5, right: 10, left: 10),
                   width: double.infinity,
-                  decoration: ViewData().decorationContainerBasic(),
+                  decoration: ViewData().decorationContainerBasic(color: color),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       RichText(
-                          text: TextSpan(style: styleTexto.titleMedium?.copyWith(fontWeight: FontWeight.w100), children: [
+                          text: TextSpan(style: estiloTexto.titleMedium?.copyWith(fontWeight: FontWeight.w100), children: [
                         TextSpan(text: partida.tituloJuego),
-                        TextSpan(text: partida.subtituloJuego != null ? " ${partida.subtituloJuego!}" : '', style: styleTexto.labelSmall)
+                        TextSpan(text: partida.subtituloJuego != null ? " ${partida.subtituloJuego!}" : '', style: estiloTexto.labelSmall)
                       ])),
-                      Text("Por ${partida.nombreJugador!}", style: styleTexto.titleSmall?.copyWith(color: color.outline)),
+                      Text("Por ${partida.nombreJugador!}", style: estiloTexto.titleSmall?.copyWith(color: color.outline)),
                       Container(
                           margin: const EdgeInsets.only(top: 15, bottom: 5),
                           padding: const EdgeInsets.only(top: 5, bottom: 5, right: 10, left: 10),

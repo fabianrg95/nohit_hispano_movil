@@ -3,31 +3,34 @@ import 'package:no_hit/infraestructure/enums/enums.dart';
 
 class AppTheme {
   final bool esTemaClaro;
+  late ColorScheme color = PaletaColores.temaClaro.getPaletaColor();
 
   AppTheme({this.esTemaClaro = true});
 
   ThemeData getTheme() {
-    final ColorScheme colorScheme = validarTema();
+    color = generarTema();
 
     return ThemeData(
-      fontFamily: 'SharpGrotesk',
-      colorScheme: colorScheme,
-      progressIndicatorTheme: ProgressIndicatorThemeData(circularTrackColor: colorScheme.tertiary),
-      useMaterial3: true,
-      cardTheme: CardTheme(color: colorScheme.secondary),
-      listTileTheme: ListTileThemeData(textColor: colorScheme.outline),
-      // appBarTheme: AppBarTheme(
-        // backgroundColor: Colors.transparent,
-        // centerTitle: false,
-        // foregroundColor: colorScheme.tertiary,
-        // surfaceTintColor: colorScheme.tertiary,
-      // ),
-      bottomSheetTheme: BottomSheetThemeData(backgroundColor: colorScheme.primary,
-                    showDragHandle: true)
-    );
+        fontFamily: 'SharpGrotesk',
+        colorScheme: color,
+        progressIndicatorTheme: ProgressIndicatorThemeData(circularTrackColor: color.tertiary),
+        useMaterial3: true,
+        cardTheme: CardTheme(color: color.secondary),
+        listTileTheme: ListTileThemeData(textColor: color.outline),
+        appBarTheme: AppBarTheme(
+          // backgroundColor: Colors.transparent,
+          centerTitle: false,
+          foregroundColor: color.tertiary,
+          surfaceTintColor: color.tertiary,
+        ),
+        bottomSheetTheme: BottomSheetThemeData(backgroundColor: color.primary, showDragHandle: true),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: color.tertiary,
+          foregroundColor: color.surfaceTint,
+        ));
   }
 
-  ColorScheme validarTema() {
+  ColorScheme generarTema() {
     return esTemaClaro ? PaletaColores.temaClaro.getPaletaColor() : PaletaColores.temaOscuro.getPaletaColor();
   }
 

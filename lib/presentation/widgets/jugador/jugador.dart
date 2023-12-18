@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
-import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class JugadorCommons {
   Widget informacionJugadorLite(JugadorDto jugador) {
+    final ColorScheme color = AppTheme().color;
     return Visibility(
         visible: jugador.mostrarInformacion,
         replacement: const Center(child: Text('Jugador sin informacion')),
@@ -27,6 +28,9 @@ class JugadorCommons {
   }
 
   Widget informacionJugadorGrande(final JugadorDto detalleJugador, final BuildContext context) {
+    final ColorScheme color = Theme.of(context).colorScheme;
+    final TextTheme styleTexto = Theme.of(context).textTheme;
+
     return GestureDetector(
       onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
         return FadeTransition(opacity: animation, child: DetalleJugadorView(idJugador: detalleJugador.id!));
@@ -34,7 +38,7 @@ class JugadorCommons {
       child: Container(
         margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
         padding: const EdgeInsets.only(top: 10, bottom: 10),
-        decoration: ViewData().decorationContainerBasic(),
+        decoration: ViewData().decorationContainerBasic(color: color),
         child: IntrinsicHeight(
           child: Column(
             children: [

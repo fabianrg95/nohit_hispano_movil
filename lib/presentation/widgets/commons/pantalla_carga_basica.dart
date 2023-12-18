@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class PantallaCargaBasica extends StatelessWidget {
   final String texto;
@@ -11,6 +12,7 @@ class PantallaCargaBasica extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const CustomNavigation(),
       body: Center(
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

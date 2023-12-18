@@ -3,13 +3,15 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
-import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class PartidaCommons {
   Widget tarjetaPartidaJuegoJugador(
       {required PartidaDto partida, required BuildContext context, required bool partidaUnica, bool mostrarJugador = false}) {
+    final ColorScheme color = Theme.of(context).colorScheme;
+    final TextTheme styleTexto = Theme.of(context).textTheme;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 20, left: 10, right: 10),
       child: Transform.rotate(
@@ -27,7 +29,7 @@ class PartidaCommons {
                     urlImagenJuego: partida.urlImagenJuego.toString()));
           })),
           child: Container(
-              decoration: ViewData().decorationContainerBasic(),
+              decoration: ViewData().decorationContainerBasic(color: color),
               child: Row(
                 children: [
                   Padding(

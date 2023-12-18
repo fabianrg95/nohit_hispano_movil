@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:no_hit/main.dart';
+import 'package:no_hit/config/theme/app_theme.dart';
 
 class ViewData {
   Widget muestraInformacion({required List<Widget> items, required CrossAxisAlignment alineacion, Function? accion}) {
@@ -13,17 +13,20 @@ class ViewData {
     );
   }
 
-  BoxDecoration decorationContainerBasic({bool topLeft = true, bool bottomLeft = true, bool bottomRight = true, bool topRight = true}) {
+  BoxDecoration decorationContainerBasic(
+      {bool topLeft = true, bool bottomLeft = true, bool bottomRight = true, bool topRight = true, ColorScheme? color}) {
+    ColorScheme colorSheme = color ?? AppTheme().color;
+
     BorderRadius borderRadius = BorderRadius.only(
         bottomLeft: Radius.circular(bottomLeft ? 20 : 0),
         bottomRight: Radius.circular(bottomRight ? 20 : 0),
         topLeft: Radius.circular(topLeft ? 20 : 0),
-        topRight: Radius.circular(topRight ? 45 : 0));
+        topRight: Radius.circular(topRight ? 20 : 0));
 
     return BoxDecoration(
-      color: color.secondary,
+      color: colorSheme.secondary,
       borderRadius: borderRadius,
-      border: Border.all(color: color.tertiary, width: 2),
+      border: Border.all(color: colorSheme.tertiary, width: 2),
     );
   }
 }

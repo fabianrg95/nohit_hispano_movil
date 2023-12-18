@@ -35,7 +35,7 @@ class PartidaEntity {
       jugador: json['jugadores'] != null ? JugadorEntity.fromJsonBasico(json['jugadores']) : null,
       primeraPartidaPersonal: json['primera_partida_personal'],
       primeraPartidaHispano: json['primera_partida_hispano'],
-      primeraPartidaMundial: json['primera_partida_mundia'],
+      primeraPartidaMundial: json['primera_partida_mundial'],
       urlImagen: json['url_imagen'],
       offstream: json['offstream'],
       videosClips: json['videos_clips']);

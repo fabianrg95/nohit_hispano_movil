@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/juego/juego_dto.dart';
-import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class CardJuego extends StatelessWidget {
@@ -22,22 +20,30 @@ class CardJuego extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme color = Theme.of(context).colorScheme;
+    final TextTheme styleTexto = Theme.of(context).textTheme;
+
     if (accion != null) {
       return GestureDetector(
         onTap: () => accion!(),
         child: visualizacionMinima
             ? _ItemJuegoGrilla(juego: juego, animarImagen: animarImagen)
-            : _itemJuegoLista(juego: juego, tamanio: tamanio, inversa: posicionInversa),
+            : _itemJuegoLista(juego: juego, tamanio: tamanio, inversa: posicionInversa, color: color, styleTexto: styleTexto),
       );
     } else {
       return visualizacionMinima
           ? _ItemJuegoGrilla(juego: juego, animarImagen: animarImagen)
-          : _itemJuegoLista(juego: juego, tamanio: tamanio, inversa: posicionInversa);
+          : _itemJuegoLista(juego: juego, tamanio: tamanio, inversa: posicionInversa, color: color, styleTexto: styleTexto);
     }
   }
 }
 
-Widget _itemJuegoLista({required final JuegoDto juego, required final double tamanio, required final bool inversa}) {
+Widget _itemJuegoLista(
+    {required final JuegoDto juego,
+    required final double tamanio,
+    required final bool inversa,
+    required ColorScheme color,
+    required TextTheme styleTexto}) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 10),
     child: SizedBox(
@@ -53,7 +59,7 @@ Widget _itemJuegoLista({required final JuegoDto juego, required final double tam
                   width: double.infinity,
                   padding: const EdgeInsets.all(10),
                   margin: const EdgeInsets.only(left: 10, right: 10),
-                  decoration: ViewData().decorationContainerBasic(),
+                  decoration: ViewData().decorationContainerBasic(color: color),
                   child: Column(
                     crossAxisAlignment: inversa == true ? CrossAxisAlignment.start : CrossAxisAlignment.end,
                     mainAxisAlignment: inversa == true ? MainAxisAlignment.start : MainAxisAlignment.end,
