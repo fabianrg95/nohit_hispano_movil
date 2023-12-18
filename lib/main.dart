@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +14,6 @@ import 'package:no_hit/infraestructure/enums/enums.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-late ColorScheme color;
 late TextTheme styleTexto;
 late Size size;
 
@@ -26,6 +26,11 @@ Future<void> main() async {
   await _inicializarStorageLocal();
   timeDilation = 1.2;
   runApp(const ProviderScope(child: MyApp()));
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 }
 
 class MyApp extends ConsumerStatefulWidget {
@@ -47,6 +52,9 @@ class MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     final AppTheme appTheme = ref.watch(themeNotifierProvider);
+    styleTexto = Theme.of(context).textTheme;
+    size = MediaQuery.of(context).size;
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: appTheme.getTheme(),

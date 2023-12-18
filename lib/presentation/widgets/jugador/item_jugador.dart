@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/jugador/jugador_dto.dart';
-import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/views/jugadores/jugador_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
@@ -15,6 +13,9 @@ class ItemJugador extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme color = Theme.of(context).colorScheme;
+    final TextTheme styleTexto = Theme.of(context).textTheme;
+
     return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
         child: GestureDetector(
@@ -22,8 +23,7 @@ class ItemJugador extends StatelessWidget {
             return FadeTransition(opacity: animation, child: DetalleJugadorView(idJugador: jugador.id!));
           })),
           child: Container(
-            decoration: AppTheme().decorationContainerBasic(
-                bottomLeft: true, bottomRight: true, topLeft: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
+            decoration: ViewData().decorationContainerBasic(color: color),
             child: ListTile(
               trailing: BanderaJugador(codigoBandera: jugador.codigoBandera, tamanio: 38),
               title: Text(jugador.nombre!, style: styleTexto.titleMedium, maxLines: 2),

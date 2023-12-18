@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:no_hit/main.dart';
 
 class BanderaJugador extends StatelessWidget {
   final String? codigoBandera;
@@ -9,6 +8,7 @@ class BanderaJugador extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme color = Theme.of(context).colorScheme;
     return Visibility(
       visible: codigoBandera != null,
       replacement: Image.asset('assets/images/panel_${color.brightness == Brightness.dark ? 'blanco' : 'negro'}.png',

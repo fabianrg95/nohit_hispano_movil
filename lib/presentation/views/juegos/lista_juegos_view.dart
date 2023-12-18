@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
-import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
@@ -15,23 +13,21 @@ class ListaJuegosView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final bool visualizarEnLista = ref.watch(visualListaJuegosNotifierProvider);
+    final TextTheme styleTexto = Theme.of(context).textTheme;
+
     return SafeArea(
       child: Scaffold(
-        //drawer: const CustomDraw(),
+        drawer: const CustomNavigation(),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: color.tertiary,
-          foregroundColor: color.surfaceTint,
           onPressed: () => ref.read(visualListaJuegosNotifierProvider.notifier).cambiarVisualizacionListaJuegos(),
           child: Icon(visualizarEnLista ? Icons.grid_view_outlined : Icons.format_list_bulleted_outlined),
         ),
-        appBar: AppBar(title: const Text('Juegos'), actions: [
+        appBar: AppBar(forceMaterialTransparency: true, title: const Text('Juegos'), actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: GestureDetector(
                 onTap: () => showModalBottomSheet(
                       context: context,
-                      backgroundColor: color.primary,
-                      showDragHandle: true,
                       useSafeArea: true,
                       builder: (context) => Padding(
                         padding: const EdgeInsets.all(12),
@@ -69,6 +65,7 @@ class TapbarJuegos extends ConsumerStatefulWidget {
 class TapbarJuegosState extends ConsumerState<TapbarJuegos> with SingleTickerProviderStateMixin {
   late TabController tabController;
   bool visualizarEnLista = true;
+  late ColorScheme color;
 
   @override
   void initState() {
@@ -85,10 +82,11 @@ class TapbarJuegosState extends ConsumerState<TapbarJuegos> with SingleTickerPro
   @override
   Widget build(BuildContext context) {
     visualizarEnLista = ref.watch(visualListaJuegosNotifierProvider);
+    color = Theme.of(context).colorScheme;
 
     return Column(children: [
       const SizedBox(height: 5),
-      _tabBarJuegos(),
+      _tabBarJuegos(Theme.of(context).textTheme),
       Expanded(
         child: TabBarView(controller: tabController, children: [
           _ListaJuegos(juegosOficiales: true, verEnLista: visualizarEnLista),
@@ -98,11 +96,10 @@ class TapbarJuegosState extends ConsumerState<TapbarJuegos> with SingleTickerPro
     ]);
   }
 
-  Container _tabBarJuegos() {
+  Container _tabBarJuegos(TextTheme styleTexto) {
     return Container(
         margin: const EdgeInsets.symmetric(horizontal: 10),
-        decoration: AppTheme().decorationContainerBasic(
-            topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
+        decoration: ViewData().decorationContainerBasic(color: color),
         child: TabBar(
             controller: tabController,
             labelStyle: styleTexto.titleMedium,
@@ -151,7 +148,12 @@ class TabViewJuegosState extends ConsumerState<_ListaJuegos> {
             juego: juego,
             accion: () => Navigator.of(context).push(PageRouteBuilder(
               pageBuilder: (context, animation, __) {
-                return FadeTransition(opacity: animation, child: DetalleJuego(juego: juego));
+                return FadeTransition(
+                    opacity: animation,
+                    child: DetalleJuego(
+                      juego: juego,
+                      heroTag: juego.id.toString(),
+                    ));
               },
             )),
             posicionInversa: index.isOdd,
@@ -173,10 +175,15 @@ class TabViewJuegosState extends ConsumerState<_ListaJuegos> {
             juego: juego,
             accion: () => Navigator.of(context).push(PageRouteBuilder(
               pageBuilder: (context, animation, __) {
-                return FadeTransition(opacity: animation, child: DetalleJuego(juego: juego));
+                return FadeTransition(
+                    opacity: animation,
+                    child: DetalleJuego(
+                      juego: juego,
+                      heroTag: juego.id.toString(),
+                    ));
               },
             )),
-            visualizacionMinima: !widget.verEnLista,
+            visualizacionMinima: widget.verEnLista,
           );
         },
       );

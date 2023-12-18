@@ -1,80 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:no_hit/infraestructure/dto/juego/juego_dto.dart';
-import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class CustomSliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
-  final JuegoDto juego;
+  final JuegoDto? juego;
+  final String heroTag;
 
-  const CustomSliverAppBarDelegate({required this.juego, required this.expandedHeight});
+  const CustomSliverAppBarDelegate({required this.juego, required this.expandedHeight, required this.heroTag});
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-
+  Widget build(final BuildContext context, final double shrinkOffset, final bool overlapsContent) {
+    final ColorScheme color = Theme.of(context).colorScheme;
+    final Size size = MediaQuery.of(context).size;
     return Stack(
       fit: StackFit.passthrough,
       children: [
-        buildJuegoImage(shrinkOffset),
-        buildAppBar(shrinkOffset),
+        buildJuegoImage(shrinkOffset, heroTag, color, size),
+        buildAppBar(shrinkOffset, color),
       ],
     );
   }
 
-  double appear(double shrinkOffset) {
+  double appear(final double shrinkOffset) {
     if (shrinkOffset / expandedHeight < 0.99) return 0;
     return (shrinkOffset / expandedHeight);
   }
 
-  double desappear(double shrinkOffset) {
+  double desappear(final double shrinkOffset) {
     if (shrinkOffset / expandedHeight < 0.99) return 1;
     return 1 - shrinkOffset / expandedHeight;
   }
 
-  double radius(double shrinkOffset) {
+  double radius(final double shrinkOffset) {
     return -180 * (shrinkOffset / expandedHeight) + 200;
   }
 
-  Widget buildAppBar(double shrinkOffset) => Opacity(
+  Widget buildAppBar(final double shrinkOffset, final ColorScheme color) => Opacity(
       opacity: appear(shrinkOffset),
       child: OverflowBar(
-        children: [AppBar(title: Text(juego.nombre), surfaceTintColor: color.tertiary)],
+        children: [AppBar(title: Text(juego != null ? juego!.nombre : ""), surfaceTintColor: color.tertiary)],
       ));
 
-  Widget buildJuegoImage(double shrinkOffset) => Opacity(
-        opacity: desappear(shrinkOffset),
-        child: Stack(
-          children: [
-            Container(
-                height: 200,
-                width: size.width,
-                decoration: BoxDecoration(
-                    color: color.tertiary,
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(radius(shrinkOffset)),
-                    ))),
-            Align(
-              alignment: AlignmentDirectional.bottomCenter,
-              child: Hero(
-                tag: juego.nombre + (juego.subtitulo == null ? juego.subtitulo.toString() : juego.id.toString()),
-                child: ImagenJuego(
-                  juego: juego.nombre,
-                  urlImagen: juego.urlImagen,
-                  animarImagen: false,
-                  tamanio: 250,
-                ),
+  Widget buildJuegoImage(double shrinkOffset, final String heroTag, final ColorScheme color, final Size size) {
+    return Opacity(
+      opacity: desappear(shrinkOffset),
+      child: Stack(
+        children: [
+          Container(
+              height: 200,
+              width: size.width,
+              decoration: BoxDecoration(
+                  color: color.tertiary,
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(radius(shrinkOffset)),
+                  ))),
+          Align(
+            alignment: AlignmentDirectional.bottomCenter,
+            child: Hero(
+              tag: heroTag,
+              child: ImagenJuego(
+                juego: juego != null ? juego!.nombre : "",
+                urlImagen: juego != null ? juego!.urlImagen : "",
+                animarImagen: false,
+                tamanio: 250,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 16, left: 16),
-              child: Icon(
-                Icons.arrow_back,
-                color: color.surfaceTint,
-              ),
-            ),
-          ],
-        ),
-      );
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 16, left: 16),
+            child: Icon(Icons.arrow_back, color: color.surfaceTint),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   double get maxExtent => expandedHeight;

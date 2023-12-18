@@ -1,11 +1,9 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
-import 'package:no_hit/main.dart';
-import 'package:no_hit/presentation/delegates/jugadores/buscar_jugadores_delegate.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
+import 'package:no_hit/presentation/delegates/jugadores/buscar_jugadores_delegate.dart';
 import 'package:no_hit/presentation/views/jugadores/jugador_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
@@ -20,6 +18,8 @@ class ListaJugadoresView extends ConsumerStatefulWidget {
 class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
   List<JugadorDto> listaJugadores = [];
   List<JugadorDto> ultimosJugadores = [];
+  late ColorScheme color;
+  late TextTheme styleTexto;
 
   @override
   void initState() {
@@ -32,6 +32,8 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
   Widget build(BuildContext context) {
     listaJugadores = ref.watch(jugadorProvider);
     ultimosJugadores = ref.watch(ultimosJugadoresProvider);
+    color = Theme.of(context).colorScheme;
+    styleTexto = Theme.of(context).textTheme;
 
     if (listaJugadores.isEmpty && ultimosJugadores.isEmpty) {
       return const PantallaCargaBasica(texto: 'Consultando Jugadores');
@@ -39,8 +41,12 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
 
     return SafeArea(
       child: Scaffold(
-        //drawer: const CustomDraw(),
-        appBar: AppBar(actions: [_accionBuscar(context)], title: const Text('Jugadores')),
+        drawer: const CustomNavigation(),
+        appBar: AppBar(
+          actions: [_accionBuscar(context)],
+          title: const Text('Jugadores'),
+          forceMaterialTransparency: true,
+        ),
         body: RefreshIndicator(
             onRefresh: () => _actualizarPartidas(), color: color.surfaceTint, backgroundColor: color.tertiary, child: _contenidoPagina()),
       ),
@@ -72,13 +78,12 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
       child: Column(
         children: [
           Container(
-            decoration: AppTheme().decorationContainerBasic(
-                topLeft: true, bottomLeft: true, bottomRight: true, topRight: true, background: color.secondary, bordeColor: color.tertiary),
+            decoration: ViewData().decorationContainerBasic(color: color),
             margin: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
             padding: const EdgeInsets.only(top: 10),
             child: Column(
               children: [
-                Text('Jugadores nuevos', style: styleTexto.titleMedium),
+                Text('Jugadores nuevos', style: styleTexto.titleLarge),
                 const SizedBox(height: 10),
                 Divider(color: color.tertiary, thickness: 2, height: 1),
                 SizedBox(
