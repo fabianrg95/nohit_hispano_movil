@@ -20,7 +20,7 @@ class CustomNavigation extends StatelessWidget {
             const _ItemMenu(item: MenuItem.partidas),
             const _ItemMenu(item: MenuItem.juegos),
             const _ItemMenu(item: MenuItem.jugadores),
-            // const _ItemMenu(item: MenuItem.informacion),
+            const _ItemMenu(item: MenuItem.informacion),
             // const _ItemMenu(item: MenuItem.contacto),
           ],
         ),

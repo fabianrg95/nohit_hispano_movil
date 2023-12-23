@@ -107,8 +107,10 @@ class _ItemJuegoGrilla extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color = Theme.of(context).colorScheme;
+
     return Container(
-        decoration: ViewData().decorationContainerBasic(),
+        decoration: ViewData().decorationContainerBasic(color: color),
         margin: const EdgeInsets.all(10),
         child: Center(
           child: Hero(

@@ -179,11 +179,11 @@ class TabViewJuegosState extends ConsumerState<_ListaJuegos> {
                     opacity: animation,
                     child: DetalleJuego(
                       juego: juego,
-                      heroTag: juego.id.toString(),
+                      heroTag: juego.nombre + (juego.subtitulo == null ? juego.subtitulo.toString() : juego.id.toString()),
                     ));
               },
             )),
-            visualizacionMinima: widget.verEnLista,
+            visualizacionMinima: !widget.verEnLista,
           );
         },
       );

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
+import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
@@ -61,14 +62,14 @@ class PartidasViewState extends ConsumerState<PartidasView> {
       return const PantallaCargaBasica(texto: 'Consultando ultimas partidas');
     }
 
-    return Swiper(
-        autoplayDelay: 5000,
-        autoplay: true,
-        autoplayDisableOnInteraction: true,
-        itemCount: listaUltimasPartidas.length,
-        itemBuilder: (context, index) {
-          return _itemPartida(partida: listaUltimasPartidas[index], context: context);
-        });
+    return SizedBox(
+      height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
+      child: ListView.builder(
+          itemCount: listaUltimasPartidas.length,
+          itemBuilder: (context, index) {
+            return _itemPartida(partida: listaUltimasPartidas[index], context: context);
+          }),
+    );
   }
 
   Widget _itemPartida({required PartidaDto partida, required BuildContext context}) {
@@ -92,67 +93,107 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                 urlImagenJuego: partida.urlImagenJuego.toString()));
       })),
       child: Container(
-        margin: const EdgeInsets.only(top: 5, bottom: 5, right: 20, left: 20),
-        child: Stack(children: [
-          SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Hero(tag: heroTag, child: Image.network(partida.urlImagenJuego!, fit: BoxFit.fitWidth)))),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 55,
-                  height: 55,
-                  decoration: ViewData().decorationContainerBasic(color: color),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(HumanFormat.fechaMes(partida.fecha.toString()), style: estiloTexto.bodySmall),
-                      Text(HumanFormat.fechaDia(partida.fecha.toString()), style: estiloTexto.bodyLarge)
-                    ],
+          margin: const EdgeInsets.only(right: 20, left: 20),
+          height: 600,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 55,
+                    height: 55,
+                    decoration: ViewData().decorationContainerBasic(color: color),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(HumanFormat.fechaMes(partida.fecha.toString()), style: estiloTexto.bodySmall),
+                        Text(HumanFormat.fechaDia(partida.fecha.toString()), style: estiloTexto.bodyLarge)
+                      ],
+                    ),
                   ),
-                ),
-                const Expanded(flex: 1, child: SizedBox(height: 1)),
-                Container(
-                  padding: const EdgeInsets.only(top: 5, bottom: 5, right: 10, left: 10),
-                  width: double.infinity,
-                  decoration: ViewData().decorationContainerBasic(color: color),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RichText(
-                          text: TextSpan(style: estiloTexto.titleMedium?.copyWith(fontWeight: FontWeight.w100), children: [
-                        TextSpan(text: partida.tituloJuego),
-                        TextSpan(text: partida.subtituloJuego != null ? " ${partida.subtituloJuego!}" : '', style: estiloTexto.labelSmall)
-                      ])),
-                      Text("Por ${partida.nombreJugador!}", style: estiloTexto.titleSmall?.copyWith(color: color.outline)),
-                      Container(
-                          margin: const EdgeInsets.only(top: 15, bottom: 5),
-                          padding: const EdgeInsets.only(top: 5, bottom: 5, right: 10, left: 10),
-                          width: double.infinity,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                  Container(
+                      margin: const EdgeInsets.only(left: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
                             children: [
-                              Center(
-                                  child: Text(
-                                partida.nombre!,
-                                textAlign: TextAlign.center,
-                              ))
+                              const Icon(Icons.person_outline),
+                              const SizedBox(width: 5),
+                              Text(partida.nombreJugador!, style: estiloTexto.titleMedium)
                             ],
-                          ))
+                          ),
+                          Row(
+                            children: [
+                              Icon(Icons.sports_esports_outlined, color: color.inverseSurface.withOpacity(0.6)),
+                              const SizedBox(width: 5),
+                              RichText(
+                                  text: TextSpan(style: estiloTexto.titleSmall?.copyWith(color: color.inverseSurface.withOpacity(0.6)), children: [
+                                TextSpan(text: partida.tituloJuego),
+                                TextSpan(text: partida.subtituloJuego != null ? " ${partida.subtituloJuego!}" : '')
+                              ]))
+                            ],
+                          )
+                        ],
+                      )),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 500,
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                child: Stack(children: [
+                  Hero(
+                      tag: heroTag,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.network(
+                          partida.urlImagenJuego!,
+                          fit: BoxFit.cover,
+                          width: MediaQuery.of(context).size.width - 40,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress != null) {
+                              return Center(
+                                child: Column(
+                                  children: [
+                                    CircularProgressIndicator(
+                                      color: color.tertiary,
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+
+                            return child;
+                          },
+                        ),
+                      )),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: ViewData().decorationContainerBasic(color: color),
+                        child: Center(
+                            child: Text(
+                          partida.nombre!,
+                          style: estiloTexto.bodyLarge,
+                          textAlign: TextAlign.center,
+                        )),
+                      ),
                     ],
-                  ),
-                ),
-              ],
-            ),
-          )
-        ]),
-      ),
+                  )
+                ]),
+              ),
+              Divider(
+                color: color.secondary,
+              )
+            ],
+          )),
     );
   }
 }

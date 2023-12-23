@@ -64,7 +64,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
 
     return SafeArea(
       child: Scaffold(
-        drawer: const CustomNavigation(),
+        // drawer: const CustomNavigation(),
         body: CustomScrollView(
           physics: const ClampingScrollPhysics(),
           slivers: [
@@ -82,14 +82,15 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
   Widget contenido(JuegoDto? juegoDto, JugadorDto? detalleJugador, PartidaDto? detallePartida) {
     if (detallePartida == null || detalleJugador == null || juegoDto == null) {
       return SliverList(
-          delegate: SliverChildBuilderDelegate((context, index) {
-        return const SingleChildScrollView(
-            child: Column(
-          children: [
-            // PantallaCargaBasica(texto: 'Consultando informacion de la partida'),
-          ],
-        ));
-      }, childCount: 1));
+          delegate: SliverChildBuilderDelegate(
+              (context, index) => const SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        // PantallaCargaBasica(texto: 'Consultando informacion de la partida'),
+                      ],
+                    ),
+                  ),
+              childCount: 1));
     }
 
     return SliverList(
@@ -113,7 +114,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
             JugadorCommons().informacionJugadorGrande(detalleJugador, context),
             _informacionPartida(detallePartida),
             _recordPartida(detallePartida),
-            _videos(detallePartida.listaVideosCompletos, 'Videos completos', "La partida no tiene videos."),
+            _videos(detallePartida.listaVideosCompletos, 'Videos', "La partida no tiene videos."),
             _videos(detallePartida.listaVideosClips, 'Clips', "La partida no tiene clips."),
             const SizedBox(height: 20)
           ],
@@ -139,7 +140,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 20),
+                  padding: const EdgeInsets.only(left: 20, right: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -152,8 +153,10 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
                 ),
                 Expanded(
                     child: Center(
-                        child: Text(detallePartida.nombre.toString(),
-                            textAlign: TextAlign.center, style: styleTexto.bodyLarge?.copyWith(color: color.outline))))
+                        child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Text(detallePartida.nombre.toString(), textAlign: TextAlign.center, style: styleTexto.bodyLarge),
+                )))
               ],
             )
           ],

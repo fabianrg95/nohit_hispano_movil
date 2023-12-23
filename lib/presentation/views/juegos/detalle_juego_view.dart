@@ -41,7 +41,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> {
 
     return SafeArea(
       child: Scaffold(
-        drawer: const CustomNavigation(),
+        // drawer: const CustomNavigation(),
         body: CustomScrollView(
           physics: const ClampingScrollPhysics(),
           slivers: [

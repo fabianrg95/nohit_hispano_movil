@@ -94,7 +94,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
                       autoplayDelay: 5000,
                       autoplay: true,
                       pagination: SwiperPagination(
-                        builder: DotSwiperPaginationBuilder(activeColor: color.surfaceTint, color: color.tertiary),
+                        builder: DotSwiperPaginationBuilder(activeColor: color.tertiary, color: color.primary),
                       ),
                       itemCount: ultimosJugadores.length,
                       itemBuilder: (context, index) {
