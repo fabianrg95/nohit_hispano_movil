@@ -80,6 +80,10 @@ flutter:
     fonts:
      - asset: fonts/SharpGrotesk-Medium20.otf
        style: normal
+  - family: Nunito
+    fonts:
+     - asset: fonts/Nunito-Regular.ttf
+       style: normal
  #   - family: Trajan Pro
  #     fonts:
  #       - asset: fonts/TrajanPro.ttf

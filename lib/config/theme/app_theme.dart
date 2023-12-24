@@ -11,7 +11,7 @@ class AppTheme {
     color = generarTema();
 
     return ThemeData(
-        fontFamily: 'SharpGrotesk',
+        fontFamily: 'Nunito',
         colorScheme: color,
         progressIndicatorTheme: ProgressIndicatorThemeData(circularTrackColor: color.tertiary),
         useMaterial3: true,

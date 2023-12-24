@@ -37,7 +37,6 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
 
     return SafeArea(
       child: Scaffold(
-        drawer: const CustomNavigation(),
         appBar: _cabecera(jugador),
         body: _contenido(jugador),
       ),
@@ -161,15 +160,16 @@ class _Partidas extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 260 //tamaño alto de cada item
+            ),
         physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
         itemCount: jugador.juegos.length,
+        shrinkWrap: true,
         itemBuilder: (context, index) {
           final JuegoDto juego = jugador.juegos[index];
           return GestureDetector(
-              onTap: () => _informacionPartidasJugador(partidas: juego.partidas, context: context),
-              child: CardJuego(juego: juego, accion: null, posicionInversa: index.isOdd));
+              onTap: () => _informacionPartidasJugador(partidas: juego.partidas, context: context), child: CardJuego(juego: juego, accion: null));
         });
   }
 
