@@ -1,10 +1,8 @@
-import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
-import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
@@ -76,9 +74,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
     final ColorScheme color = Theme.of(context).colorScheme;
     final TextTheme estiloTexto = Theme.of(context).textTheme;
 
-    final String heroTag = partida.id.toString() +
-        partida.tituloJuego.toString() +
-        (partida.subtituloJuego == null ? partida.subtituloJuego.toString() : partida.idJuego.toString());
+    final String heroTag = 'Partida-${partida.id}';
 
     return GestureDetector(
       onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {

@@ -33,7 +33,7 @@ class _ItemJuegoGrilla extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Hero(
-        tag: juego.nombre + (juego.subtitulo == null ? juego.subtitulo.toString() : juego.id.toString()),
+        tag: 'Juego-${juego.id}',
         child: ImagenJuego(
           juego: juego.nombre,
           urlImagen: juego.urlImagen,

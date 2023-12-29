@@ -98,19 +98,20 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
       return SingleChildScrollView(
         child: Column(
           children: [
-            JuegoCommons().subtitulo(
-                juegoDto,
-                () => Navigator.of(context).push(PageRouteBuilder(
-                      pageBuilder: (context, animation, __) {
-                        return FadeTransition(
-                            opacity: animation,
-                            child: DetalleJuego(
-                              juego: juegoDto,
-                              heroTag: widget.heroTag,
-                            ));
-                      },
-                    )),
-                context),
+            JuegoCommons().subtitulo(juegoDto, () {
+              ref.read(informacionJuegoProvider.notifier).saveData(juegoDto: juegoDto);
+
+              return Navigator.of(context).push(PageRouteBuilder(
+                pageBuilder: (context, animation, __) {
+                  return FadeTransition(
+                      opacity: animation,
+                      child: DetalleJuego(
+                        idJuego: juegoDto.id,
+                        heroTag: widget.heroTag,
+                      ));
+                },
+              ));
+            }, context),
             JugadorCommons().informacionJugadorGrande(detalleJugador, context),
             _informacionPartida(detallePartida),
             _recordPartida(detallePartida),

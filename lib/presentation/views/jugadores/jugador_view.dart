@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
-import 'package:no_hit/presentation/widgets/partida/partida.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class DetalleJugadorView extends ConsumerStatefulWidget {
@@ -202,7 +201,7 @@ class _Partidas extends StatelessWidget {
                   itemCount: partidas.isEmpty ? 0 : partidas.length,
                   itemBuilder: (BuildContext context, int index) {
                     PartidaDto partida = partidas[index];
-                    return PartidaCommons().tarjetaPartidaJuegoJugador(partida: partida, context: context, partidaUnica: partidas.length == 1);
+                    return PartidaCommons().tarjetaPartidaJuegoJugador(partida: partida, context: context);
                   },
                 )
               ]),

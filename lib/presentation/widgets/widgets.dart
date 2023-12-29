@@ -8,3 +8,4 @@ export 'juegos/juego.dart';
 export 'jugador/bandera_jugador.dart';
 export 'jugador/item_jugador.dart';
 export 'jugador/jugador.dart';
+export 'partida/partida.dart';

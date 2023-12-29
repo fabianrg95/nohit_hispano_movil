@@ -44,7 +44,7 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
         .from('partidas')
         .select<List<Map<String, dynamic>>>(
             'id, fecha_partida, nombre_partida, primera_partida_personal, primera_partida_hispano, primera_partida_mundial, offstream, videos_clips, '
-            'jugadores(id, nombre_usuario, fecha_primera_partida), '
+            'jugadores(id, nombre_usuario, fecha_primera_partida, nacionalidad(pais, codigo_bandera, gentilicio_masculino, gentilicio_femenino, neutro)), '
             'juegos(id, nombre, subtitulo)')
         .eq('juego_id', idJuego)
         .order('id', ascending: true);
@@ -105,5 +105,16 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
   Future<int> obtenerCantidadJuegos() async {
     final respuesta = await supabase.from('juegos').select('id', const FetchOptions(count: CountOption.exact, head: true));
     return respuesta.count;
+  }
+
+  @override
+  Future<JuegoEntity> obtenerInformacionJuego(final int idJuego) async {
+    final Map<String, dynamic> respuesta = await supabase
+        .from('juegos')
+        .select<Map<String, dynamic>>('id, nombre, subtitulo, url_imagen, oficial_team_hitless')
+        .eq('id', idJuego)
+        .order('nombre', ascending: true);
+
+    return JuegoEntity.fromJson(respuesta);
   }
 }

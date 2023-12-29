@@ -1,6 +1,6 @@
 import 'package:no_hit/domain/entities/entities.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
-import 'package:no_hit/infraestructure/mapper/partida/partida_mapper.dart';
+import 'package:no_hit/infraestructure/mapper/mappers.dart';
 
 class JuegoMapper {
   static JuegoDto entityToDto(final JuegoEntity juegoEntity) => JuegoDto(
@@ -18,6 +18,7 @@ class JuegoMapper {
     final ResumenJuegoDto resumen = ResumenJuegoDto();
 
     resumen.partidas = PartidaMapper.mapearListaPartidas(listaPartidas);
+    resumen.jugadores = JugadorMapper.mapearListaJugadoresJuego(listaPartidas);
 
     resumen.cantidadPartidas = listaPartidas.length;
     resumen.cantidadJugadores = _contarJugadores(resumen.partidas);

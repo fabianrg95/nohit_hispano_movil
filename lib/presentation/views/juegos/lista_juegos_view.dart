@@ -33,6 +33,7 @@ class TapbarJuegosState extends ConsumerState<TapbarJuegos> with SingleTickerPro
   late TabController tabController;
   bool visualizarEnLista = true;
   late ColorScheme color;
+  late TextTheme styleTexto;
 
   @override
   void initState() {
@@ -48,12 +49,12 @@ class TapbarJuegosState extends ConsumerState<TapbarJuegos> with SingleTickerPro
 
   @override
   Widget build(BuildContext context) {
-    visualizarEnLista = ref.watch(visualListaJuegosNotifierProvider);
     color = Theme.of(context).colorScheme;
+    styleTexto = Theme.of(context).textTheme;
 
     return Column(children: [
       const SizedBox(height: 5),
-      _tabBarJuegos(Theme.of(context).textTheme),
+      _tabBarJuegos(),
       Expanded(
         child: TabBarView(controller: tabController, children: const [
           _ListaJuegos(juegosOficiales: true),
@@ -63,7 +64,7 @@ class TapbarJuegosState extends ConsumerState<TapbarJuegos> with SingleTickerPro
     ]);
   }
 
-  Container _tabBarJuegos(TextTheme styleTexto) {
+  Container _tabBarJuegos() {
     return Container(
         margin: const EdgeInsets.symmetric(horizontal: 10),
         decoration: ViewData().decorationContainerBasic(color: color),
@@ -111,26 +112,26 @@ class TabViewJuegosState extends ConsumerState<_ListaJuegos> {
     }
 
     return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 260 //tamaño alto de cada item
-          ),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 260),
       itemCount: juegos.length,
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) {
         final JuegoDto juego = juegos[index];
-        return CardJuego(
-          juego: juego,
-          accion: () => Navigator.of(context).push(PageRouteBuilder(
-            pageBuilder: (context, animation, __) {
-              return FadeTransition(
-                  opacity: animation,
-                  child: DetalleJuego(
-                    juego: juego,
-                    heroTag: juego.nombre + (juego.subtitulo == null ? juego.subtitulo.toString() : juego.id.toString()),
-                  ));
-            },
-          )),
-        );
+        return CardJuego(juego: juego, accion: () => navegarJuego(context, juego));
       },
     );
+  }
+
+  Future<dynamic> navegarJuego(final BuildContext context, final JuegoDto juego) {
+    const duration = Duration(milliseconds: 500);
+
+    ref.read(informacionJuegoProvider.notifier).saveData(juegoDto: juego);
+
+    return Navigator.of(context).push(PageRouteBuilder(
+      transitionDuration: duration,
+      reverseTransitionDuration: duration,
+      pageBuilder: (context, __, ___) => DetalleJuego(idJuego: juego.id, heroTag: 'Juego-${juego.id}'),
+      transitionsBuilder: (_, animation, ___, child) => FadeTransition(opacity: animation, child: child),
+    ));
   }
 }

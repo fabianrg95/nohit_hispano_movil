@@ -1,4 +1,3 @@
-
 import 'package:no_hit/domain/entities/entities.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/mapper/partida/partida_mapper.dart';
@@ -75,5 +74,17 @@ class JugadorMapper {
     juego.partidas = partidas.where((filtro) => filtro.idJuego == partida.idJuego).toList();
 
     return juego;
+  }
+
+  static List<JugadorDto> mapearListaJugadoresJuego(List<PartidaEntity> partidas) {
+    Map<int, JugadorDto> listaJugadores = {};
+
+    for (var partida in partidas) {
+      if (listaJugadores[partida.jugador!.id] == null) {
+        listaJugadores = {...listaJugadores, partida.jugador!.id: entityToDtoBasico(partida.jugador!)};
+      }
+    }
+
+    return listaJugadores.values.toList();
   }
 }
