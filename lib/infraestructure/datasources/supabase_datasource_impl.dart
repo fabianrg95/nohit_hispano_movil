@@ -56,7 +56,7 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
     if (id == null) {
       final List<Map<String, dynamic>> respuesta =
           await supabase.from('partidas').select<List<Map<String, dynamic>>>('id').order('id', ascending: false).limit(1);
-      id = respuesta[0]['id'];
+      id = respuesta[0]['id'] + 1;
     }
 
     final List<Map<String, dynamic>> respuesta = await supabase
@@ -65,7 +65,7 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
             'id, fecha_partida, nombre_partida, primera_partida_personal, primera_partida_hispano, primera_partida_mundial, offstream, videos_clips, '
             'jugadores(id, nombre_usuario, nacionalidad(pais, codigo_bandera) ), '
             'juegos(id, nombre, subtitulo, url_imagen, oficial_team_hitless)')
-        .lte('id', id)
+        .lt('id', id)
         .order('id', ascending: false)
         .limit(10);
     return respuesta.map((partida) => PartidaEntity.fromJson(partida)).toList();

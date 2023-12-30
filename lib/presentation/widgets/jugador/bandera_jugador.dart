@@ -11,8 +11,8 @@ class BanderaJugador extends StatelessWidget {
     final ColorScheme color = Theme.of(context).colorScheme;
     return Visibility(
       visible: codigoBandera != null,
-      replacement: Image.asset('assets/images/panel_${color.brightness == Brightness.dark ? 'blanco' : 'negro'}.png',
-          fit: BoxFit.fill, width: tamanio + 15, height: tamanio),
+      replacement: Image.asset('assets/images/nohit_${color.brightness == Brightness.dark ? 'blanco' : 'negro'}.png',
+          fit: BoxFit.fill, width: tamanio - 5, height: tamanio + 10),
       child: ClipOval(
         child: Image.asset('icons/flags/png/$codigoBandera.png', package: 'country_icons', fit: BoxFit.fill, width: tamanio, height: tamanio),
       ),

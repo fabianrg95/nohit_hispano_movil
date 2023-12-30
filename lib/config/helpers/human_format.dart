@@ -5,9 +5,16 @@ class HumanFormat {
     return NumberFormat.compactCurrency(decimalDigits: 0, symbol: '', locale: 'en').format(number);
   }
 
-  static String fecha(String fecha) {
+  static String fecha(String? fecha) {
+    fecha ??= DateTime.now().toString();
     var parsedDate = DateTime.parse(fecha);
     return DateFormat.yMMMMd('es-CO').format(parsedDate).toString();
+  }
+
+  static String fechaSmall(String? fecha) {
+    fecha ??= DateTime.now().toString();
+    var parsedDate = DateTime.parse(fecha);
+    return DateFormat.yMMMd('es-CO').format(parsedDate).toString();
   }
 
   static String fechaDia(String fecha) {
