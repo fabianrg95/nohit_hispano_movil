@@ -28,8 +28,8 @@ class SupabaseRepositoryImpl extends SupabaseRepository {
   }
 
   @override
-  Future<List<PartidaEntity>> obtenerUltimasPartidas() {
-    return datasource.obtenerUltimasPartidas();
+  Future<List<PartidaEntity>> obtenerUltimasPartidas(int? id) {
+    return datasource.obtenerUltimasPartidas(id);
   }
 
   @override

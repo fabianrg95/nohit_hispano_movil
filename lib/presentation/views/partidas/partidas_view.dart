@@ -18,11 +18,17 @@ class PartidasView extends ConsumerStatefulWidget {
 class PartidasViewState extends ConsumerState<PartidasView> {
   List<PartidaDto>? listaUltimasPartidas = [];
   late ColorScheme color;
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    ref.read(ultimasPartidasProvider.notifier).loadData(false);
+    _cargarPartidas();
+    scrollController.addListener(() {
+      if ((scrollController.position.pixels + 500) > scrollController.position.maxScrollExtent) {
+        _cargarPartidas();
+      }
+    });
   }
 
   @override
@@ -34,7 +40,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
       drawer: const CustomNavigation(),
       appBar: _titulo(context),
       body: RefreshIndicator(
-        onRefresh: () => _actualizarPartidas(),
+        onRefresh: () => _reiniciarPartidas(),
         color: color.surfaceTint,
         backgroundColor: color.tertiary,
         child: _contenido(listaUltimasPartidas),
@@ -42,9 +48,15 @@ class PartidasViewState extends ConsumerState<PartidasView> {
     );
   }
 
-  Future<void> _actualizarPartidas() async {
+  Future<void> _cargarPartidas() async {
     setState(() {
-      ref.read(ultimasPartidasProvider.notifier).loadData(true);
+      ref.read(ultimasPartidasProvider.notifier).loadData();
+    });
+  }
+
+  Future<void> _reiniciarPartidas() async {
+    setState(() {
+      ref.read(ultimasPartidasProvider.notifier).loadData();
     });
   }
 
@@ -63,6 +75,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
     return SizedBox(
       height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
       child: ListView.builder(
+          controller: scrollController,
           itemCount: listaUltimasPartidas.length,
           itemBuilder: (context, index) {
             return _itemPartida(partida: listaUltimasPartidas[index], context: context);
