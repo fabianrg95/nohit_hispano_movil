@@ -229,21 +229,21 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
             IntrinsicHeight(
               child: Row(
                 children: [
-                  ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
+                  ViewData().muestraInformacionAccion(alineacion: CrossAxisAlignment.center, items: [
                     const SizedBox(height: 10),
                     Text(detallePartida.primeraPartidaJugador == true ? 'Si' : 'No', style: styleTexto.titleLarge?.copyWith(color: color.outline)),
                     const Text('Jugador'),
                     const SizedBox(height: 10),
                   ]),
                   VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
-                  ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
+                  ViewData().muestraInformacionAccion(alineacion: CrossAxisAlignment.center, items: [
                     const SizedBox(height: 10),
                     Text(detallePartida.primeraPartidaHispano == true ? 'Si' : 'No', style: styleTexto.titleLarge?.copyWith(color: color.outline)),
                     const Text('Hispano'),
                     const SizedBox(height: 10),
                   ]),
                   VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
-                  ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
+                  ViewData().muestraInformacionAccion(alineacion: CrossAxisAlignment.center, items: [
                     const SizedBox(height: 10),
                     Text(detallePartida.primeraPartidaMundo == true ? 'Si' : 'No', style: styleTexto.titleLarge?.copyWith(color: color.outline)),
                     const Text('Mundial'),

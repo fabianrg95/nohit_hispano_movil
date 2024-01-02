@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
@@ -63,17 +62,9 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
           return SafeArea(
             child: Scaffold(
               extendBodyBehindAppBar: true,
-              appBar:
-                  AppBar(forceMaterialTransparency: pageViewIndex == 0 ? true : false, elevation: 0, title: Text(titulosPageView[pageViewIndex]!)),
+              appBar: AppBar(forceMaterialTransparency: true, elevation: 0, title: Text(titulosPageView[pageViewIndex]!)),
               body: Stack(children: [
                 _cabecera(jugador, offsetValue),
-                Align(
-                  alignment: FractionalOffset(0, (jugador.partidas.length > 1 ? 0.57 : 0.48) + offsetValue),
-                  child: FadeTransition(
-                    opacity: AlwaysStoppedAnimation(1 - offsetValue),
-                    child: Column(mainAxisSize: MainAxisSize.min, children: [_contenido(jugador)]),
-                  ),
-                ),
                 PageView(
                   controller: _pageController,
                   onPageChanged: (value) => setState(() {
@@ -84,9 +75,16 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                     FadeTransition(
                         opacity: AlwaysStoppedAnimation(1 - (offsetValue * 2)),
                         child: const Align(alignment: FractionalOffset(0, 1), child: ShimmerArrows(icon: Icons.keyboard_arrow_right))),
-                    _Partidas(jugador: jugador)
+                    PageView(physics: const NeverScrollableScrollPhysics(), children: [_Partidas(jugador: jugador)])
                   ],
-                )
+                ),
+                Align(
+                  alignment: FractionalOffset(0, (jugador.partidas.length > 1 ? 0.57 : 0.48) + offsetValue),
+                  child: FadeTransition(
+                    opacity: AlwaysStoppedAnimation(1 - offsetValue),
+                    child: Column(mainAxisSize: MainAxisSize.min, children: [_contenido(jugador)]),
+                  ),
+                ),
               ]),
             ),
           );
@@ -170,14 +168,28 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
           const SizedBox(height: 10),
           Row(
             children: [
-              ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
-                Text(jugador.juegos.length.toString(), style: styleTexto.displaySmall?.copyWith(color: color.outline)),
-                Text('Juego${jugador.juegos.length != 1 ? 's' : ''}')
-              ]),
-              ViewData().muestraInformacion(alineacion: CrossAxisAlignment.center, items: [
-                Text(jugador.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: color.outline)),
-                Text('Partida${jugador.cantidadPartidas != 1 ? 's' : ''}')
-              ]),
+              ViewData().muestraInformacionAccion(
+                  alineacion: CrossAxisAlignment.center,
+                  accion: () {
+                    setState(() {
+                      _pageController.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+                    });
+                  },
+                  items: [
+                    Text(jugador.juegos.length.toString(), style: styleTexto.displaySmall?.copyWith(color: color.outline)),
+                    Text('Juego${jugador.juegos.length != 1 ? 's' : ''}')
+                  ]),
+              ViewData().muestraInformacionAccion(
+                  alineacion: CrossAxisAlignment.center,
+                  accion: () {
+                    setState(() {
+                      _pageController.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+                    });
+                  },
+                  items: [
+                    Text(jugador.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: color.outline)),
+                    Text('Partida${jugador.cantidadPartidas != 1 ? 's' : ''}')
+                  ]),
             ],
           ),
           const SizedBox(height: 10),
@@ -197,7 +209,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
               decoration: ViewData().decorationContainerBasic(color: color),
               child: Column(
                 children: [
-                  ViewData().muestraInformacion(
+                  ViewData().muestraInformacionAccion(
                       alineacion: CrossAxisAlignment.start,
                       items: [
                         Text('${jugador.primeraPartida!.tituloJuego.toString()} ${jugador.primeraPartida!.subtituloJuego ?? ''}',
@@ -227,7 +239,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                   ),
                   Visibility(
                       visible: jugador.primeraPartida!.id != jugador.ultimaPartida!.id,
-                      child: ViewData().muestraInformacion(
+                      child: ViewData().muestraInformacionAccion(
                           alineacion: CrossAxisAlignment.end,
                           items: [
                             Text('${jugador.ultimaPartida!.tituloJuego.toString()} ${jugador.ultimaPartida!.subtituloJuego ?? ''}',
@@ -258,20 +270,26 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
   }
 }
 
-class _Partidas extends StatelessWidget {
+class _Partidas extends StatefulWidget {
   final JugadorDto jugador;
 
   const _Partidas({required this.jugador});
 
   @override
+  State<_Partidas> createState() => _PartidasState();
+}
+
+class _PartidasState extends State<_Partidas> {
+  late List<PartidaDto> partidas = [];
+
+  @override
   Widget build(BuildContext context) {
     return GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 260 //tamaño alto de cada item
-            ),
-        itemCount: jugador.juegos.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 260),
+        itemCount: widget.jugador.juegos.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          final JuegoDto juego = jugador.juegos[index];
+          final JuegoDto juego = widget.jugador.juegos[index];
           return GestureDetector(
               onTap: () => _informacionPartidasJugador(partidas: juego.partidas, context: context), child: CardJuego(juego: juego, accion: null));
         });

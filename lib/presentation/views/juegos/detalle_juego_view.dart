@@ -53,6 +53,12 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
     offset.value = offsetValue.clamp(0, 1);
   }
 
+  void _navegarPage(int page) {
+    setState(() {
+      _pageController.animateToPage(page, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     informacionJuego = ref.watch(informacionJuegoProvider)[widget.idJuego];
@@ -74,17 +80,6 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
             extendBodyBehindAppBar: true,
             body: Stack(children: [
               cabecera(context, widget.heroTag, offsetValue),
-              Align(
-                alignment: FractionalOffset(0, 0.88 + offsetValue),
-                child: FadeTransition(
-                  opacity: AlwaysStoppedAnimation(1 - offsetValue),
-                  child: Column(mainAxisSize: MainAxisSize.min, children: [
-                    JuegoCommons().subtitulo(informacionJuego!, null, context),
-                    const SizedBox(height: 10),
-                    _resumenJuego(informacionJuego!, resumenJuego),
-                  ]),
-                ),
-              ),
               if (resumenJuego != null && resumenJuego!.cantidadPartidas > 0)
                 PageView(
                     scrollDirection: Axis.horizontal,
@@ -101,7 +96,18 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
                           heroTag: widget.heroTag,
                           listaPartidas: resumenJuego!.partidas),
                       ListaJugadoresJuego(listaJugadores: resumenJuego!.jugadores)
-                    ])
+                    ]),
+              Align(
+                alignment: FractionalOffset(0.5, 0.88 + offsetValue),
+                child: FadeTransition(
+                  opacity: AlwaysStoppedAnimation(1 - (offsetValue * 1.5)),
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    JuegoCommons().subtitulo(informacionJuego!, null, context),
+                    const SizedBox(height: 10),
+                    _resumenJuego(informacionJuego!, resumenJuego),
+                  ]),
+                ),
+              ),
             ]),
           ),
         );
@@ -161,20 +167,22 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
     return IntrinsicHeight(
       child: Column(
         children: [
-          ViewData().muestraInformacion(items: [
+          ViewData().muestraInformacionSimple(items: [
             Text(informacionJuego.oficialTeamHistless == true ? 'Oficial' : 'No oficial',
                 style: styleTexto.titleLarge?.copyWith(color: color.outline)),
             const Text('Team hitless')
           ]),
           Row(
             children: [
-              ViewData().muestraInformacion(
+              ViewData().muestraInformacionAccion(
+                accion: () => _navegarPage(1),
                 items: [
                   Text(resumenPartidasJuego.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: color.outline)),
                   Text('Partida${resumenPartidasJuego.cantidadPartidas != 1 ? 's' : ''}')
                 ],
               ),
-              ViewData().muestraInformacion(
+              ViewData().muestraInformacionAccion(
+                accion: () => _navegarPage(2),
                 items: [
                   Text(resumenPartidasJuego.cantidadJugadores.toString(), style: styleTexto.displaySmall?.copyWith(color: color.outline)),
                   Text('Jugador${resumenPartidasJuego.cantidadJugadores != 1 ? 'es' : ''}')

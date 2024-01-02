@@ -2,13 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 
 class ViewData {
-  Widget muestraInformacion({required List<Widget> items, CrossAxisAlignment alineacion = CrossAxisAlignment.center, Function? accion}) {
+  Widget muestraInformacionAccion({required List<Widget> items, CrossAxisAlignment alineacion = CrossAxisAlignment.center, Function? accion}) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
         child: GestureDetector(
             onTap: () => accion != null ? accion() : null,
             child: SizedBox(width: double.infinity, child: Column(crossAxisAlignment: alineacion, children: items))),
+      ),
+    );
+  }
+
+  Widget muestraInformacionSimple({required List<Widget> items, CrossAxisAlignment alineacion = CrossAxisAlignment.center}) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
+        child: SizedBox(width: double.infinity, child: Column(crossAxisAlignment: alineacion, children: items)),
       ),
     );
   }

@@ -19,6 +19,7 @@ class JuegoMapper {
 
     resumen.partidas = PartidaMapper.mapearListaPartidas(listaPartidas);
     resumen.jugadores = JugadorMapper.mapearListaJugadoresJuego(listaPartidas);
+    resumen.jugadores.sort((a, b) => a.nombre!.toLowerCase().compareTo(b.nombre!.toLowerCase()));
 
     resumen.cantidadPartidas = listaPartidas.length;
     resumen.cantidadJugadores = _contarJugadores(resumen.partidas);

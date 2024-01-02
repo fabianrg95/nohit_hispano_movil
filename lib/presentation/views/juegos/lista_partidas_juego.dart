@@ -33,7 +33,7 @@ class ListaPartidas extends StatelessWidget {
               decoration: ViewData().decorationContainerBasic(color: color),
               child: IntrinsicHeight(
                 child: Column(children: [
-                  ViewData().muestraInformacion(
+                  ViewData().muestraInformacionAccion(
                       alineacion: CrossAxisAlignment.start,
                       items: [
                         Text(primeraPartida!.nombreJugador.toString(), style: styleTexto.titleMedium),
@@ -61,7 +61,7 @@ class ListaPartidas extends StatelessWidget {
                   ),
                   Visibility(
                       visible: primeraPartida!.id != ultimaPartida!.id,
-                      child: ViewData().muestraInformacion(
+                      child: ViewData().muestraInformacionAccion(
                           alineacion: CrossAxisAlignment.end,
                           items: [
                             Text(ultimaPartida!.nombreJugador.toString(), style: styleTexto.titleMedium),
