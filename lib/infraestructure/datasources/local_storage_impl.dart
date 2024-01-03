@@ -13,7 +13,7 @@ class LocalStorageImpl extends LocalStorage {
   @override
   Future<bool> obtenerEsTemaClaro() async {
     final box = GetStorage(BoxLocal.temaSeleccinado.nombreAlmacenamiento);
-    final bool temaClaroSeleccionado = box.read(BoxLocal.temaSeleccinado.llaveAlmacenamiento) ?? true;
+    final bool temaClaroSeleccionado = box.read(BoxLocal.temaSeleccinado.llaveAlmacenamiento) ?? false;
     return Future.value(temaClaroSeleccionado);
   }
 }

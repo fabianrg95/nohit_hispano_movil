@@ -1,10 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
-import 'package:no_hit/presentation/delegates/delegates.dart';
-import 'package:no_hit/presentation/views/views.dart';
+import 'package:no_hit/presentation/widgets/commons/arrow.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class DetallePartidaView extends ConsumerStatefulWidget {
@@ -12,17 +13,10 @@ class DetallePartidaView extends ConsumerStatefulWidget {
   final int jugadorId;
   final int idJuego;
   final String nombreJuego;
-  final String urlImagenJuego;
   final String heroTag;
 
   const DetallePartidaView(
-      {super.key,
-      required this.partidaId,
-      required this.jugadorId,
-      required this.heroTag,
-      required this.idJuego,
-      required this.nombreJuego,
-      required this.urlImagenJuego});
+      {super.key, required this.partidaId, required this.jugadorId, required this.heroTag, required this.idJuego, required this.nombreJuego});
 
   @override
   DetallePartidaState createState() => DetallePartidaState();
@@ -32,96 +26,172 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
   final double tamanioImagen = 150;
   late ColorScheme color;
   late TextTheme styleTexto;
+  late JuegoDto? juegoDto;
+  IconData iconoFlechaAtras = Icons.arrow_back;
+
+  int pageViewIndex = 0;
+
+  final Map<int, String> titulosPageView = {0: '', 1: 'Detalle partida'};
+
+  ValueNotifier<double> offset = ValueNotifier(0);
+  final PageController _pageController = PageController();
 
   @override
   void initState() {
     super.initState();
     ref.read(detallePartidaProvider.notifier).loadData(widget.partidaId);
     ref.read(detalleJugadorProvider.notifier).loadData(widget.jugadorId);
+    _pageController.addListener(_pageListener);
+
+    if (Platform.isIOS) {
+      iconoFlechaAtras = Icons.arrow_back_ios_new;
+    }
+  }
+
+  @override
+  void dispose() {
+    _pageController
+      ..removeListener(_pageListener)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _pageListener() {
+    final tamanioPantalla = MediaQuery.of(context).size.width;
+    final offsetValue = _pageController.offset / tamanioPantalla;
+    offset.value = offsetValue.clamp(0, 1);
+  }
+
+  void _navegarPage(int page) {
+    setState(() {
+      _pageController.animateToPage(page, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    juegoDto = ref.watch(informacionJuegoProvider)[widget.idJuego];
     final PartidaDto? detallePartida = ref.watch(detallePartidaProvider)[widget.partidaId];
     final JugadorDto? detalleJugador = ref.watch(detalleJugadorProvider)[widget.jugadorId];
-    JuegoDto juegoDto = JuegoDto(id: widget.idJuego, nombre: widget.nombreJuego, urlImagen: widget.urlImagenJuego);
     color = Theme.of(context).colorScheme;
     styleTexto = Theme.of(context).textTheme;
 
-    if (widget.urlImagenJuego == "") {
-      const PantallaCargaBasica(
-        texto: "Cargando la información de la partida",
-      );
-    }
+    return PopScope(
+      canPop: pageViewIndex == 0,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+        controlarBack(context);
+      },
+      child: ValueListenableBuilder(
+          valueListenable: offset,
+          builder: (BuildContext context, offsetValue, _) => SafeArea(
+                child: Scaffold(
+                    appBar: AppBar(
+                      leading: IconButton(
+                        onPressed: () => controlarBack(context),
+                        icon: Icon(iconoFlechaAtras),
+                      ),
+                      forceMaterialTransparency: true,
+                      elevation: 0,
+                      title: Text(titulosPageView[pageViewIndex]!),
+                    ),
+                    extendBodyBehindAppBar: true,
+                    body: Stack(
+                      children: [
+                        cabecera(context, widget.heroTag, offsetValue),
+                        if (detalleJugador != null && detallePartida != null)
+                          PageView(
+                              scrollDirection: Axis.horizontal,
+                              controller: _pageController,
+                              onPageChanged: (value) => setState(() {
+                                    pageViewIndex = value;
+                                  }),
+                              children: [const SizedBox.shrink(), contenido(juegoDto, detalleJugador, detallePartida)]),
+                        Align(
+                          alignment: FractionalOffset(0.5, 0.98 + offsetValue),
+                          child: FadeTransition(
+                            opacity: AlwaysStoppedAnimation(1 - (offsetValue * 1.5)),
+                            child: Column(mainAxisSize: MainAxisSize.min, children: [
+                              JuegoCommons().subtitulo(juegoDto!, null, context),
+                              const SizedBox(height: 10),
+                              _resumenPartida(juegoDto!, detallePartida, detalleJugador),
+                              GestureDetector(
+                                  onTap: () => _navegarPage(1),
+                                  child: const Align(alignment: FractionalOffset(0, 1), child: ShimmerArrows(icon: Icons.keyboard_arrow_right))),
+                            ]),
+                          ),
+                        ),
+                      ],
+                    )),
+              )),
+    );
+  }
 
-    if (detallePartida != null && detalleJugador != null) {
-      juegoDto = JuegoDto(
-          id: detallePartida.idJuego,
-          nombre: detallePartida.tituloJuego.toString(),
-          subtitulo: detallePartida.subtituloJuego,
-          urlImagen: detallePartida.urlImagenJuego);
+  void controlarBack(BuildContext context) {
+    if (pageViewIndex == 0) {
+      Navigator.of(context).pop();
+    } else {
+      _navegarPage(pageViewIndex - 1);
     }
+  }
 
-    return SafeArea(
-      child: Scaffold(
-        // drawer: const CustomNavigation(),
-        body: CustomScrollView(
-          physics: const ClampingScrollPhysics(),
-          slivers: [
-            SliverPersistentHeader(
-                delegate:
-                    CustomSliverAppBarDelegate(juego: juegoDto, expandedHeight: MediaQuery.of(context).size.height * 0.35, heroTag: widget.heroTag),
-                pinned: true),
-            contenido(juegoDto, detalleJugador, detallePartida)
-          ],
+  Widget cabecera(BuildContext context, final String heroTag, final double offset) {
+    final size = MediaQuery.of(context).size;
+
+    return Hero(
+      tag: heroTag,
+      child: FadeTransition(
+        opacity: AlwaysStoppedAnimation(1 - offset),
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(juegoDto!.urlImagen!),
+              fit: BoxFit.cover,
+            ),
+          ),
+          height: size.height * 0.65,
+          child: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: const [0.5, 1],
+                    colors: [Colors.transparent, color.primary],
+                  ),
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    stops: const [0, 0.3],
+                    colors: [color.primary, Colors.transparent],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget contenido(JuegoDto? juegoDto, JugadorDto? detalleJugador, PartidaDto? detallePartida) {
-    if (detallePartida == null || detalleJugador == null || juegoDto == null) {
-      return SliverList(
-          delegate: SliverChildBuilderDelegate(
-              (context, index) => const SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        // PantallaCargaBasica(texto: 'Consultando informacion de la partida'),
-                      ],
-                    ),
-                  ),
-              childCount: 1));
-    }
-
-    return SliverList(
-        delegate: SliverChildBuilderDelegate((context, index) {
-      return SingleChildScrollView(
-        child: Column(
-          children: [
-            JuegoCommons().subtitulo(juegoDto, () {
-              ref.read(informacionJuegoProvider.notifier).saveData(juegoDto: juegoDto);
-
-              return Navigator.of(context).push(PageRouteBuilder(
-                pageBuilder: (context, animation, __) {
-                  return FadeTransition(
-                      opacity: animation,
-                      child: DetalleJuego(
-                        idJuego: juegoDto.id,
-                        heroTag: widget.heroTag,
-                      ));
-                },
-              ));
-            }, context),
-            JugadorCommons().informacionJugadorGrande(detalleJugador, context),
-            _informacionPartida(detallePartida),
-            _recordPartida(detallePartida),
-            _videos(detallePartida.listaVideosCompletos, 'Videos', "La partida no tiene videos."),
-            _videos(detallePartida.listaVideosClips, 'Clips', "La partida no tiene clips."),
-            const SizedBox(height: 20)
-          ],
-        ),
-      );
-    }, childCount: 1));
+  Widget contenido(JuegoDto? juegoDto, JugadorDto detalleJugador, PartidaDto detallePartida) {
+    return SafeArea(
+      child: ListView(
+        children: [
+          JugadorCommons().informacionJugadorGrande(detalleJugador, context),
+          _informacionPartida(detallePartida),
+          _recordPartida(detallePartida),
+          _videos(detallePartida.listaVideosCompletos, 'Videos', "La partida no tiene videos."),
+          _videos(detallePartida.listaVideosClips, 'Clips', "La partida no tiene clips."),
+          const SizedBox(height: 20)
+        ],
+      ),
+    );
   }
 
   Widget _informacionPartida(final PartidaDto detallePartida) {
@@ -254,6 +324,36 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _resumenPartida(JuegoDto juegoDto, PartidaDto? detallePartida, JugadorDto? detalleJugador) {
+    if (detallePartida == null || detalleJugador == null) {
+      return const SizedBox(height: 100, child: PantallaCargaBasica(texto: "Consultando las partidas del juego seleccionado"));
+    }
+
+    return IntrinsicHeight(
+      child: Column(
+        children: [
+          ViewData().muestraInformacionAccion(
+              accion: () => _navegarPage(1),
+              items: [Text(detalleJugador.nombre.toString(), style: styleTexto.titleLarge?.copyWith(color: color.outline)), const Text('Jugador')]),
+          ViewData().muestraInformacionAccion(
+            accion: () => _navegarPage(1),
+            items: [
+              Text(HumanFormat.fechaSmall(detallePartida.fecha), style: styleTexto.bodyLarge?.copyWith(color: color.outline)),
+              const Text('Fecha partida')
+            ],
+          ),
+          ViewData().muestraInformacionAccion(
+            accion: () => _navegarPage(1),
+            items: [
+              Text(detallePartida.nombre.toString(), style: styleTexto.bodyLarge?.copyWith(color: color.outline)),
+              const Text('Nombre partida')
+            ],
+          ),
+        ],
       ),
     );
   }

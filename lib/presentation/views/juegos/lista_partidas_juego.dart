@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
+import 'package:no_hit/infraestructure/providers/juegos/informacion_juego_provider.dart';
 import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
-class ListaPartidas extends StatelessWidget {
+class ListaPartidas extends ConsumerWidget {
   final PartidaDto? primeraPartida;
   final PartidaDto? ultimaPartida;
   final List<PartidaDto>? listaPartidas;
@@ -12,7 +14,7 @@ class ListaPartidas extends StatelessWidget {
   const ListaPartidas({super.key, this.primeraPartida, this.ultimaPartida, required this.heroTag, required this.listaPartidas});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final ColorScheme color = Theme.of(context).colorScheme;
 
     if (primeraPartida == null && ultimaPartida == null) {
@@ -44,17 +46,7 @@ class ListaPartidas extends StatelessWidget {
                           style: styleTexto.bodyLarge?.copyWith(color: color.outline),
                         )
                       ],
-                      accion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
-                            return FadeTransition(
-                                opacity: animation,
-                                child: DetallePartidaView(
-                                    partidaId: primeraPartida!.id,
-                                    jugadorId: primeraPartida!.idJugador,
-                                    heroTag: heroTag,
-                                    idJuego: primeraPartida!.idJuego,
-                                    nombreJuego: primeraPartida!.tituloJuego.toString(),
-                                    urlImagenJuego: ""));
-                          }))),
+                      accion: () => navegarPartida(context, ref, primeraPartida!)),
                   Visibility(
                     visible: primeraPartida!.id != ultimaPartida!.id,
                     child: Divider(color: color.tertiary, thickness: 2, height: 1),
@@ -69,30 +61,33 @@ class ListaPartidas extends StatelessWidget {
                             Text(ultimaPartida!.fecha.toString(), style: styleTexto.bodySmall),
                             Text('Ultima partida', style: styleTexto.bodyLarge?.copyWith(color: color.outline))
                           ],
-                          accion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
-                                return FadeTransition(
-                                    opacity: animation,
-                                    child: DetallePartidaView(
-                                      partidaId: ultimaPartida!.id,
-                                      jugadorId: ultimaPartida!.idJugador,
-                                      heroTag: heroTag,
-                                      idJuego: ultimaPartida!.idJuego,
-                                      nombreJuego: ultimaPartida!.tituloJuego.toString(),
-                                      urlImagenJuego: "",
-                                    ));
-                              }))))
+                          accion: () => navegarPartida(context, ref, ultimaPartida!)))
                 ]),
               ),
             ),
             const SizedBox(height: 10),
-            if (listaPartidas!.length > 2) Expanded(child: _listaPartidas(listaPartidas, styleTexto))
+            if (listaPartidas!.length > 2) Expanded(child: _listaPartidas(listaPartidas, styleTexto, ref))
           ],
         ),
       ),
     );
   }
 
-  Widget _listaPartidas(final List<PartidaDto>? listaPartidas, TextTheme styleTexto) {
+  Future<dynamic> navegarPartida(BuildContext context, WidgetRef ref, PartidaDto partida) {
+    ref.read(informacionJuegoProvider.notifier).saveData(juegoDto: partida.getJuegoDto());
+    return Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+      return FadeTransition(
+          opacity: animation,
+          child: DetallePartidaView(
+              partidaId: partida.id,
+              jugadorId: partida.idJugador,
+              heroTag: heroTag,
+              idJuego: partida.idJuego,
+              nombreJuego: partida.tituloJuego.toString()));
+    }));
+  }
+
+  Widget _listaPartidas(final List<PartidaDto>? listaPartidas, TextTheme styleTexto, WidgetRef ref) {
     if (listaPartidas!.isEmpty) {
       return const Center(
         child: Text("El juego no posee partidas."),
@@ -103,7 +98,7 @@ class ListaPartidas extends StatelessWidget {
       itemCount: listaPartidas.length,
       itemBuilder: (BuildContext context, int index) {
         PartidaDto partida = listaPartidas[index];
-        return PartidaCommons().tarjetaPartidaJuegoJugador(partida: partida, context: context, mostrarJugador: true);
+        return PartidaCommons().tarjetaPartidaJuegoJugador(partida: partida, context: context, mostrarJugador: true, ref: ref);
       },
     );
   }

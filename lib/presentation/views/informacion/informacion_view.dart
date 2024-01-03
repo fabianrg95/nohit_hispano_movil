@@ -42,6 +42,7 @@ class ContenidoState extends State<Contenido> {
 
   @override
   Widget build(BuildContext context) {
+    final TextTheme styleTexto = Theme.of(context).textTheme;
     return SingleChildScrollView(
       child: ExpansionPanelList(
           expansionCallback: (int index, bool isExpanded) {
@@ -51,10 +52,19 @@ class ContenidoState extends State<Contenido> {
           },
           children: informacion.map<ExpansionPanel>((Item dato) {
             return ExpansionPanel(
+              canTapOnHeader: true,
               headerBuilder: (context, isExpanded) {
-                return ListTile(title: Text(dato.headerValue));
+                return ListTile(
+                    title: Text(
+                  dato.headerValue,
+                  style: styleTexto.titleMedium,
+                ));
               },
-              body: ListTile(title: Text(dato.expandedValue)),
+              body: ListTile(
+                  title: Text(
+                dato.expandedValue,
+                style: styleTexto.bodyLarge,
+              )),
               isExpanded: dato.isExpanded,
             );
           }).toList()),

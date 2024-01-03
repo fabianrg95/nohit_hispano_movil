@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
@@ -18,6 +20,7 @@ class DetalleJugadorView extends ConsumerStatefulWidget {
 class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
   late ColorScheme color;
   late TextTheme styleTexto;
+  IconData iconoFlechaAtras = Icons.arrow_back;
 
   int pageViewIndex = 0;
   final Map<int, String> titulosPageView = {0: '', 1: 'Juegos'};
@@ -30,6 +33,10 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
     super.initState();
     ref.read(detalleJugadorProvider.notifier).loadData(widget.idJugador);
     _pageController.addListener(_pageListener);
+
+    if (Platform.isIOS) {
+      iconoFlechaAtras = Icons.arrow_back_ios_new;
+    }
   }
 
   @override
@@ -56,40 +63,68 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
       return const PantallaCargaBasica(texto: "Consultando la informacion del jugador");
     }
 
-    return ValueListenableBuilder(
-        valueListenable: offset,
-        builder: (BuildContext context, offsetValue, _) {
-          return SafeArea(
-            child: Scaffold(
-              extendBodyBehindAppBar: true,
-              appBar: AppBar(forceMaterialTransparency: true, elevation: 0, title: Text(titulosPageView[pageViewIndex]!)),
-              body: Stack(children: [
-                _cabecera(jugador, offsetValue),
-                PageView(
-                  controller: _pageController,
-                  onPageChanged: (value) => setState(() {
-                    pageViewIndex = value;
-                  }),
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    FadeTransition(
-                        opacity: AlwaysStoppedAnimation(1 - (offsetValue * 2)),
-                        child: const Align(alignment: FractionalOffset(0, 1), child: ShimmerArrows(icon: Icons.keyboard_arrow_right))),
-                    PageView(physics: const NeverScrollableScrollPhysics(), children: [_Partidas(jugador: jugador)])
-                  ],
-                ),
-                Align(
-                  alignment: FractionalOffset(0, (jugador.partidas.length > 1 ? 0.57 : 0.48) + offsetValue),
-                  child: FadeTransition(
-                    opacity: AlwaysStoppedAnimation(1 - offsetValue),
-                    child: Column(mainAxisSize: MainAxisSize.min, children: [_contenido(jugador)]),
+    return PopScope(
+      canPop: pageViewIndex == 0,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+        controlarBack(context);
+      },
+      child: ValueListenableBuilder(
+          valueListenable: offset,
+          builder: (BuildContext context, offsetValue, _) {
+            return SafeArea(
+              child: Scaffold(
+                extendBodyBehindAppBar: true,
+                appBar: AppBar(
+                    leading: IconButton(
+                      onPressed: () {
+                        controlarBack(context);
+                      },
+                      icon: Icon(iconoFlechaAtras),
+                    ),
+                    forceMaterialTransparency: true,
+                    elevation: 0,
+                    title: Text(titulosPageView[pageViewIndex]!)),
+                body: Stack(children: [
+                  _cabecera(jugador, offsetValue),
+                  PageView(
+                    controller: _pageController,
+                    onPageChanged: (value) => setState(() {
+                      pageViewIndex = value;
+                    }),
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      FadeTransition(
+                          opacity: AlwaysStoppedAnimation(1 - (offsetValue * 2)),
+                          child: Align(
+                              alignment: const FractionalOffset(0, 1),
+                              child: GestureDetector(onTap: () => _navegarPage(1), child: const ShimmerArrows(icon: Icons.keyboard_arrow_right)))),
+                      PageView(physics: const NeverScrollableScrollPhysics(), children: [_Partidas(jugador: jugador)])
+                    ],
                   ),
-                ),
-              ]),
-            ),
-          );
-        });
+                  Align(
+                    alignment: FractionalOffset(0, (jugador.partidas.length > 1 ? 0.57 : 0.48) + offsetValue),
+                    child: FadeTransition(
+                      opacity: AlwaysStoppedAnimation(1 - offsetValue),
+                      child: Column(mainAxisSize: MainAxisSize.min, children: [_contenido(jugador)]),
+                    ),
+                  ),
+                ]),
+              ),
+            );
+          }),
+    );
   }
+
+  void controlarBack(BuildContext context) {
+    if (pageViewIndex == 0) {
+      Navigator.of(context).pop();
+    } else {
+      _navegarPage(pageViewIndex - 1);
+    }
+  }
+
+  void _navegarPage(int page) => _pageController.animateToPage(page, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
 
   Widget _cabecera(final JugadorDto jugador, double offsetValue) {
     final size = MediaQuery.of(context).size;
@@ -222,44 +257,25 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                           style: styleTexto.bodyLarge?.copyWith(color: color.outline),
                         )
                       ],
-                      accion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
-                            return FadeTransition(
-                                opacity: animation,
-                                child: DetallePartidaView(
-                                    partidaId: jugador.primeraPartida!.id,
-                                    jugadorId: jugador.primeraPartida!.idJugador,
-                                    heroTag: jugador.primeraPartida!.id.toString(),
-                                    idJuego: jugador.primeraPartida!.idJuego,
-                                    nombreJuego: jugador.primeraPartida!.tituloJuego.toString(),
-                                    urlImagenJuego: ""));
-                          }))),
+                      accion: () => navegarPartida(jugador.primeraPartida!)),
                   Visibility(
                     visible: jugador.primeraPartida!.id != jugador.ultimaPartida!.id,
                     child: Divider(color: color.tertiary, thickness: 2, height: 1),
                   ),
                   Visibility(
-                      visible: jugador.primeraPartida!.id != jugador.ultimaPartida!.id,
-                      child: ViewData().muestraInformacionAccion(
-                          alineacion: CrossAxisAlignment.end,
-                          items: [
-                            Text('${jugador.ultimaPartida!.tituloJuego.toString()} ${jugador.ultimaPartida!.subtituloJuego ?? ''}',
-                                style: styleTexto.titleMedium),
-                            Text(jugador.ultimaPartida!.nombre.toString(),
-                                style: styleTexto.labelSmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
-                            Text(jugador.ultimaPartida!.fecha.toString(), style: styleTexto.labelSmall),
-                            Text('Ultima partida', style: styleTexto.bodyLarge?.copyWith(color: color.outline))
-                          ],
-                          accion: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
-                                return FadeTransition(
-                                    opacity: animation,
-                                    child: DetallePartidaView(
-                                        partidaId: jugador.ultimaPartida!.id,
-                                        jugadorId: jugador.ultimaPartida!.idJugador,
-                                        heroTag: jugador.ultimaPartida!.id.toString(),
-                                        idJuego: jugador.ultimaPartida!.idJuego,
-                                        nombreJuego: jugador.ultimaPartida!.tituloJuego.toString(),
-                                        urlImagenJuego: ""));
-                              }))))
+                    visible: jugador.primeraPartida!.id != jugador.ultimaPartida!.id,
+                    child: ViewData().muestraInformacionAccion(
+                        alineacion: CrossAxisAlignment.end,
+                        items: [
+                          Text('${jugador.ultimaPartida!.tituloJuego.toString()} ${jugador.ultimaPartida!.subtituloJuego ?? ''}',
+                              style: styleTexto.titleMedium),
+                          Text(jugador.ultimaPartida!.nombre.toString(),
+                              style: styleTexto.labelSmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+                          Text(jugador.ultimaPartida!.fecha.toString(), style: styleTexto.labelSmall),
+                          Text('Ultima partida', style: styleTexto.bodyLarge?.copyWith(color: color.outline))
+                        ],
+                        accion: () => navegarPartida(jugador.ultimaPartida!)),
+                  )
                 ],
               ),
             ),
@@ -268,18 +284,32 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
       ),
     );
   }
+
+  void navegarPartida(PartidaDto partida) {
+    ref.read(informacionJuegoProvider.notifier).saveData(juegoDto: partida.getJuegoDto());
+
+    Navigator.of(context).push(PageRouteBuilder(
+        pageBuilder: (context, animation, __) => FadeTransition(
+            opacity: animation,
+            child: DetallePartidaView(
+                partidaId: partida.id,
+                jugadorId: partida.idJugador,
+                heroTag: partida.id.toString(),
+                idJuego: partida.idJuego,
+                nombreJuego: partida.tituloJuego.toString()))));
+  }
 }
 
-class _Partidas extends StatefulWidget {
+class _Partidas extends ConsumerStatefulWidget {
   final JugadorDto jugador;
 
   const _Partidas({required this.jugador});
 
   @override
-  State<_Partidas> createState() => _PartidasState();
+  _PartidasState createState() => _PartidasState();
 }
 
-class _PartidasState extends State<_Partidas> {
+class _PartidasState extends ConsumerState<_Partidas> {
   late List<PartidaDto> partidas = [];
 
   @override
@@ -291,11 +321,12 @@ class _PartidasState extends State<_Partidas> {
         itemBuilder: (context, index) {
           final JuegoDto juego = widget.jugador.juegos[index];
           return GestureDetector(
-              onTap: () => _informacionPartidasJugador(partidas: juego.partidas, context: context), child: CardJuego(juego: juego, accion: null));
+              onTap: () => _informacionPartidasJugador(partidas: juego.partidas, context: context, ref: ref),
+              child: CardJuego(juego: juego, accion: null));
         });
   }
 
-  Future _informacionPartidasJugador({required List<PartidaDto> partidas, required BuildContext context}) {
+  Future _informacionPartidasJugador({required List<PartidaDto> partidas, required BuildContext context, required WidgetRef ref}) {
     final ColorScheme color = Theme.of(context).colorScheme;
     final TextTheme styleTexto = Theme.of(context).textTheme;
 
@@ -324,7 +355,7 @@ class _PartidasState extends State<_Partidas> {
                   itemCount: partidas.isEmpty ? 0 : partidas.length,
                   itemBuilder: (BuildContext context, int index) {
                     PartidaDto partida = partidas[index];
-                    return PartidaCommons().tarjetaPartidaJuegoJugador(partida: partida, context: context);
+                    return PartidaCommons().tarjetaPartidaJuegoJugador(partida: partida, context: context, ref: ref);
                   },
                 )
               ]),

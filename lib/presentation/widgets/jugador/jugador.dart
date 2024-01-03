@@ -49,7 +49,7 @@ class JugadorCommons {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 10, left: 30),
-                    child: BanderaJugador(codigoBandera: detalleJugador.codigoBandera, tamanio: 70),
+                    child: BanderaJugador(codigoBandera: detalleJugador.codigoBandera, tamanio: 50),
                   ),
                   Expanded(
                     child: Column(

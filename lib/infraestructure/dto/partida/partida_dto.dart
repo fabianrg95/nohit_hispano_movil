@@ -1,3 +1,5 @@
+import 'package:no_hit/infraestructure/dto/dtos.dart';
+
 class PartidaDto {
   final int id;
   final int idJuego;
@@ -27,4 +29,8 @@ class PartidaDto {
       this.primeraPartidaJugador = false,
       this.primeraPartidaMundo = false,
       this.urlImagenJuego});
+
+  JuegoDto getJuegoDto() {
+    return JuegoDto(id: idJuego, nombre: tituloJuego.toString(), subtitulo: subtituloJuego, urlImagen: urlImagenJuego);
+  }
 }

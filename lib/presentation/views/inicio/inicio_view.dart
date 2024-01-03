@@ -223,19 +223,19 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                   ),
                 ),
               ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () => setState(() {
-                    ref.read(themeNotifierProvider.notifier).toggleDarkmode();
-                  }),
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    decoration: ViewData().decorationContainerBasic(color: color),
-                    child: Icon(esTemaClaro ? Icons.dark_mode_outlined : Icons.light_mode_outlined),
-                  ),
-                ),
-              )
+              // Expanded(
+              //   child: GestureDetector(
+              //     onTap: () => setState(() {
+              //       ref.read(themeNotifierProvider.notifier).toggleDarkmode();
+              //     }),
+              //     child: Container(
+              //       margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
+              //       padding: const EdgeInsets.only(top: 10, bottom: 10),
+              //       decoration: ViewData().decorationContainerBasic(color: color),
+              //       child: Icon(esTemaClaro ? Icons.dark_mode_outlined : Icons.light_mode_outlined),
+              //     ),
+              //   ),
+              // )
             ],
           ),
           const SizedBox(height: 10)

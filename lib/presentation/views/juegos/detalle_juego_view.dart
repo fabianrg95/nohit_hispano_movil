@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
@@ -25,6 +27,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
   late ColorScheme color;
   late TextTheme styleTexto;
   int pageViewIndex = 0;
+  IconData iconoFlechaAtras = Icons.arrow_back;
 
   final Map<int, String> titulosPageView = {0: '', 1: 'Partidas', 2: 'Jugadores'};
 
@@ -37,6 +40,10 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
     ref.read(informacionJuegoProvider.notifier).loadData(idJuego: widget.idJuego);
     ref.read(partidasJuegoProvider.notifier).loadData(widget.idJuego);
     _pageController.addListener(_pageListener);
+
+    if (Platform.isIOS) {
+      iconoFlechaAtras = Icons.arrow_back_ios_new;
+    }
   }
 
   @override
@@ -66,13 +73,24 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
     color = Theme.of(context).colorScheme;
     styleTexto = Theme.of(context).textTheme;
 
-    return ValueListenableBuilder(
-      valueListenable: offset,
-      builder: (BuildContext context, offsetValue, _) {
-        return SafeArea(
+    return PopScope(
+      canPop: pageViewIndex == 0,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+        controlarBack(context);
+      },
+      child: ValueListenableBuilder(
+        valueListenable: offset,
+        builder: (BuildContext context, offsetValue, _) => SafeArea(
           child: Scaffold(
             // drawer: const CustomNavigation(),
             appBar: AppBar(
+              leading: IconButton(
+                onPressed: () {
+                  controlarBack(context);
+                },
+                icon: Icon(iconoFlechaAtras),
+              ),
               forceMaterialTransparency: true,
               elevation: 0,
               title: Text(titulosPageView[pageViewIndex]!),
@@ -89,7 +107,9 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
                         }),
                     children: [
                       // const SizedBox.shrink(),
-                      const Align(alignment: FractionalOffset(0, 1), child: ShimmerArrows(icon: Icons.keyboard_arrow_right)),
+                      Align(
+                          alignment: const FractionalOffset(0, 1),
+                          child: GestureDetector(onTap: () => _navegarPage(1), child: const ShimmerArrows(icon: Icons.keyboard_arrow_right))),
                       ListaPartidas(
                           primeraPartida: resumenJuego?.primeraPartida,
                           ultimaPartida: resumenJuego?.ultimaPartida,
@@ -110,9 +130,17 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
               ),
             ]),
           ),
-        );
-      },
+        ),
+      ),
     );
+  }
+
+  void controlarBack(BuildContext context) {
+    if (pageViewIndex == 0) {
+      Navigator.of(context).pop();
+    } else {
+      _navegarPage(pageViewIndex - 1);
+    }
   }
 
   Widget cabecera(BuildContext context, final String heroTag, final double offset) {

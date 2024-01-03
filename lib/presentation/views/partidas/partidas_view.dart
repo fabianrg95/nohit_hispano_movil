@@ -56,7 +56,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
 
   Future<void> _reiniciarPartidas() async {
     setState(() {
-      ref.read(ultimasPartidasProvider.notifier).loadData();
+      ref.read(ultimasPartidasProvider.notifier).reloadData();
     });
   }
 
@@ -90,17 +90,19 @@ class PartidasViewState extends ConsumerState<PartidasView> {
     final String heroTag = 'Partida-${partida.id}';
 
     return GestureDetector(
-      onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
-        return FadeTransition(
-            opacity: animation,
-            child: DetallePartidaView(
-                partidaId: partida.id,
-                jugadorId: partida.idJugador,
-                heroTag: heroTag,
-                idJuego: partida.idJuego,
-                nombreJuego: partida.tituloJuego.toString(),
-                urlImagenJuego: partida.urlImagenJuego.toString()));
-      })),
+      onTap: () {
+        ref.read(informacionJuegoProvider.notifier).saveData(juegoDto: partida.getJuegoDto());
+        Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+          return FadeTransition(
+              opacity: animation,
+              child: DetallePartidaView(
+                  partidaId: partida.id,
+                  jugadorId: partida.idJugador,
+                  heroTag: heroTag,
+                  idJuego: partida.idJuego,
+                  nombreJuego: partida.tituloJuego.toString()));
+        }));
+      },
       child: Container(
           margin: const EdgeInsets.only(right: 20, left: 20),
           height: 600,
