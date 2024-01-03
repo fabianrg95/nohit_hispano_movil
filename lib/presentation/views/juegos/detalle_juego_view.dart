@@ -115,7 +115,11 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
                           ultimaPartida: resumenJuego?.ultimaPartida,
                           heroTag: widget.heroTag,
                           listaPartidas: resumenJuego!.partidas),
-                      ListaJugadoresJuego(listaJugadores: resumenJuego!.jugadores)
+                      ListaJugadoresJuego(
+                        listaJugadores: resumenJuego!.jugadores,
+                        primeraPartida: resumenJuego?.primeraPartida,
+                        ultimaPartida: resumenJuego?.ultimaPartida,
+                      )
                     ]),
               Align(
                 alignment: FractionalOffset(0.5, 0.88 + offsetValue),

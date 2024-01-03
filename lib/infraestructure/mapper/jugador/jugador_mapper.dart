@@ -80,8 +80,14 @@ class JugadorMapper {
     Map<int, JugadorDto> listaJugadores = {};
 
     for (var partida in partidas) {
-      if (listaJugadores[partida.jugador!.id] == null) {
-        listaJugadores = {...listaJugadores, partida.jugador!.id: entityToDtoBasico(partida.jugador!)};
+      JugadorDto? jugador = listaJugadores[partida.jugador!.id];
+      if (jugador == null) {
+        jugador = entityToDtoBasico(partida.jugador!);
+        jugador.cantidadPartidasJuego += 1;
+        listaJugadores = {...listaJugadores, partida.jugador!.id: jugador};
+      } else {
+        jugador.cantidadPartidasJuego += 1;
+        listaJugadores[partida.jugador!.id] == jugador;
       }
     }
 

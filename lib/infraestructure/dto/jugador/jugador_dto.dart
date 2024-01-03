@@ -9,6 +9,7 @@ class JugadorDto {
   final String? codigoBandera;
   final String? urlYoutube;
   final String? urlTwitch;
+  int cantidadPartidasJuego = 0;
 
   PartidaDto? primeraPartida;
   PartidaDto? ultimaPartida;
