@@ -43,10 +43,6 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
     ref.read(detallePartidaProvider.notifier).loadData(widget.partidaId);
     ref.read(detalleJugadorProvider.notifier).loadData(widget.jugadorId);
     _pageController.addListener(_pageListener);
-
-    if (Platform.isIOS) {
-      iconoFlechaAtras = Icons.arrow_back_ios_new;
-    }
   }
 
   @override
@@ -88,10 +84,6 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
           builder: (BuildContext context, offsetValue, _) => SafeArea(
                 child: Scaffold(
                     appBar: AppBar(
-                      leading: IconButton(
-                        onPressed: () => controlarBack(context),
-                        icon: Icon(iconoFlechaAtras),
-                      ),
                       forceMaterialTransparency: true,
                       elevation: 0,
                       title: Text(titulosPageView[pageViewIndex]!),

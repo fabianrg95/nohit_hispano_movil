@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
@@ -40,10 +38,6 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
     ref.read(informacionJuegoProvider.notifier).loadData(idJuego: widget.idJuego);
     ref.read(partidasJuegoProvider.notifier).loadData(widget.idJuego);
     _pageController.addListener(_pageListener);
-
-    if (Platform.isIOS) {
-      iconoFlechaAtras = Icons.arrow_back_ios_new;
-    }
   }
 
   @override
@@ -85,12 +79,6 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
           child: Scaffold(
             // drawer: const CustomNavigation(),
             appBar: AppBar(
-              leading: IconButton(
-                onPressed: () {
-                  controlarBack(context);
-                },
-                icon: Icon(iconoFlechaAtras),
-              ),
               forceMaterialTransparency: true,
               elevation: 0,
               title: Text(titulosPageView[pageViewIndex]!),

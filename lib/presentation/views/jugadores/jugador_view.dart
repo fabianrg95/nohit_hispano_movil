@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
@@ -33,10 +31,6 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
     super.initState();
     ref.read(detalleJugadorProvider.notifier).loadData(widget.idJugador);
     _pageController.addListener(_pageListener);
-
-    if (Platform.isIOS) {
-      iconoFlechaAtras = Icons.arrow_back_ios_new;
-    }
   }
 
   @override
@@ -75,16 +69,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
             return SafeArea(
               child: Scaffold(
                 extendBodyBehindAppBar: true,
-                appBar: AppBar(
-                    leading: IconButton(
-                      onPressed: () {
-                        controlarBack(context);
-                      },
-                      icon: Icon(iconoFlechaAtras),
-                    ),
-                    forceMaterialTransparency: true,
-                    elevation: 0,
-                    title: Text(titulosPageView[pageViewIndex]!)),
+                appBar: AppBar(forceMaterialTransparency: true, elevation: 0, title: Text(titulosPageView[pageViewIndex]!)),
                 body: Stack(children: [
                   _cabecera(jugador, offsetValue),
                   PageView(
