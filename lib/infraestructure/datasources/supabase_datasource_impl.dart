@@ -9,7 +9,7 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
   Future<List<JuegoEntity>> obtenerJuegos(final bool oficialTeamHitless) async {
     final List<Map<String, dynamic>> respuesta = await supabase
         .from('juegos')
-        .select<List<Map<String, dynamic>>>('id, nombre, subtitulo, url_imagen, oficial_team_hitless')
+        .select('id, nombre, subtitulo, url_imagen, oficial_team_hitless')
         .eq('oficial_team_hitless', oficialTeamHitless)
         .order('nombre', ascending: true);
 
@@ -18,10 +18,8 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
 
   @override
   Future<List<JugadorEntity>> obtenerJugadores() async {
-    final List<Map<String, dynamic>> respuesta = await supabase
-        .from('jugadores')
-        .select<List<Map<String, dynamic>>>('id, nombre_usuario, nacionalidad(codigo_bandera))')
-        .order('nombre_usuario', ascending: true);
+    final List<Map<String, dynamic>> respuesta =
+        await supabase.from('jugadores').select('id, nombre_usuario, nacionalidad(codigo_bandera))').order('nombre_usuario', ascending: true);
     return respuesta.map((jugador) => JugadorEntity.fromJsonBasico(jugador)).toList();
   }
 
@@ -29,12 +27,12 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
   Future<JugadorEntity> obtenerInfromacionJugador(final int idJugador) async {
     final List<Map<String, dynamic>> respuesta = await supabase
         .from('jugadores')
-        .select<List<Map<String, dynamic>>>('id, nombre_usuario, url_canal_youtube, url_canal_twitch, fecha_primera_partida, '
+        .select('id, nombre_usuario, url_canal_youtube, url_canal_twitch, fecha_primera_partida, '
             'pronombre(pronombre, genero), '
             'nacionalidad(pais, codigo_bandera, gentilicio_masculino, gentilicio_femenino, neutro), '
             'partidas(id, fecha_partida, nombre_partida, juegos(id, nombre, subtitulo, url_imagen, oficial_team_hitless), jugadores(id)))')
         .eq('id', idJugador)
-        .order('id', foreignTable: 'partidas', ascending: true);
+        .order('id', referencedTable: 'partidas', ascending: true);
     return respuesta.map((jugador) => JugadorEntity.fromJsonDetalle(jugador)).first;
   }
 
@@ -42,7 +40,7 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
   Future<List<PartidaEntity>> obtenerPartidasPorJuego(final int idJuego) async {
     final List<Map<String, dynamic>> respuesta = await supabase
         .from('partidas')
-        .select<List<Map<String, dynamic>>>(
+        .select(
             'id, fecha_partida, nombre_partida, primera_partida_personal, primera_partida_hispano, primera_partida_mundial, offstream, videos_clips, '
             'jugadores(id, nombre_usuario, fecha_primera_partida, nacionalidad(pais, codigo_bandera, gentilicio_masculino, gentilicio_femenino, neutro)), '
             'juegos(id, nombre, subtitulo)')
@@ -54,18 +52,17 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
   @override
   Future<List<PartidaEntity>> obtenerUltimasPartidas(int? id) async {
     if (id == null) {
-      final List<Map<String, dynamic>> respuesta =
-          await supabase.from('partidas').select<List<Map<String, dynamic>>>('id').order('id', ascending: false).limit(1);
+      final List<Map<String, dynamic>> respuesta = await supabase.from('partidas').select('id').order('id', ascending: false).limit(1);
       id = respuesta[0]['id'] + 1;
     }
 
     final List<Map<String, dynamic>> respuesta = await supabase
         .from('partidas')
-        .select<List<Map<String, dynamic>>>(
+        .select(
             'id, fecha_partida, nombre_partida, primera_partida_personal, primera_partida_hispano, primera_partida_mundial, offstream, videos_clips, '
             'jugadores(id, nombre_usuario, nacionalidad(pais, codigo_bandera) ), '
             'juegos(id, nombre, subtitulo, url_imagen, oficial_team_hitless)')
-        .lt('id', id)
+        .lt('id', id!)
         .order('id', ascending: false)
         .limit(10);
     return respuesta.map((partida) => PartidaEntity.fromJson(partida)).toList();
@@ -75,7 +72,7 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
   Future<List<JugadorEntity>> obtenerUltimosJugadores() async {
     final List<Map<String, dynamic>> respuesta = await supabase
         .from('jugadores')
-        .select<List<Map<String, dynamic>>>('id, nombre_usuario, anio_nacimiento,'
+        .select('id, nombre_usuario, anio_nacimiento,'
             ' pronombre(pronombre, genero),'
             ' nacionalidad(pais, codigo_bandera, gentilicio_masculino, gentilicio_femenino, neutro))')
         .order('fecha_creacion', ascending: false)
@@ -87,7 +84,7 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
   Future<PartidaEntity> obtenerInformacionPartida(final int idPartida) async {
     final List<Map<String, dynamic>> respuesta = await supabase
         .from('partidas')
-        .select<List<Map<String, dynamic>>>(
+        .select(
             'id, fecha_partida, nombre_partida, primera_partida_personal, primera_partida_hispano, primera_partida_mundial, offstream, videos_clips, '
             'jugadores(id, nombre_usuario, fecha_primera_partida), '
             'juegos(id, nombre, subtitulo, url_imagen, oficial_team_hitless)')
@@ -98,29 +95,30 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
 
   @override
   Future<int> obtenerCantidadJugadores() async {
-    final respuesta = await supabase.from('jugadores').select('id', const FetchOptions(count: CountOption.exact, head: true));
+    final respuesta = await supabase.from('jugadores').select('id').count();
     return respuesta.count;
   }
 
   @override
   Future<int> obtenerCantidadPartidas() async {
-    final respuesta = await supabase.from('partidas').select('id', const FetchOptions(count: CountOption.exact, head: true));
+    final respuesta = await supabase.from('partidas').select('id').count();
     return respuesta.count;
   }
 
   @override
   Future<int> obtenerCantidadJuegos() async {
-    final respuesta = await supabase.from('juegos').select('id', const FetchOptions(count: CountOption.exact, head: true));
+    final respuesta = await supabase.from('juegos').select('id').count();
     return respuesta.count;
   }
 
   @override
   Future<JuegoEntity> obtenerInformacionJuego(final int idJuego) async {
-    final Map<String, dynamic> respuesta = await supabase
+    final respuesta = await supabase
         .from('juegos')
-        .select<Map<String, dynamic>>('id, nombre, subtitulo, url_imagen, oficial_team_hitless')
+        .select('id, nombre, subtitulo, url_imagen, oficial_team_hitless')
         .eq('id', idJuego)
-        .order('nombre', ascending: true);
+        .order('nombre', ascending: true)
+        .single();
 
     return JuegoEntity.fromJson(respuesta);
   }

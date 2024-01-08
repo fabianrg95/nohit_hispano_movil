@@ -16,6 +16,7 @@ class CustomNavigation extends StatelessWidget {
         child: ListView(
           children: [
             cabeceraMenu(color),
+            const SizedBox(height: 20),
             const _ItemMenu(item: MenuItem.inicio),
             const _ItemMenu(item: MenuItem.partidas),
             const _ItemMenu(item: MenuItem.juegos),

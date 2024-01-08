@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:go_router/go_router.dart';
+import 'package:no_hit/infraestructure/enums/enums.dart';
 import 'package:no_hit/presentation/views/informacion/informacion_data.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
@@ -12,14 +14,21 @@ class InformacionView extends StatelessWidget {
   Widget build(BuildContext context) {
     FlutterNativeSplash.remove();
 
-    return SafeArea(
-      child: Scaffold(
-        drawer: const CustomNavigation(),
-        appBar: AppBar(
-          forceMaterialTransparency: true,
-          title: const Text("Información"),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+        context.go(MenuItem.inicio.link);
+      },
+      child: SafeArea(
+        child: Scaffold(
+          drawer: const CustomNavigation(),
+          appBar: AppBar(
+            forceMaterialTransparency: true,
+            title: const Text("Información"),
+          ),
+          body: const Contenido(),
         ),
-        body: const Contenido(),
       ),
     );
   }

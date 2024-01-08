@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
+import 'package:no_hit/presentation/views/juegos/detalle_juego_view.dart';
 import 'package:no_hit/presentation/widgets/commons/arrow.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
@@ -112,7 +113,17 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
                           child: FadeTransition(
                             opacity: AlwaysStoppedAnimation(1 - (offsetValue * 1.5)),
                             child: Column(mainAxisSize: MainAxisSize.min, children: [
-                              JuegoCommons().subtitulo(juegoDto!, null, context),
+                              JuegoCommons().subtitulo(
+                                  juegoDto!,
+                                  () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+                                        return FadeTransition(
+                                            opacity: animation,
+                                            child: DetalleJuego(
+                                              idJuego: juegoDto!.id,
+                                              heroTag: widget.heroTag,
+                                            ));
+                                      })),
+                                  context),
                               const SizedBox(height: 10),
                               _resumenPartida(juegoDto!, detallePartida, detalleJugador),
                               GestureDetector(
@@ -349,7 +360,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
           ViewData().muestraInformacionAccion(
             accion: () => _navegarPage(1),
             items: [
-              Text(detallePartida.nombre.toString(), style: styleTexto.bodyLarge?.copyWith(color: color.outline)),
+              Text(detallePartida.nombre.toString(), textAlign: TextAlign.center, style: styleTexto.bodyLarge?.copyWith(color: color.outline)),
               const Text('Nombre partida')
             ],
           ),

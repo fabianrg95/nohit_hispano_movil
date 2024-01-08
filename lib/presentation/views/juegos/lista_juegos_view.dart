@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
+import 'package:no_hit/infraestructure/enums/enums.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
@@ -12,11 +14,18 @@ class ListaJuegosView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    return SafeArea(
-      child: Scaffold(
-        drawer: const CustomNavigation(),
-        appBar: AppBar(forceMaterialTransparency: true, title: const Text('Juegos')),
-        body: const TapbarJuegos(),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+        context.go(MenuItem.inicio.link);
+      },
+      child: SafeArea(
+        child: Scaffold(
+          drawer: const CustomNavigation(),
+          appBar: AppBar(forceMaterialTransparency: true, title: const Text('Juegos')),
+          body: const TapbarJuegos(),
+        ),
       ),
     );
   }

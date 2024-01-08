@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
+import 'package:no_hit/infraestructure/enums/enums.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
@@ -36,14 +38,21 @@ class PartidasViewState extends ConsumerState<PartidasView> {
     listaUltimasPartidas = ref.watch(ultimasPartidasProvider);
     color = Theme.of(context).colorScheme;
 
-    return Scaffold(
-      drawer: const CustomNavigation(),
-      appBar: _titulo(context),
-      body: RefreshIndicator(
-        onRefresh: () => _reiniciarPartidas(),
-        color: color.surfaceTint,
-        backgroundColor: color.tertiary,
-        child: _contenido(listaUltimasPartidas),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+        context.go(MenuItem.inicio.link);
+      },
+      child: Scaffold(
+        drawer: const CustomNavigation(),
+        appBar: _titulo(context),
+        body: RefreshIndicator(
+          onRefresh: () => _reiniciarPartidas(),
+          color: color.surfaceTint,
+          backgroundColor: color.tertiary,
+          child: _contenido(listaUltimasPartidas),
+        ),
       ),
     );
   }
