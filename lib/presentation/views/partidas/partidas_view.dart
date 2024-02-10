@@ -5,6 +5,8 @@ import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/enums/enums.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
+import 'package:no_hit/main.dart';
+import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
@@ -39,22 +41,20 @@ class PartidasViewState extends ConsumerState<PartidasView> {
     color = Theme.of(context).colorScheme;
 
     return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) {
-        if (didPop) return;
-        context.go(MenuItem.inicio.link);
-      },
-      child: Scaffold(
-        drawer: const CustomNavigation(),
-        appBar: _titulo(context),
-        body: RefreshIndicator(
-          onRefresh: () => _reiniciarPartidas(),
-          color: color.surfaceTint,
-          backgroundColor: color.tertiary,
-          child: _contenido(listaUltimasPartidas),
-        ),
-      ),
-    );
+        onPopInvoked: (didPop) {
+          if (didPop) return;
+          Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, __, ___) => const InicioView()));
+        },
+        child: Scaffold(
+          drawer: const CustomNavigation(),
+          appBar: _titulo(context),
+          body: RefreshIndicator(
+            onRefresh: () => _reiniciarPartidas(),
+            color: color.surfaceTint,
+            backgroundColor: color.tertiary,
+            child: _contenido(listaUltimasPartidas),
+          ),
+        ));
   }
 
   Future<void> _cargarPartidas() async {
@@ -149,11 +149,15 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                             children: [
                               Icon(Icons.sports_esports_outlined, color: color.inverseSurface.withOpacity(0.6)),
                               const SizedBox(width: 5),
-                              RichText(
-                                  text: TextSpan(style: estiloTexto.titleSmall?.copyWith(color: color.inverseSurface.withOpacity(0.6)), children: [
-                                TextSpan(text: partida.tituloJuego),
-                                TextSpan(text: partida.subtituloJuego != null ? " ${partida.subtituloJuego!}" : '')
-                              ]))
+                              SizedBox(
+                                width: size.width * 0.65,
+                                child: RichText(
+                                    overflow: TextOverflow.ellipsis,
+                                    text: TextSpan(
+                                      style: estiloTexto.titleSmall?.copyWith(color: color.inverseSurface.withOpacity(0.6)),
+                                      text: HumanFormat.nombreJuegoCompleto(partida.tituloJuego, partida.subtituloJuego),
+                                    )),
+                              )
                             ],
                           )
                         ],

@@ -24,7 +24,9 @@ class PartidaMapper {
 
     if (links != null && links.isNotEmpty) {
       for (final link in links) {
-        link.contains("clip") ? videosClips.add(link) : videosCompletos.add(link);
+        if (link.isNotEmpty) {
+          link.contains("clip") ? videosClips.add(link) : videosCompletos.add(link);
+        }
       }
       partidas.listaVideosCompletos = videosCompletos;
       partidas.listaVideosClips = videosClips;

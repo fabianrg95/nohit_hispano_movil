@@ -14,13 +14,16 @@ class TotalPartidasNotifier extends StateNotifier<int> {
 
   TotalPartidasNotifier(this.obtenerTotalPartidas) : super(0);
 
-  Future<void> loadData() async {
+  Future<void> loadData(bool reload) async {
     if (loadingdata == true) {
       return;
     }
     loadingdata = true;
 
-    state = await obtenerTotalPartidas();
+    if (state == 0 || reload == true) {
+      state = await obtenerTotalPartidas();
+    }
+
     loadingdata = false;
   }
 }

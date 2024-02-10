@@ -6,6 +6,7 @@ import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/enums/enums.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/presentation/delegates/jugadores/buscar_jugadores_delegate.dart';
+import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
 import 'package:no_hit/presentation/views/jugadores/jugador_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
@@ -42,10 +43,9 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
     }
 
     return PopScope(
-      canPop: false,
       onPopInvoked: (didPop) {
         if (didPop) return;
-        context.go(MenuItem.inicio.link);
+        Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, __, ___) => const InicioView()));
       },
       child: SafeArea(
         child: Scaffold(

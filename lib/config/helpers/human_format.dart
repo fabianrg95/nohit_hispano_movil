@@ -35,4 +35,8 @@ class HumanFormat {
   static String capitalize(final String texto) {
     return "${texto[0].toUpperCase()}${texto.substring(1).toLowerCase()}";
   }
+
+  static String nombreJuegoCompleto(final String? titulo, final String? subtitulo) {
+    return "${titulo ?? ''} ${subtitulo ?? ''}";
+  }
 }

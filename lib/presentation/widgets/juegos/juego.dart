@@ -15,8 +15,17 @@ class JuegoCommons {
           padding: const EdgeInsets.only(top: 10, bottom: 10),
           decoration: ViewData().decorationContainerBasic(color: color),
           child: Column(children: [
-            Text(juego.nombre.toString(), style: styleTexto.titleLarge),
-            if (juego.subtitulo != null) Text(juego.subtitulo.toString(), style: styleTexto.titleSmall)
+            Text(
+              juego.nombre.toString(),
+              style: styleTexto.titleLarge,
+              textAlign: TextAlign.center,
+            ),
+            if (juego.subtitulo != null)
+              Text(
+                juego.subtitulo.toString(),
+                style: styleTexto.titleSmall,
+                textAlign: TextAlign.center,
+              )
           ]),
         ));
   }

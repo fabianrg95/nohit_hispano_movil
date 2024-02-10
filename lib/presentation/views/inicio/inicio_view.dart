@@ -2,9 +2,8 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:no_hit/infraestructure/enums/enums.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
+import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class InicioView extends ConsumerStatefulWidget {
@@ -31,21 +30,21 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
   @override
   void initState() {
     super.initState();
+
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     );
-
     _controller.forward(from: 0.0);
 
     _actualizarConteos();
   }
 
-  Future<void> _actualizarConteos() async {
+  Future<void> _actualizarConteos({bool reload = false}) async {
     setState(() {
-      ref.read(totalJugadoresProvider.notifier).loadData();
-      ref.read(totalPartidasProvider.notifier).loadData();
-      ref.read(totalJuegosProvider.notifier).loadData();
+      ref.read(totalJugadoresProvider.notifier).loadData(reload);
+      ref.read(totalPartidasProvider.notifier).loadData(reload);
+      ref.read(totalJuegosProvider.notifier).loadData(reload);
       _controller.reset();
       _controller.forward(from: 0.0);
     });
@@ -72,14 +71,21 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
       FlutterNativeSplash.remove();
     }
 
-    return SafeArea(
-      child: Scaffold(
-        drawer: const CustomNavigation(),
-        body: RefreshIndicator(
-            onRefresh: () => _actualizarConteos(),
-            color: color.surfaceTint,
-            backgroundColor: color.tertiary,
-            child: contenido(totalJugadores, totalPartidas, context)),
+    return PopScope(
+      canPop: false,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            forceMaterialTransparency: true,
+          ),
+          extendBodyBehindAppBar: true,
+          drawer: const CustomNavigation(),
+          body: RefreshIndicator(
+              onRefresh: () => _actualizarConteos(reload: true),
+              color: color.surfaceTint,
+              backgroundColor: color.tertiary,
+              child: contenido(totalJugadores, totalPartidas, context)),
+        ),
       ),
     );
   }
@@ -115,7 +121,8 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
         children: [
           Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
             GestureDetector(
-              onTap: () => context.go(MenuItem.partidas.link),
+              onTap: () => Navigator.of(context)
+                  .push(PageRouteBuilder(pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: const PartidasView()))),
               child: Container(
                 margin: const EdgeInsets.only(left: 10, top: 10, right: 10),
                 padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -146,7 +153,8 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
           Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
             Expanded(
               child: GestureDetector(
-                onTap: () => context.go(MenuItem.jugadores.link),
+                onTap: () => Navigator.of(context).push(PageRouteBuilder(
+                    pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: const ListaJugadoresView()))),
                 child: Container(
                   margin: const EdgeInsets.only(left: 10, top: 10, right: 5),
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -175,7 +183,8 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
             ),
             Expanded(
               child: GestureDetector(
-                onTap: () => context.go(MenuItem.juegos.link),
+                onTap: () => Navigator.of(context).push(
+                    PageRouteBuilder(pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: const ListaJuegosView()))),
                 child: Container(
                   margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -210,7 +219,8 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
               Expanded(
                 flex: 3,
                 child: GestureDetector(
-                  onTap: () => context.go(MenuItem.informacion.link),
+                  onTap: () => Navigator.of(context).push(
+                      PageRouteBuilder(pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: const InformacionView()))),
                   child: Container(
                     margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
                     padding: const EdgeInsets.only(top: 10, bottom: 10),

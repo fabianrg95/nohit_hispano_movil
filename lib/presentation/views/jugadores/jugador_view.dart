@@ -20,6 +20,7 @@ class DetalleJugadorView extends ConsumerStatefulWidget {
 class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
   late ColorScheme color;
   late TextTheme styleTexto;
+  late Size size;
   IconData iconoFlechaAtras = Icons.arrow_back;
 
   int pageViewIndex = 0;
@@ -58,6 +59,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
     final JugadorDto? jugador = ref.watch(detalleJugadorProvider)[widget.idJugador];
     color = Theme.of(context).colorScheme;
     styleTexto = Theme.of(context).textTheme;
+    size = MediaQuery.of(context).size;
 
     if (jugador == null || jugador.id == 0 || jugador.id != widget.idJugador) {
       return const PantallaCargaBasica(texto: "Consultando la informacion del jugador");
@@ -94,20 +96,21 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                     }),
                     scrollDirection: Axis.horizontal,
                     children: [
-                      FadeTransition(
-                          opacity: AlwaysStoppedAnimation(1 - (offsetValue * 2)),
-                          child: Align(
-                              alignment: const FractionalOffset(0, 1),
-                              child: GestureDetector(onTap: () => _navegarPage(1), child: const ShimmerArrows(icon: Icons.keyboard_arrow_right)))),
+                      Align(
+                        alignment: FractionalOffset(0, (jugador.partidas.length > 1 ? 0.57 : 0.48) + offsetValue),
+                        child: FadeTransition(
+                            opacity: AlwaysStoppedAnimation(1 - (offsetValue * 2)),
+                            child: Column(
+                              children: [
+                                SizedBox(height: size.height * 0.22),
+                                _contenido(jugador),
+                                const Expanded(child: SizedBox(height: 1)),
+                                GestureDetector(onTap: () => _navegarPage(1), child: const ShimmerArrows(icon: Icons.keyboard_arrow_right)),
+                              ],
+                            )),
+                      ),
                       PageView(physics: const NeverScrollableScrollPhysics(), children: [_Partidas(jugador: jugador)])
                     ],
-                  ),
-                  Align(
-                    alignment: FractionalOffset(0, (jugador.partidas.length > 1 ? 0.57 : 0.48) + offsetValue),
-                    child: FadeTransition(
-                      opacity: AlwaysStoppedAnimation(1 - offsetValue),
-                      child: Column(mainAxisSize: MainAxisSize.min, children: [_contenido(jugador)]),
-                    ),
                   ),
                 ]),
               ),
@@ -133,7 +136,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
     if (jugador.codigoBandera == null) {
       image = Image.asset('assets/images/panel_${color.brightness == Brightness.dark ? 'blanco' : 'negro'}.png').image;
     } else {
-      image = Image.asset('icons/flags/png/${jugador.codigoBandera}.png', package: 'country_icons').image;
+      image = Image.asset('icons/flags/png250px/${jugador.codigoBandera}.png', package: 'country_icons').image;
     }
 
     return FadeTransition(

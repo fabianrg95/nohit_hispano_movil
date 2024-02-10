@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:go_router/go_router.dart';
-import 'package:no_hit/infraestructure/enums/enums.dart';
 import 'package:no_hit/presentation/views/informacion/informacion_data.dart';
+import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class InformacionView extends StatelessWidget {
@@ -12,13 +10,10 @@ class InformacionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FlutterNativeSplash.remove();
-
     return PopScope(
-      canPop: false,
       onPopInvoked: (didPop) {
         if (didPop) return;
-        context.go(MenuItem.inicio.link);
+        Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, __, ___) => const InicioView()));
       },
       child: SafeArea(
         child: Scaffold(

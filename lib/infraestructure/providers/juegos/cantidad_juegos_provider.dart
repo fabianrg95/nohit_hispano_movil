@@ -14,13 +14,16 @@ class TotalJuegosNotifier extends StateNotifier<int> {
 
   TotalJuegosNotifier(this.obtenerTotalJuegos) : super(0);
 
-  Future<void> loadData() async {
-    if (loadingdata == true || state > 0) {
+  Future<void> loadData(bool reload) async {
+    if (loadingdata == true) {
       return;
     }
     loadingdata = true;
 
-    state = await obtenerTotalJuegos();
+    if (state == 0 || reload == true) {
+      state = await obtenerTotalJuegos();
+    }
+
     loadingdata = false;
   }
 }

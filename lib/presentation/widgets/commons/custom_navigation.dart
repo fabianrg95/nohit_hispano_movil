@@ -1,6 +1,5 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:no_hit/infraestructure/enums/menu/menu_items.dart';
 import 'package:no_hit/main.dart';
 
@@ -69,7 +68,9 @@ class _ItemMenu extends StatelessWidget {
         ),
         onTap: () {
           //Navigator.pop(context);
-          context.go(item.link);
+          Navigator.of(context)
+              .push(PageRouteBuilder(pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: item.page)));
+          // context.go(item.link);
           // Navigator.of(context).push(MaterialPageRoute(
           //   builder: (context) => item.page,));
         });

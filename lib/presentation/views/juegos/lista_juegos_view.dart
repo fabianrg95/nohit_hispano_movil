@@ -15,10 +15,9 @@ class ListaJuegosView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     return PopScope(
-      canPop: false,
       onPopInvoked: (didPop) {
         if (didPop) return;
-        context.go(MenuItem.inicio.link);
+        Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, __, ___) => const InicioView()));
       },
       child: SafeArea(
         child: Scaffold(
