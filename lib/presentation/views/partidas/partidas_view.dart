@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
+import 'package:no_hit/config/helpers/utilidades.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/main.dart';
@@ -153,7 +154,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                                     overflow: TextOverflow.ellipsis,
                                     text: TextSpan(
                                       style: estiloTexto.titleSmall?.copyWith(color: color.inverseSurface.withOpacity(0.6)),
-                                      text: HumanFormat.nombreJuegoCompleto(partida.tituloJuego, partida.subtituloJuego),
+                                      text: Utilidades.nombreJuegoCompleto(partida.tituloJuego, partida.subtituloJuego),
                                     )),
                               )
                             ],

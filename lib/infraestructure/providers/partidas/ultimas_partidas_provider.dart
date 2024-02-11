@@ -1,4 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:no_hit/config/helpers/utilidades.dart';
 import 'package:no_hit/domain/entities/entities.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/mapper/mappers.dart';
@@ -9,7 +11,7 @@ final ultimasPartidasProvider = StateNotifierProvider<UltimasPartidasNotifier, L
   return UltimasPartidasNotifier(hitlessRepository.obtenerUltimasPartidas);
 });
 
-typedef GetUltimasPartidasCallback = Future<List<PartidaEntity>> Function(int? id);
+typedef GetUltimasPartidasCallback = Future<List<PartidaEntity>> Function(String fechaInicio, String fechaFinal);
 
 class UltimasPartidasNotifier extends StateNotifier<List<PartidaDto>> {
   GetUltimasPartidasCallback obtenerUltimasPartidas;
@@ -21,8 +23,12 @@ class UltimasPartidasNotifier extends StateNotifier<List<PartidaDto>> {
     if (cargando) return;
 
     cargando = true;
-    final int? ultimoId = state.isEmpty ? null : state.last.id;
-    final List<PartidaEntity> lista = await obtenerUltimasPartidas(ultimoId);
+
+    final String? fechaUltimaPartida = state.isEmpty ? null : state.last.fecha;
+
+    final List<String> fechas = Utilidades.obtenerFiltroFechas(fechaUltimaPartida);
+
+    final List<PartidaEntity> lista = await obtenerUltimasPartidas(fechas[0], fechas[1]);
     List<PartidaDto> listaPartidas = PartidaMapper.mapearListaPartidas(lista);
     for (var partida in listaPartidas) {
       state = [...state, partida];
@@ -34,7 +40,9 @@ class UltimasPartidasNotifier extends StateNotifier<List<PartidaDto>> {
     if (cargando) return;
 
     cargando = true;
-    final List<PartidaEntity> lista = await obtenerUltimasPartidas(null);
+    final List<String> fechas = Utilidades.obtenerFiltroFechas(DateTime.now().toString());
+
+    final List<PartidaEntity> lista = await obtenerUltimasPartidas(fechas[0], fechas[1]);
     state = PartidaMapper.mapearListaPartidas(lista);
     cargando = false;
   }

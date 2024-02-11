@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:no_hit/config/helpers/utilidades.dart';
 
 class HumanFormat {
   static String number(double number) {
@@ -29,14 +30,6 @@ class HumanFormat {
 
   static String fechaMes(String fecha) {
     var parsedDate = DateTime.parse(fecha);
-    return capitalize(DateFormat.MMM('es-CO').format(parsedDate).toString());
-  }
-
-  static String capitalize(final String texto) {
-    return "${texto[0].toUpperCase()}${texto.substring(1).toLowerCase()}";
-  }
-
-  static String nombreJuegoCompleto(final String? titulo, final String? subtitulo) {
-    return "${titulo ?? ''} ${subtitulo ?? ''}";
+    return Utilidades.capitalize(DateFormat.MMM('es-CO').format(parsedDate).toString());
   }
 }

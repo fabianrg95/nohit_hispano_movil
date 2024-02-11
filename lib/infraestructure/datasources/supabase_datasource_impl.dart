@@ -50,20 +50,16 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
   }
 
   @override
-  Future<List<PartidaEntity>> obtenerUltimasPartidas(int? id) async {
-    if (id == null) {
-      final List<Map<String, dynamic>> respuesta = await supabase.from('partidas').select('id').order('id', ascending: false).limit(1);
-      id = respuesta[0]['id'] + 1;
-    }
-
+  Future<List<PartidaEntity>> obtenerUltimasPartidas(String fechaInicio, String fechaFinal) async {
     final List<Map<String, dynamic>> respuesta = await supabase
             .from('partidas')
             .select(
                 'id, fecha_partida, nombre_partida, primera_partida_personal, primera_partida_hispano, primera_partida_mundial, offstream, videos_clips, '
                 'jugadores(id, nombre_usuario, nacionalidad(pais, codigo_bandera) ), '
                 'juegos(id, nombre, subtitulo, url_imagen, oficial_team_hitless)')
-            .lt('id', id!)
-            .order('id', ascending: false)
+            .gte('fecha_partida', fechaInicio)
+            .lte('fecha_partida', fechaFinal)
+            .order('fecha_partida', ascending: false)
         //.limit(10)
         ;
     return respuesta.map((partida) => PartidaEntity.fromJson(partida)).toList();
