@@ -9,7 +9,7 @@ class Item {
     this.isExpanded = false,
   });
 
-  String expandedValue;
+  Widget expandedValue;
   String headerValue;
   bool isExpanded;
 }
@@ -19,8 +19,8 @@ class Informacion {
     final List<Item> listaInformacion = [];
 
     listaInformacion.add(Item(
-        expandedValue:
-            '"No Hit" se le denomina al reto en el cual se logra completar un video juego sin recibir daño alguno por jefes, enemigos y/o trampas del mismo.',
+        expandedValue: const Text(
+            '"No Hit" se le denomina al reto en el cual se logra completar un video juego sin recibir daño alguno por jefes, enemigos y/o trampas del mismo.'),
         headerValue: 'Que es "No Hit"?'));
 
     listaInformacion.add(Item(
@@ -31,7 +31,7 @@ class Informacion {
           const TextSpan(
               text:
                   ' son los que se determinan como oficiales, cualquier otro juego que no se encuentre en dicha pagina se considera como un juego no oficial'),
-        ])).toString(),
+        ])),
         headerValue: 'Por que hay juegos oficiales y no oficiales'));
     return listaInformacion;
   }

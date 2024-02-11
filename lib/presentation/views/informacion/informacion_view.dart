@@ -64,11 +64,7 @@ class ContenidoState extends State<Contenido> {
                   style: styleTexto.titleMedium,
                 ));
               },
-              body: ListTile(
-                  title: Text(
-                dato.expandedValue,
-                style: styleTexto.bodyLarge,
-              )),
+              body: Container(padding: const EdgeInsets.symmetric(horizontal: 8), child: dato.expandedValue),
               isExpanded: dato.isExpanded,
             );
           }).toList()),

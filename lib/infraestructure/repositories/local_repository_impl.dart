@@ -15,4 +15,14 @@ class LocalRepositoryImpl extends LocalRepository {
   Future<bool> obtenerEsTemaClaro() {
     return local.obtenerEsTemaClaro();
   }
+
+  @override
+  Future<void> guardarIntroduccionFinalizada(bool introduccionFinalizada) async {
+    local.guardarIntroduccionFinalizada(introduccionFinalizada);
+  }
+
+  @override
+  Future<bool> obtenerIntroduccionFinalizada() {
+    return local.obtenerIntroduccionFinalizada();
+  }
 }

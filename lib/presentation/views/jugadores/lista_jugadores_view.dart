@@ -1,9 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
-import 'package:no_hit/infraestructure/enums/enums.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/presentation/delegates/jugadores/buscar_jugadores_delegate.dart';
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';

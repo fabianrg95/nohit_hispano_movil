@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
+import 'package:no_hit/presentation/views/introduccion/introduccion_view.dart';
 import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
@@ -20,6 +21,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
   int totalPartidas = 0;
   int totalJuegos = 0;
   late bool esTemaClaro;
+  late bool introduccionFinalizada;
 
   late ColorScheme color;
   late Size size;
@@ -66,9 +68,14 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
     totalPartidas = ref.watch(totalPartidasProvider);
     totalJuegos = ref.watch(totalJuegosProvider);
     esTemaClaro = ref.watch(themeNotifierProvider).esTemaClaro;
+    introduccionFinalizada = ref.watch(introduccionProvider);
 
     if (totalJugadores != 0 && totalPartidas != 0 && totalJuegos != 0) {
       FlutterNativeSplash.remove();
+    }
+
+    if (introduccionFinalizada == false) {
+      return FadeTransition(opacity: _controller, child: const IntroduccionView());
     }
 
     return PopScope(

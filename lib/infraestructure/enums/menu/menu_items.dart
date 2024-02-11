@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:no_hit/presentation/views/introduccion/introduccion_view.dart';
 import 'package:no_hit/presentation/views/views.dart';
 
 enum MenuItem {
@@ -44,6 +45,13 @@ enum MenuItem {
     page: ContactoView(),
     icon: Icons.engineering_outlined,
     nombre: ContactoView.nombre,
+  ),
+  introduccion(
+    title: 'Introduccion',
+    link: '/introduccion',
+    page: IntroduccionView(),
+    icon: Icons.view_carousel_outlined,
+    nombre: IntroduccionView.nombre,
   );
 
   final String title;

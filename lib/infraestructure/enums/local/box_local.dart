@@ -1,5 +1,6 @@
 enum BoxLocal {
-  temaSeleccinado(nombreAlmacenamiento: 'TemaSeleccionadoBox', llaveAlmacenamiento: 'temaSeleccionadoKey');
+  temaSeleccinado(nombreAlmacenamiento: 'TemaSeleccionadoBox', llaveAlmacenamiento: 'temaSeleccionadoKey'),
+  introduccionFinalizada(nombreAlmacenamiento: 'IntroduccionFinalizadaBox', llaveAlmacenamiento: 'IntroduccionFinalizadaKey');
 
   final String nombreAlmacenamiento;
   final String llaveAlmacenamiento;
