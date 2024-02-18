@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:no_hit/presentation/views/aplicacion/aplicacion_view.dart';
+import 'package:no_hit/presentation/views/comunidad/comunidad_view.dart';
 import 'package:no_hit/presentation/views/introduccion/introduccion_view.dart';
 import 'package:no_hit/presentation/views/views.dart';
 
@@ -45,6 +47,20 @@ enum MenuItem {
     page: Desarrollador(),
     icon: Icons.developer_mode_outlined,
     nombre: Desarrollador.nombre,
+  ),
+  aplicacion(
+    title: 'Aplicacion',
+    link: '/aplicacion',
+    page: Aplicacion(),
+    icon: Icons.app_shortcut_outlined,
+    nombre: Aplicacion.nombre,
+  ),
+  comunidad(
+    title: 'Comunidad',
+    link: '/comunidad',
+    page: Comunidad(),
+    icon: Icons.groups_2_outlined,
+    nombre: Comunidad.nombre,
   ),
   introduccion(
     title: 'Introduccion',
