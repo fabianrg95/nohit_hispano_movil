@@ -42,7 +42,7 @@ class ListaPartidas extends ConsumerWidget {
                         Text(primeraPartida!.nombre.toString(), style: styleTexto.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis),
                         Text(primeraPartida!.fecha.toString(), style: styleTexto.bodySmall),
                         Text(
-                          'Primera ${primeraPartida!.id == ultimaPartida!.id ? 'y unica ' : ''}partida',
+                          'Primera ${primeraPartida!.id == ultimaPartida!.id ? 'y única ' : ''}partida',
                           style: styleTexto.bodyLarge?.copyWith(color: color.outline),
                         )
                       ],

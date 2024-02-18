@@ -3,10 +3,10 @@ import 'package:no_hit/presentation/views/informacion/informacion_data.dart';
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
-class InformacionView extends StatelessWidget {
+class PreguntasFrecuentesView extends StatelessWidget {
   static const nombre = 'informacion-screen';
 
-  const InformacionView({super.key});
+  const PreguntasFrecuentesView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class InformacionView extends StatelessWidget {
           drawer: const CustomNavigation(),
           appBar: AppBar(
             forceMaterialTransparency: true,
-            title: const Text("Información"),
+            title: const Text("Preguntas frecuentes"),
           ),
           body: const Contenido(),
         ),

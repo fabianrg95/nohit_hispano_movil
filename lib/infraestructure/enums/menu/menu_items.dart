@@ -5,7 +5,7 @@ import 'package:no_hit/presentation/views/views.dart';
 
 enum MenuItem {
   inicio(
-    title: 'inicio',
+    title: 'Inicio',
     link: '/inicio',
     page: InicioView(),
     nombre: InicioView.nombre,
@@ -32,19 +32,19 @@ enum MenuItem {
     icon: Icons.groups_2_outlined,
     nombre: ListaJugadoresView.nombre,
   ),
-  informacion(
-    title: 'Informacion',
-    link: '/informacion',
-    page: InformacionView(),
+  preguntasFrecuentes(
+    title: 'Preguntas frecuentes',
+    link: '/preguntas_frecuentes',
+    page: PreguntasFrecuentesView(),
     icon: Icons.info_outline,
-    nombre: InformacionView.nombre,
+    nombre: PreguntasFrecuentesView.nombre,
   ),
-  contacto(
-    title: 'Contacto',
-    link: '/contacto',
-    page: ContactoView(),
-    icon: Icons.engineering_outlined,
-    nombre: ContactoView.nombre,
+  desarrollador(
+    title: 'Desarrollador',
+    link: '/desarrollador',
+    page: Desarrollador(),
+    icon: Icons.developer_mode_outlined,
+    nombre: Desarrollador.nombre,
   ),
   introduccion(
     title: 'Introduccion',

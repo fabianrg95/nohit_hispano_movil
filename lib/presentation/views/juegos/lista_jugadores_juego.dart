@@ -52,7 +52,7 @@ class ListaJugadoresJuego extends ConsumerWidget {
                 Text(primeraPartida.nombreJugador.toString(), style: styleTexto.titleMedium),
                 Text(primeraPartida.fecha.toString(), style: styleTexto.bodySmall),
                 Text(
-                  'Primer ${primeraPartida.id == ultimaPartida.id ? 'y unico ' : ''}jugador',
+                  'Primer ${primeraPartida.id == ultimaPartida.id ? 'y único ' : ''}jugador',
                   style: styleTexto.bodyLarge?.copyWith(color: color.outline),
                 )
               ],

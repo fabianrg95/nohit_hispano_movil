@@ -24,10 +24,18 @@ class Informacion {
         headerValue: 'Que es "No Hit"?'));
 
     listaInformacion.add(Item(
+        expandedValue:
+            const Text('Toda la información mostrada en la aplicación se obtiene del archivo excel de la comunidad no hit hispanohablante.'),
+        headerValue: 'De donde se obtiene esta información?'));
+
+    listaInformacion.add(Item(
         expandedValue: RichText(
             text: TextSpan(children: [
-          const TextSpan(text: 'Solo los juegos que son abalados por la pagina '),
-          TextSpan(text: 'teamhitless.com', recognizer: TapGestureRecognizer()..onTap = () => launchUrlString('https://www.teamhitless.com')),
+          const TextSpan(text: 'Solo los juegos que son avalados por la pagina '),
+          TextSpan(
+              text: 'teamhitless.com',
+              style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+              recognizer: TapGestureRecognizer()..onTap = () => launchUrlString('https://www.teamhitless.com')),
           const TextSpan(
               text:
                   ' son los que se determinan como oficiales, cualquier otro juego que no se encuentre en dicha pagina se considera como un juego no oficial'),

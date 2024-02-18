@@ -62,7 +62,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
     size = MediaQuery.of(context).size;
 
     if (jugador == null || jugador.id == 0 || jugador.id != widget.idJugador) {
-      return const PantallaCargaBasica(texto: "Consultando la informacion del jugador");
+      return const PantallaCargaBasica(texto: "Consultando la información del jugador");
     }
 
     return PopScope(
@@ -256,7 +256,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                             style: styleTexto.labelSmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
                         Text(jugador.primeraPartida!.fecha.toString(), style: styleTexto.labelSmall),
                         Text(
-                          'Primera ${jugador.primeraPartida!.id == jugador.ultimaPartida!.id ? 'y unica ' : ''}partida',
+                          'Primera ${jugador.primeraPartida!.id == jugador.ultimaPartida!.id ? 'y única ' : ''}partida',
                           style: styleTexto.bodyLarge?.copyWith(color: color.outline),
                         )
                       ],

@@ -6,4 +6,4 @@ export 'jugadores/jugador_view.dart';
 export 'jugadores/lista_jugadores_view.dart';
 export 'partidas/detalle_partida_view.dart';
 export 'partidas/partidas_view.dart';
-export 'contacto/contacto_view.dart';
+export 'acerca_de/acerda_de_view.dart';

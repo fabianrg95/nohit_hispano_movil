@@ -75,26 +75,26 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
     }
 
     if (introduccionFinalizada == false) {
-      return FadeTransition(opacity: _controller, child: const IntroduccionView());
-    }
-
-    return PopScope(
-      canPop: false,
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            forceMaterialTransparency: true,
+      return const IntroduccionView();
+    } else {
+      return PopScope(
+        canPop: false,
+        child: SafeArea(
+          child: Scaffold(
+            appBar: AppBar(
+              forceMaterialTransparency: true,
+            ),
+            extendBodyBehindAppBar: true,
+            drawer: const CustomNavigation(),
+            body: RefreshIndicator(
+                onRefresh: () => _actualizarConteos(reload: true),
+                color: color.surfaceTint,
+                backgroundColor: color.tertiary,
+                child: contenido(totalJugadores, totalPartidas, context)),
           ),
-          extendBodyBehindAppBar: true,
-          drawer: const CustomNavigation(),
-          body: RefreshIndicator(
-              onRefresh: () => _actualizarConteos(reload: true),
-              color: color.surfaceTint,
-              backgroundColor: color.tertiary,
-              child: contenido(totalJugadores, totalPartidas, context)),
         ),
-      ),
-    );
+      );
+    }
   }
 
   Widget contenido(final int cantidadTotalJugadores, final int cantidadTotalPartidas, BuildContext context) {
@@ -104,16 +104,18 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
         height: size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom,
         child: Column(
           children: [
-            const Expanded(flex: 1, child: SizedBox(height: 1)),
-            Image.asset('assets/images/panel_${color.brightness == Brightness.dark ? 'blanco' : 'negro'}.png', height: 160),
-            Padding(
-              padding: const EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
-              child: Text(
-                'Una partida No hit/hitless consiste en completar un juego de principio a fin sin recibir ningún golpe de un enemigo o una trampa.',
-                textAlign: TextAlign.center,
-                style: styleTexto.bodyMedium,
-              ),
-            ),
+            const Expanded(flex: 2, child: SizedBox(height: 1)),
+            Hero(
+                tag: "headerNoHit",
+                child: Image.asset('assets/images/panel_${color.brightness == Brightness.dark ? 'blanco' : 'negro'}.png', height: 260)),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
+            //   child: Text(
+            //     'Una partida No hit/hitless consiste en completar un juego de principio a fin sin recibir ningún golpe de un enemigo o una trampa.',
+            //     textAlign: TextAlign.center,
+            //     style: styleTexto.bodyMedium,
+            //   ),
+            // ),
             const Expanded(flex: 3, child: SizedBox(height: 1)),
             _informacionHispano(context),
           ],
@@ -226,15 +228,15 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
               Expanded(
                 flex: 3,
                 child: GestureDetector(
-                  onTap: () => Navigator.of(context).push(
-                      PageRouteBuilder(pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: const InformacionView()))),
+                  onTap: () => Navigator.of(context).push(PageRouteBuilder(
+                      pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: const PreguntasFrecuentesView()))),
                   child: Container(
                     margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
                     padding: const EdgeInsets.only(top: 10, bottom: 10),
                     decoration: ViewData().decorationContainerBasic(color: color),
                     child: Column(
                       children: [
-                        Text('Información', style: styleTexto.titleMedium),
+                        Text('Preguntas frecuentes', style: styleTexto.titleMedium),
                       ],
                     ),
                   ),
@@ -255,6 +257,29 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
               // )
             ],
           ),
+          // Row(
+          //   crossAxisAlignment: CrossAxisAlignment.center,
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Expanded(
+          //       flex: 3,
+          //       child: GestureDetector(
+          //         onTap: () => Navigator.of(context).push(
+          //             PageRouteBuilder(pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: const ContactoView()))),
+          //         child: Container(
+          //           margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
+          //           padding: const EdgeInsets.only(top: 10, bottom: 10),
+          //           decoration: ViewData().decorationContainerBasic(color: color),
+          //           child: Column(
+          //             children: [
+          //               Text('Contacto', style: styleTexto.titleMedium),
+          //             ],
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
           const SizedBox(height: 10)
         ],
       ),

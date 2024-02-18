@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/presentation/views/views.dart';
@@ -14,20 +15,21 @@ class JugadorCommons {
           children: [
             Visibility(visible: jugador.pronombre != null, child: Text(jugador.pronombre.toString())),
             Visibility(visible: jugador.gentilicio != null, child: Text(jugador.gentilicio.toString())),
+            const SizedBox(height: 10),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              CustomLinks().link(jugador.urlYoutube, 'assets/images/youtube.png'),
+              CustomLinks().link(jugador.urlYoutube, FontAwesomeIcons.youtube),
               Visibility(
                   visible: jugador.urlYoutube != null && jugador.urlTwitch != null,
                   child: VerticalDivider(
                     color: color.tertiary,
                   )),
-              CustomLinks().link(jugador.urlTwitch, 'assets/images/twitch.png')
+              CustomLinks().link(jugador.urlTwitch, FontAwesomeIcons.twitch)
             ])
           ],
         ));
   }
 
-  Widget informacionJugadorGrande(final JugadorDto detalleJugador, final BuildContext context) {
+  Widget informacionJugadorGrande(final JugadorDto detalleJugador, final BuildContext context, {final bool mostrarTitulo = true}) {
     final ColorScheme color = Theme.of(context).colorScheme;
     final TextTheme styleTexto = Theme.of(context).textTheme;
 
@@ -42,9 +44,9 @@ class JugadorCommons {
         child: IntrinsicHeight(
           child: Column(
             children: [
-              Center(child: Text('Informacion Jugador', style: styleTexto.titleMedium)),
-              const SizedBox(height: 10),
-              Divider(color: color.tertiary, thickness: 2, height: 1),
+              if (mostrarTitulo) Center(child: Text('Información Jugador', style: styleTexto.titleMedium)),
+              if (mostrarTitulo) const SizedBox(height: 10),
+              if (mostrarTitulo) Divider(color: color.tertiary, thickness: 2, height: 1),
               Row(
                 children: [
                   Padding(
@@ -66,14 +68,15 @@ class JugadorCommons {
                             visible: detalleJugador.gentilicio != null,
                             child: Text(detalleJugador.gentilicio.toString(),
                                 style: styleTexto.labelSmall?.copyWith(color: color.inverseSurface.withOpacity(0.7)))),
+                        const SizedBox(height: 10),
                         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          CustomLinks().link(detalleJugador.urlYoutube, 'assets/images/youtube.png'),
+                          CustomLinks().link(detalleJugador.urlYoutube, FontAwesomeIcons.youtube),
                           Visibility(
                               visible: detalleJugador.urlYoutube != null && detalleJugador.urlTwitch != null,
                               child: VerticalDivider(
                                 color: color.tertiary,
                               )),
-                          CustomLinks().link(detalleJugador.urlTwitch, 'assets/images/twitch.png')
+                          CustomLinks().link(detalleJugador.urlTwitch, FontAwesomeIcons.twitch)
                         ])
                       ],
                     ),

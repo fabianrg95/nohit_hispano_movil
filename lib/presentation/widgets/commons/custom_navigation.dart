@@ -20,8 +20,16 @@ class CustomNavigation extends StatelessWidget {
             const _ItemMenu(item: MenuItem.partidas),
             const _ItemMenu(item: MenuItem.juegos),
             const _ItemMenu(item: MenuItem.jugadores),
-            const _ItemMenu(item: MenuItem.informacion),
-            // const _ItemMenu(item: MenuItem.contacto),
+            const SizedBox(height: 30),
+            Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: Text(
+                "Acerca de",
+                style: styleTexto.titleMedium?.copyWith(color: color.tertiary),
+              ),
+            ),
+            const _ItemMenu(item: MenuItem.preguntasFrecuentes),
+            const _ItemMenu(item: MenuItem.desarrollador),
           ],
         ),
       ),
@@ -56,23 +64,22 @@ class _ItemMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final ColorScheme color = Theme.of(context).colorScheme;
     return ListTile(
-        contentPadding: const EdgeInsets.only(left: 30),
+        contentPadding: const EdgeInsets.only(left: 20),
         leading: Icon(
           item.icon,
           color: color.tertiary,
-          size: 40,
+          size: 30,
         ),
-        title: Text(
-          item.title,
-          style: styleTexto.titleLarge?.copyWith(color: color.tertiary),
+        title: Padding(
+          padding: const EdgeInsets.only(left: 5),
+          child: Text(
+            item.title,
+            style: styleTexto.titleMedium?.copyWith(color: color.tertiary),
+          ),
         ),
         onTap: () {
-          //Navigator.pop(context);
           Navigator.of(context)
               .push(PageRouteBuilder(pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: item.page)));
-          // context.go(item.link);
-          // Navigator.of(context).push(MaterialPageRoute(
-          //   builder: (context) => item.page,));
         });
   }
 }

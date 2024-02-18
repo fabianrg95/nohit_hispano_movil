@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
@@ -215,7 +216,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(child: Text('Informacion Partida', style: styleTexto.titleMedium)),
+            Center(child: Text('Información Partida', style: styleTexto.titleMedium)),
             const SizedBox(height: 10),
             Divider(color: color.tertiary, thickness: 2, height: 1),
             const SizedBox(height: 10),
@@ -290,7 +291,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
   Widget link(final String linkVideo) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
-      child: CustomLinks().link(linkVideo, 'assets/images/${linkVideo.contains("youtu") ? "youtube.png" : "twitch.png"}', tamanio: 50),
+      child: CustomLinks().link(linkVideo, linkVideo.contains("youtu") ? FontAwesomeIcons.youtube : FontAwesomeIcons.twitch, tamanio: 50),
     );
   }
 
