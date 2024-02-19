@@ -49,7 +49,7 @@ enum MenuItem {
     nombre: Desarrollador.nombre,
   ),
   aplicacion(
-    title: 'Aplicacion',
+    title: 'Aplicación',
     link: '/aplicacion',
     page: Aplicacion(),
     icon: Icons.app_shortcut_outlined,
@@ -63,7 +63,7 @@ enum MenuItem {
     nombre: Comunidad.nombre,
   ),
   introduccion(
-    title: 'Introduccion',
+    title: 'Introducción',
     link: '/introduccion',
     page: IntroduccionView(),
     icon: Icons.view_carousel_outlined,
