@@ -67,6 +67,10 @@ class Aplicacion extends StatelessWidget {
               onTap: () => CustomLinks().lanzarUrl("https://github.com/fabianrg95/nohit_hispano_movil"),
             ),
             /* ToDo agregar la redireccion a la tienda de apple */
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 50),
+              child: Divider(),
+            ),
             ListTile(
               leading: const Icon(FontAwesomeIcons.googlePlay),
               title: const Text("Google play"),
