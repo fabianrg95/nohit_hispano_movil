@@ -38,7 +38,7 @@ class Desarrollador extends StatelessWidget {
       id: 148,
       anioNacimiento: "1995",
       codigoBandera: "co",
-      pronombre: "He/they",
+      pronombre: "He/Him",
       nacionalidad: "Colombiano",
     );
     jugadorDto.mostrarInformacion = true;
