@@ -67,7 +67,10 @@ class IntroduccionViewState extends ConsumerState<IntroduccionView> {
           alignment: const Alignment(0, -0.46),
           child: Hero(
               tag: "headerNoHit",
-              child: Image.asset('assets/images/panel_${color.brightness == Brightness.dark ? 'blanco' : 'negro'}.png', height: 260)),
+              child: Image.asset(
+                'assets/images/panel_${color.brightness == Brightness.dark ? 'blanco' : 'negro'}.png',
+                height: size.width * 0.6,
+              )),
         ),
         PageView(
           controller: pageController,
@@ -77,19 +80,19 @@ class IntroduccionViewState extends ConsumerState<IntroduccionView> {
           children: [pantalla1(), pantalla2()],
         ),
         Container(
-            alignment: const Alignment(0, 0.68),
+            alignment: const Alignment(0, 0.7),
             child: SmoothPageIndicator(
               controller: pageController,
               count: cantidadPantallas,
               effect: ExpandingDotsEffect(dotColor: color.secondary, activeDotColor: color.tertiary),
             )),
         Container(
-          alignment: const Alignment(0, 0.85),
+          alignment: const Alignment(0, 0.9),
           child: TextButton(
             style: TextButton.styleFrom(backgroundColor: color.tertiary, textStyle: styleTexto.titleLarge),
             onPressed: () => _avanzarPagina(indexPage + 1),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 15),
               child: AnimatedCrossFade(
                 firstCurve: Curves.linear,
                 secondCurve: Curves.linear,
@@ -112,7 +115,7 @@ class IntroduccionViewState extends ConsumerState<IntroduccionView> {
       child: Text(
         'Aca encontraras las partidas, Jugadores y juegos registrados en la comunidad No Hit Hispanohablante.',
         textAlign: TextAlign.center,
-        style: styleTexto.titleLarge,
+        style: TextStyle(color: Colors.white, fontSize: size.width * 0.05),
       ),
     );
   }
@@ -124,7 +127,7 @@ class IntroduccionViewState extends ConsumerState<IntroduccionView> {
       child: Text(
         'Una partida No hit/hitless consiste en completar un juego de principio a fin sin recibir algún golpe de un enemigo o una trampa.',
         textAlign: TextAlign.center,
-        style: styleTexto.titleLarge,
+        style: TextStyle(color: Colors.white, fontSize: size.width * 0.05),
       ),
     );
   }

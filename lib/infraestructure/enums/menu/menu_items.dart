@@ -38,7 +38,7 @@ enum MenuItem {
     title: 'Preguntas frecuentes',
     link: '/preguntas_frecuentes',
     page: PreguntasFrecuentesView(),
-    icon: Icons.info_outline,
+    icon: Icons.help_outline_outlined,
     nombre: PreguntasFrecuentesView.nombre,
   ),
   desarrollador(

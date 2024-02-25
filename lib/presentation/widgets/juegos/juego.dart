@@ -6,6 +6,7 @@ class JuegoCommons {
   Widget subtitulo(final JuegoDto juego, final Function? redireccion, final BuildContext context) {
     final ColorScheme color = Theme.of(context).colorScheme;
     final TextTheme styleTexto = Theme.of(context).textTheme;
+    final Size size = MediaQuery.of(context).size;
 
     return GestureDetector(
         onTap: () => redireccion != null ? redireccion() : null,
@@ -17,7 +18,7 @@ class JuegoCommons {
           child: Column(children: [
             Text(
               juego.nombre.toString(),
-              style: styleTexto.titleLarge,
+              style: TextStyle(color: Colors.white, fontSize: size.width * 0.05),
               textAlign: TextAlign.center,
             ),
             if (juego.subtitulo != null)

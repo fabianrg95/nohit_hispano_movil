@@ -84,7 +84,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                       },
                       icon: Icon(iconoFlechaAtras),
                     ),
-                    forceMaterialTransparency: true,
+                    forceMaterialTransparency: pageViewIndex == 0,
                     elevation: 0,
                     title: Text(titulosPageView[pageViewIndex]!)),
                 body: Stack(children: [
@@ -102,7 +102,6 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                             opacity: AlwaysStoppedAnimation(1 - (offsetValue * 2)),
                             child: Column(
                               children: [
-                                SizedBox(height: size.height * 0.22),
                                 _contenido(jugador),
                                 const Expanded(child: SizedBox(height: 1)),
                                 GestureDetector(onTap: () => _navegarPage(1), child: const ShimmerArrows(icon: Icons.keyboard_arrow_right)),
@@ -180,60 +179,64 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
   }
 
   Widget _contenido(final JugadorDto jugador) {
-    return IntrinsicHeight(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
-            decoration: ViewData().decorationContainerBasic(color: color),
-            child: Center(
-                child: Text(
-              jugador.nombre!,
-              style: styleTexto.titleLarge,
-            )),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.09),
+    return SizedBox(
+      height: size.height * 0.85,
+      child: ListView(children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: size.height * 0.13),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.9,
               padding: const EdgeInsets.only(top: 10, bottom: 10),
               decoration: ViewData().decorationContainerBasic(color: color),
-              child: JugadorCommons().informacionJugadorLite(jugador),
+              child: Center(
+                  child: Text(
+                jugador.nombre!,
+                style: styleTexto.titleLarge,
+              )),
             ),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              ViewData().muestraInformacionAccion(
-                  alineacion: CrossAxisAlignment.center,
-                  accion: () {
-                    setState(() {
-                      _pageController.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
-                    });
-                  },
-                  items: [
-                    Text(jugador.juegos.length.toString(), style: styleTexto.displaySmall?.copyWith(color: color.outline)),
-                    Text('Juego${jugador.juegos.length != 1 ? 's' : ''}')
-                  ]),
-              ViewData().muestraInformacionAccion(
-                  alineacion: CrossAxisAlignment.center,
-                  accion: () {
-                    setState(() {
-                      _pageController.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
-                    });
-                  },
-                  items: [
-                    Text(jugador.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: color.outline)),
-                    Text('Partida${jugador.cantidadPartidas != 1 ? 's' : ''}')
-                  ]),
-            ],
-          ),
-          const SizedBox(height: 10),
-          _resumenPartidas(jugador: jugador),
-        ],
-      ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.09),
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                decoration: ViewData().decorationContainerBasic(color: color),
+                child: JugadorCommons().informacionJugadorLite(jugador),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                ViewData().muestraInformacionAccion(
+                    alineacion: CrossAxisAlignment.center,
+                    accion: () {
+                      setState(() {
+                        _pageController.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+                      });
+                    },
+                    items: [
+                      Text(jugador.juegos.length.toString(), style: TextStyle(color: color.outline, fontSize: size.width * 0.08)),
+                      Text('Juego${jugador.juegos.length != 1 ? 's' : ''}')
+                    ]),
+                ViewData().muestraInformacionAccion(
+                    alineacion: CrossAxisAlignment.center,
+                    accion: () {
+                      setState(() {
+                        _pageController.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+                      });
+                    },
+                    items: [
+                      Text(jugador.cantidadPartidas.toString(), style: TextStyle(color: color.outline, fontSize: size.width * 0.08)),
+                      Text('Partida${jugador.cantidadPartidas != 1 ? 's' : ''}')
+                    ]),
+              ],
+            ),
+            const SizedBox(height: 10),
+            _resumenPartidas(jugador: jugador),
+          ],
+        ),
+      ]),
     );
   }
 

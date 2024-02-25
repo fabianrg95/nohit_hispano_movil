@@ -94,6 +94,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
   Widget _itemPartida({required PartidaDto partida, required BuildContext context}) {
     final ColorScheme color = Theme.of(context).colorScheme;
     final TextTheme estiloTexto = Theme.of(context).textTheme;
+    final Size size = MediaQuery.of(context).size;
 
     final String heroTag = 'Partida-${partida.id}';
 
@@ -113,7 +114,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
       },
       child: Container(
           margin: const EdgeInsets.only(right: 20, left: 20),
-          height: 600,
+          height: size.width * 1.5,
           child: Column(
             children: [
               Row(
@@ -149,7 +150,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                               Icon(Icons.sports_esports_outlined, color: color.inverseSurface.withOpacity(0.6)),
                               const SizedBox(width: 5),
                               SizedBox(
-                                width: size.width * 0.65,
+                                width: size.width * 0.6,
                                 child: RichText(
                                     overflow: TextOverflow.ellipsis,
                                     text: TextSpan(
@@ -167,7 +168,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                 height: 10,
               ),
               Container(
-                height: 500,
+                height: size.width * 1.2,
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
                 child: Stack(children: [
                   Hero(

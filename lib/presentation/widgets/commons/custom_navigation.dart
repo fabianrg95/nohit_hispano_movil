@@ -9,6 +9,7 @@ class CustomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme color = Theme.of(context).colorScheme;
+    final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Drawer(
         backgroundColor: color.primary,
@@ -17,9 +18,9 @@ class CustomNavigation extends StatelessWidget {
             cabeceraMenu(color),
             const SizedBox(height: 20),
             const _ItemMenu(item: MenuItem.inicio),
-            const _ItemMenu(item: MenuItem.partidas),
             const _ItemMenu(item: MenuItem.juegos),
             const _ItemMenu(item: MenuItem.jugadores),
+            const _ItemMenu(item: MenuItem.partidas),
             const SizedBox(height: 30),
             Padding(
               padding: const EdgeInsets.only(left: 20),
@@ -28,8 +29,8 @@ class CustomNavigation extends StatelessWidget {
                 style: styleTexto.titleMedium?.copyWith(color: color.tertiary),
               ),
             ),
-            const _ItemMenu(item: MenuItem.aplicacion),
             const _ItemMenu(item: MenuItem.preguntasFrecuentes),
+            const _ItemMenu(item: MenuItem.aplicacion),
             const _ItemMenu(item: MenuItem.comunidad),
             const _ItemMenu(item: MenuItem.desarrollador),
           ],
@@ -42,15 +43,15 @@ class CustomNavigation extends StatelessWidget {
     return FadeInDown(
       duration: const Duration(milliseconds: 300),
       child: ClipRRect(
-        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(550), bottomRight: Radius.circular(550)),
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(size.width * 0.5), bottomRight: Radius.circular(size.width * 0.5)),
         child: DrawerHeader(
             decoration: BoxDecoration(
               color: color.tertiary,
-              borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(550), bottomRight: Radius.circular(550)),
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(size.width * 0.5), bottomRight: Radius.circular(size.width * 0.5)),
             ),
             child: Image.asset(
               'assets/images/panel_${color.brightness != Brightness.dark ? 'blanco' : 'negro'}.png',
-              height: 110,
+              height: size.width * 0.1,
             )),
       ),
     );
@@ -66,17 +67,17 @@ class _ItemMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     final ColorScheme color = Theme.of(context).colorScheme;
     return ListTile(
-        contentPadding: const EdgeInsets.only(left: 20),
+        contentPadding: EdgeInsets.only(left: size.width * 0.1),
         leading: Icon(
           item.icon,
           color: color.tertiary,
-          size: 30,
+          size: size.width * 0.08,
         ),
         title: Padding(
-          padding: const EdgeInsets.only(left: 5),
+          padding: EdgeInsets.only(left: size.width * 0.001),
           child: Text(
             item.title,
-            style: styleTexto.titleMedium?.copyWith(color: color.tertiary),
+            style: TextStyle(color: color.tertiary, fontSize: size.width * 0.04),
           ),
         ),
         onTap: () {

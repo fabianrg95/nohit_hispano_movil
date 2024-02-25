@@ -107,15 +107,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
             const Expanded(flex: 2, child: SizedBox(height: 1)),
             Hero(
                 tag: "headerNoHit",
-                child: Image.asset('assets/images/panel_${color.brightness == Brightness.dark ? 'blanco' : 'negro'}.png', height: 260)),
-            // Padding(
-            //   padding: const EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
-            //   child: Text(
-            //     'Una partida No hit/hitless consiste en completar un juego de principio a fin sin recibir ningún golpe de un enemigo o una trampa.',
-            //     textAlign: TextAlign.center,
-            //     style: styleTexto.bodyMedium,
-            //   ),
-            // ),
+                child: Image.asset('assets/images/panel_${color.brightness == Brightness.dark ? 'blanco' : 'negro'}.png', height: size.width * 0.6)),
             const Expanded(flex: 3, child: SizedBox(height: 1)),
             _informacionHispano(context),
           ],
@@ -142,18 +134,8 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                     AnimatedBuilder(
                         animation: _controller,
                         builder: (context, child) => Text((totalPartidas * _controller.value).toInt().toString(),
-                            style: styleTexto.displaySmall?.copyWith(color: color.outline))),
-                    Text('Partidas', style: styleTexto.titleMedium),
-                    // Align(
-                    //   alignment: const AlignmentDirectional(1.00, 0.00),
-                    //   child: Padding(
-                    //     padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 10, 0),
-                    //     child: Text(
-                    //       'Ver todos >',
-                    //       style: styleTexto.labelSmall,
-                    //     ),
-                    //   ),
-                    // ),
+                            style: TextStyle(color: color.outline, fontSize: size.width * 0.08))),
+                    Text('Partidas', style: TextStyle(color: Colors.white, fontSize: size.width * 0.04)),
                   ],
                 ),
               ),
@@ -173,8 +155,8 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                       AnimatedBuilder(
                           animation: _controller,
                           builder: (context, child) => Text((totalJugadores * _controller.value).toInt().toString(),
-                              style: styleTexto.displaySmall?.copyWith(color: color.outline))),
-                      Text('Jugadores', style: styleTexto.titleMedium),
+                              style: TextStyle(color: color.outline, fontSize: size.width * 0.08))),
+                      Text('Jugadores', style: TextStyle(color: Colors.white, fontSize: size.width * 0.04)),
                       // Align(
                       //   alignment: const AlignmentDirectional(1.00, 0.00),
                       //   child: Padding(
@@ -203,8 +185,8 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                       AnimatedBuilder(
                           animation: _controller,
                           builder: (context, child) => Text((totalJuegos * _controller.value).toInt().toString(),
-                              style: styleTexto.displaySmall?.copyWith(color: color.outline))),
-                      Text('Juegos', style: styleTexto.titleMedium),
+                              style: TextStyle(color: color.outline, fontSize: size.width * 0.08))),
+                      Text('Juegos', style: TextStyle(color: Colors.white, fontSize: size.width * 0.04)),
                       // Align(
                       //   alignment: const AlignmentDirectional(1.00, 0.00),
                       //   child: Padding(
@@ -236,7 +218,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                     decoration: ViewData().decorationContainerBasic(color: color),
                     child: Column(
                       children: [
-                        Text('Preguntas frecuentes', style: styleTexto.titleMedium),
+                        Text('Preguntas frecuentes', style: TextStyle(color: Colors.white, fontSize: size.width * 0.04)),
                       ],
                     ),
                   ),

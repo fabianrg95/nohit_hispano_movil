@@ -59,6 +59,7 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
                 'juegos(id, nombre, subtitulo, url_imagen, oficial_team_hitless)')
             .gte('fecha_partida', fechaInicio)
             .lte('fecha_partida', fechaFinal)
+            .order('fecha_partida', ascending: false)
             .order('id', ascending: false)
         //.limit(10)
         ;

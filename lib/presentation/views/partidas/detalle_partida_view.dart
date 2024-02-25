@@ -28,6 +28,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
   final double tamanioImagen = 150;
   late ColorScheme color;
   late TextTheme styleTexto;
+  late Size size;
   late JuegoDto? juegoDto;
   IconData iconoFlechaAtras = Icons.arrow_back;
 
@@ -77,6 +78,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
     final JugadorDto? detalleJugador = ref.watch(detalleJugadorProvider)[widget.jugadorId];
     color = Theme.of(context).colorScheme;
     styleTexto = Theme.of(context).textTheme;
+    size = MediaQuery.of(context).size;
 
     return PopScope(
       canPop: pageViewIndex == 0,
@@ -169,7 +171,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    stops: const [0.5, 1],
+                    stops: const [0.5, 0.9],
                     colors: [Colors.transparent, color.primary],
                   ),
                 ),
@@ -348,21 +350,32 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
     return IntrinsicHeight(
       child: Column(
         children: [
-          ViewData().muestraInformacionAccion(
-              accion: () => _navegarPage(1),
-              items: [Text(detalleJugador.nombre.toString(), style: styleTexto.titleLarge?.copyWith(color: color.outline)), const Text('Jugador')]),
+          ViewData().muestraInformacionAccion(accion: () => _navegarPage(1), items: [
+            Text(detalleJugador.nombre.toString(), style: TextStyle(color: color.tertiary, fontSize: size.width * 0.05)),
+            Text(
+              'Jugador',
+              style: TextStyle(color: Colors.white, fontSize: size.width * 0.037),
+            )
+          ]),
           ViewData().muestraInformacionAccion(
             accion: () => _navegarPage(1),
             items: [
-              Text(HumanFormat.fechaSmall(detallePartida.fecha), style: styleTexto.bodyLarge?.copyWith(color: color.outline)),
-              const Text('Fecha partida')
+              Text(HumanFormat.fechaSmall(detallePartida.fecha), style: TextStyle(color: color.tertiary, fontSize: size.width * 0.05)),
+              Text(
+                'Fecha partida',
+                style: TextStyle(color: Colors.white, fontSize: size.width * 0.037),
+              )
             ],
           ),
           ViewData().muestraInformacionAccion(
             accion: () => _navegarPage(1),
             items: [
-              Text(detallePartida.nombre.toString(), textAlign: TextAlign.center, style: styleTexto.bodyLarge?.copyWith(color: color.outline)),
-              const Text('Nombre partida')
+              Text(detallePartida.nombre.toString(),
+                  textAlign: TextAlign.center, style: TextStyle(color: color.tertiary, fontSize: size.width * 0.05)),
+              Text(
+                'Nombre partida',
+                style: TextStyle(color: Colors.white, fontSize: size.width * 0.037),
+              )
             ],
           ),
         ],

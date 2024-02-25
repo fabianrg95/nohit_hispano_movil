@@ -20,13 +20,13 @@ class Informacion {
 
     listaInformacion.add(Item(
         expandedValue: const Text(
-            '"No Hit" se le denomina al reto en el cual se logra completar un video juego sin recibir daño alguno por jefes, enemigos y/o trampas del mismo.'),
-        headerValue: 'Que es "No Hit"?'));
+            '"No Hit" se le denomina al reto en el cual se logra completar un video juego sin recibir daño alguno por jefes, enemigos y/o trampas.'),
+        headerValue: '¿Que es "No Hit"?'));
 
     listaInformacion.add(Item(
         expandedValue:
             const Text('Toda la información mostrada en la aplicación se obtiene del archivo excel de la comunidad no hit hispanohablante.'),
-        headerValue: 'De donde se obtiene esta información?'));
+        headerValue: '¿De donde se obtiene esta información?'));
 
     listaInformacion.add(Item(
         expandedValue: RichText(
@@ -40,7 +40,7 @@ class Informacion {
               text:
                   ' son los que se determinan como oficiales, cualquier otro juego que no se encuentre en dicha pagina se considera como un juego no oficial'),
         ])),
-        headerValue: 'Por que hay juegos oficiales y no oficiales'));
+        headerValue: '¿Por que hay juegos oficiales y no oficiales?'));
     return listaInformacion;
   }
 }

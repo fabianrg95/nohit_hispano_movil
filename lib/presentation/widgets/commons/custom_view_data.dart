@@ -5,7 +5,7 @@ class ViewData {
   Widget muestraInformacionAccion({required List<Widget> items, CrossAxisAlignment alineacion = CrossAxisAlignment.center, Function? accion}) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
+        padding: const EdgeInsets.only(bottom: 5, left: 10, right: 10, top: 5),
         child: GestureDetector(
             onTap: () => accion != null ? accion() : null,
             child: SizedBox(width: double.infinity, child: Column(crossAxisAlignment: alineacion, children: items))),
@@ -16,7 +16,7 @@ class ViewData {
   Widget muestraInformacionSimple({required List<Widget> items, CrossAxisAlignment alineacion = CrossAxisAlignment.center}) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
+        padding: const EdgeInsets.only(bottom: 5, left: 10, right: 10, top: 5),
         child: SizedBox(width: double.infinity, child: Column(crossAxisAlignment: alineacion, children: items)),
       ),
     );
