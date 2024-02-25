@@ -1,0 +1,7 @@
+{
+  "@@locale": "es",
+
+  "hello": "¡Hola!",
+  "welcome_message": "¡Bienvenido a mi aplicación!",
+  "button_label": "Aceptar"
+}

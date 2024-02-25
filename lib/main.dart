@@ -12,6 +12,8 @@ import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/enums/enums.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 late TextTheme styleTexto;
 late Size size;
@@ -58,6 +60,13 @@ class MyAppState extends ConsumerState<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: appTheme.getTheme(),
       routerConfig: appRouter,
+      localizationsDelegates: const [
+        AppLocalizations.delegate, // Add this line
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }
