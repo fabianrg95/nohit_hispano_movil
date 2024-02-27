@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
 import 'package:no_hit/presentation/widgets/commons/arrow.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
@@ -202,7 +203,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                 margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.09),
                 padding: const EdgeInsets.only(top: 10, bottom: 10),
                 decoration: ViewData().decorationContainerBasic(color: color),
-                child: JugadorCommons().informacionJugadorLite(jugador),
+                child: JugadorCommons().informacionJugadorLite(jugador, context),
               ),
             ),
             const SizedBox(height: 10),
@@ -217,7 +218,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                     },
                     items: [
                       Text(jugador.juegos.length.toString(), style: TextStyle(color: color.outline, fontSize: size.width * 0.08)),
-                      Text('Juego${jugador.juegos.length != 1 ? 's' : ''}')
+                      Text(AppLocalizations.of(context)!.juegos((jugador.juegos.length != 1).toString()))
                     ]),
                 ViewData().muestraInformacionAccion(
                     alineacion: CrossAxisAlignment.center,
@@ -228,7 +229,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                     },
                     items: [
                       Text(jugador.cantidadPartidas.toString(), style: TextStyle(color: color.outline, fontSize: size.width * 0.08)),
-                      Text('Partida${jugador.cantidadPartidas != 1 ? 's' : ''}')
+                      Text(AppLocalizations.of(context)!.partidas((jugador.cantidadPartidas != 1).toString()))
                     ]),
               ],
             ),
@@ -259,7 +260,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                             style: styleTexto.labelSmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
                         Text(jugador.primeraPartida!.fecha.toString(), style: styleTexto.labelSmall),
                         Text(
-                          'Primera ${jugador.primeraPartida!.id == jugador.ultimaPartida!.id ? 'y única ' : ''}partida',
+                          AppLocalizations.of(context)!.primera_partida((jugador.primeraPartida!.id == jugador.ultimaPartida!.id).toString()),
                           style: styleTexto.bodyLarge?.copyWith(color: color.outline),
                         )
                       ],
@@ -278,7 +279,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                           Text(jugador.ultimaPartida!.nombre.toString(),
                               style: styleTexto.labelSmall, textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
                           Text(jugador.ultimaPartida!.fecha.toString(), style: styleTexto.labelSmall),
-                          Text('Ultima partida', style: styleTexto.bodyLarge?.copyWith(color: color.outline))
+                          Text(AppLocalizations.of(context)!.ultima_partida, style: styleTexto.bodyLarge?.copyWith(color: color.outline))
                         ],
                         accion: () => navegarPartida(jugador.ultimaPartida!)),
                   )

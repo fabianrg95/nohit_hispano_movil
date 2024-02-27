@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/presentation/views/views.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class ListaJugadoresJuego extends ConsumerWidget {
@@ -14,7 +15,7 @@ class ListaJugadoresJuego extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     if (listaJugadores == null || listaJugadores!.isEmpty) {
-      return const Center(child: Text('El juego no cuenta con jugadores registradas'));
+      return Center(child: Text(AppLocalizations.of(context)!.juego_sin_jugadores));
     }
 
     return SafeArea(
@@ -52,7 +53,7 @@ class ListaJugadoresJuego extends ConsumerWidget {
                 Text(primeraPartida.nombreJugador.toString(), style: styleTexto.titleMedium),
                 Text(primeraPartida.fecha.toString(), style: styleTexto.bodySmall),
                 Text(
-                  'Primer ${primeraPartida.id == ultimaPartida.id ? 'y único ' : ''}jugador',
+                  AppLocalizations.of(context)!.primera_partida((primeraPartida.id == ultimaPartida.id).toString()),
                   style: styleTexto.bodyLarge?.copyWith(color: color.outline),
                 )
               ],
@@ -68,7 +69,7 @@ class ListaJugadoresJuego extends ConsumerWidget {
                   items: [
                     Text(ultimaPartida.nombreJugador.toString(), style: styleTexto.titleMedium),
                     Text(ultimaPartida.fecha.toString(), style: styleTexto.bodySmall),
-                    Text('Ultimo jugador', style: styleTexto.bodyLarge?.copyWith(color: color.outline))
+                    Text(AppLocalizations.of(context)!.ultimo_jugador, style: styleTexto.bodyLarge?.copyWith(color: color.outline))
                   ],
                   accion: () => navegarJugador(context, ultimaPartida.idJugador)))
         ]),

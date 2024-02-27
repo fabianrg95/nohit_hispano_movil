@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/views/juegos/lista_jugadores_juego.dart';
 import 'package:no_hit/presentation/views/juegos/lista_partidas_juego.dart';
 import 'package:no_hit/presentation/widgets/commons/arrow.dart';
@@ -193,16 +194,16 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
 
   Widget _resumenJuego(final JuegoDto informacionJuego, ResumenJuegoDto? resumenPartidasJuego) {
     if (resumenPartidasJuego == null) {
-      return const SizedBox(height: 100, child: PantallaCargaBasica(texto: "Consultando las partidas del juego seleccionado"));
+      return SizedBox(height: 100, child: PantallaCargaBasica(texto: AppLocalizations.of(context)!.consultando_partidas));
     }
 
     return IntrinsicHeight(
       child: Column(
         children: [
           ViewData().muestraInformacionSimple(items: [
-            Text(informacionJuego.oficialTeamHistless == true ? 'Oficial' : 'No oficial',
+            Text(AppLocalizations.of(context)!.tipo_juego(informacionJuego.oficialTeamHistless.toString()),
                 style: styleTexto.titleLarge?.copyWith(color: color.outline)),
-            const Text('Team hitless')
+            Text(AppLocalizations.of(context)!.team_hitless)
           ]),
           Row(
             children: [
@@ -210,14 +211,14 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
                 accion: () => _navegarPage(1),
                 items: [
                   Text(resumenPartidasJuego.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: color.outline)),
-                  Text('Partida${resumenPartidasJuego.cantidadPartidas != 1 ? 's' : ''}')
+                  Text(AppLocalizations.of(context)!.partidas((resumenPartidasJuego.cantidadPartidas != 1).toString()))
                 ],
               ),
               ViewData().muestraInformacionAccion(
                 accion: () => _navegarPage(2),
                 items: [
                   Text(resumenPartidasJuego.cantidadJugadores.toString(), style: styleTexto.displaySmall?.copyWith(color: color.outline)),
-                  Text('Jugador${resumenPartidasJuego.cantidadJugadores != 1 ? 'es' : ''}')
+                  Text(AppLocalizations.of(context)!.jugadores((resumenPartidasJuego.cantidadJugadores != 1).toString()))
                 ],
               ),
             ],

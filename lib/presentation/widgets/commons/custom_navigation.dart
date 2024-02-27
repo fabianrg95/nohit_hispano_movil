@@ -9,7 +9,6 @@ class CustomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme color = Theme.of(context).colorScheme;
-    final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Drawer(
         backgroundColor: color.primary,

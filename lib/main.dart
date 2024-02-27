@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 import 'package:no_hit/config/contants/environment.dart';
 import 'package:no_hit/config/router/app_router.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/infraestructure/enums/enums.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 late TextTheme styleTexto;
 late Size size;
@@ -22,7 +20,6 @@ Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await _definirVariablesEntorno();
-  _definirLocalizacion();
   await _inicializarSupabase();
   await _inicializarStorageLocal();
   runApp(const ProviderScope(child: MyApp()));
@@ -66,18 +63,16 @@ class MyAppState extends ConsumerState<MyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: AppLocalizations.supportedLocales,
+      supportedLocales: const [
+        Locale('en'),
+        Locale('es'),
+      ],
     );
   }
 }
 
 Future<void> _definirVariablesEntorno() async {
   await dotenv.load(fileName: '.env');
-}
-
-void _definirLocalizacion() {
-  Intl.defaultLocale = 'es-CO';
-  initializeDateFormatting('es-CO', null);
 }
 
 Future<void> _inicializarSupabase() async {

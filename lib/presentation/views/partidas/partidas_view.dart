@@ -4,6 +4,7 @@ import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/config/helpers/utilidades.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
@@ -69,14 +70,14 @@ class PartidasViewState extends ConsumerState<PartidasView> {
 
   AppBar _titulo(BuildContext context) {
     return AppBar(
-      title: const Text('Ultimas Partidas'),
+      title: Text(AppLocalizations.of(context)!.ultimas_partidas),
       forceMaterialTransparency: true,
     );
   }
 
   Widget _contenido(final List<PartidaDto>? listaUltimasPartidas) {
     if (listaUltimasPartidas == null || listaUltimasPartidas.isEmpty) {
-      return const PantallaCargaBasica(texto: 'Consultando ultimas partidas');
+      return PantallaCargaBasica(texto: AppLocalizations.of(context)!.consultando_ultimas_partidas);
     }
 
     return SizedBox(

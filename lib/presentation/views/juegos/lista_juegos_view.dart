@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
@@ -20,7 +21,7 @@ class ListaJuegosView extends ConsumerWidget {
       child: SafeArea(
         child: Scaffold(
           drawer: const CustomNavigation(),
-          appBar: AppBar(forceMaterialTransparency: true, title: const Text('Juegos')),
+          appBar: AppBar(forceMaterialTransparency: true, title: Text(AppLocalizations.of(context)!.juegos(true.toString()))),
           body: const TapbarJuegos(),
         ),
       ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/views/introduccion/introduccion_view.dart';
 import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
@@ -135,7 +136,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                         animation: _controller,
                         builder: (context, child) => Text((totalPartidas * _controller.value).toInt().toString(),
                             style: TextStyle(color: color.outline, fontSize: size.width * 0.08))),
-                    Text('Partidas', style: TextStyle(color: Colors.white, fontSize: size.width * 0.04)),
+                    Text(AppLocalizations.of(context)!.partidas('true'), style: TextStyle(color: Colors.white, fontSize: size.width * 0.04)),
                   ],
                 ),
               ),
@@ -156,17 +157,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                           animation: _controller,
                           builder: (context, child) => Text((totalJugadores * _controller.value).toInt().toString(),
                               style: TextStyle(color: color.outline, fontSize: size.width * 0.08))),
-                      Text('Jugadores', style: TextStyle(color: Colors.white, fontSize: size.width * 0.04)),
-                      // Align(
-                      //   alignment: const AlignmentDirectional(1.00, 0.00),
-                      //   child: Padding(
-                      //     padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 10, 0),
-                      //     child: Text(
-                      //       'Ver todos >',
-                      //       style: styleTexto.labelSmall,
-                      //     ),
-                      //   ),
-                      // ),
+                      Text(AppLocalizations.of(context)!.jugadores('true'), style: TextStyle(color: Colors.white, fontSize: size.width * 0.04)),
                     ],
                   ),
                 ),
@@ -186,17 +177,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                           animation: _controller,
                           builder: (context, child) => Text((totalJuegos * _controller.value).toInt().toString(),
                               style: TextStyle(color: color.outline, fontSize: size.width * 0.08))),
-                      Text('Juegos', style: TextStyle(color: Colors.white, fontSize: size.width * 0.04)),
-                      // Align(
-                      //   alignment: const AlignmentDirectional(1.00, 0.00),
-                      //   child: Padding(
-                      //     padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 10, 0),
-                      //     child: Text(
-                      //       'Ver todos >',
-                      //       style: styleTexto.labelSmall,
-                      //     ),
-                      //   ),
-                      // ),
+                      Text(AppLocalizations.of(context)!.juegos('true'), style: TextStyle(color: Colors.white, fontSize: size.width * 0.04)),
                     ],
                   ),
                 ),
@@ -218,7 +199,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                     decoration: ViewData().decorationContainerBasic(color: color),
                     child: Column(
                       children: [
-                        Text('Preguntas frecuentes', style: TextStyle(color: Colors.white, fontSize: size.width * 0.04)),
+                        Text(AppLocalizations.of(context)!.preguntas_frecuentes, style: TextStyle(color: Colors.white, fontSize: size.width * 0.04)),
                       ],
                     ),
                   ),
@@ -239,29 +220,6 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
               // )
             ],
           ),
-          // Row(
-          //   crossAxisAlignment: CrossAxisAlignment.center,
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-          //     Expanded(
-          //       flex: 3,
-          //       child: GestureDetector(
-          //         onTap: () => Navigator.of(context).push(
-          //             PageRouteBuilder(pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: const ContactoView()))),
-          //         child: Container(
-          //           margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
-          //           padding: const EdgeInsets.only(top: 10, bottom: 10),
-          //           decoration: ViewData().decorationContainerBasic(color: color),
-          //           child: Column(
-          //             children: [
-          //               Text('Contacto', style: styleTexto.titleMedium),
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
           const SizedBox(height: 10)
         ],
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:no_hit/infraestructure/dto/jugador/jugador_dto.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -21,7 +22,7 @@ class Desarrollador extends StatelessWidget {
           drawer: const CustomNavigation(),
           appBar: AppBar(
             forceMaterialTransparency: true,
-            title: const Text("Desarrollador"),
+            title: Text(AppLocalizations.of(context)!.desarrollador),
           ),
           body: contenido(context),
         ),
@@ -70,11 +71,11 @@ class Desarrollador extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 20),
-          JugadorCommons().informacionJugadorLite(jugadorDto),
+          JugadorCommons().informacionJugadorLite(jugadorDto, context),
           const SizedBox(height: 20),
           ListTile(
               leading: const Icon(FontAwesomeIcons.envelope),
-              title: const Text("Correo electrónico"),
+              title: Text(AppLocalizations.of(context)!.correo_electronico),
               contentPadding: const EdgeInsets.symmetric(horizontal: 50),
               textColor: Colors.white,
               onTap: () => /*To do arreglar para ios */
@@ -85,7 +86,7 @@ class Desarrollador extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(FontAwesomeIcons.github),
-            title: const Text("Github"),
+            title: Text(AppLocalizations.of(context)!.github),
             contentPadding: const EdgeInsets.symmetric(horizontal: 50),
             textColor: Colors.white,
             onTap: () => CustomLinks().lanzarUrl("https://github.com/fabianrg95"),
@@ -96,7 +97,7 @@ class Desarrollador extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(FontAwesomeIcons.instagram),
-            title: const Text("Instagram"),
+            title: Text(AppLocalizations.of(context)!.instagram),
             contentPadding: const EdgeInsets.symmetric(horizontal: 50),
             textColor: Colors.white,
             onTap: () => CustomLinks().lanzarUrl("https://www.instagram.com/fabiancho.r"),
@@ -107,7 +108,7 @@ class Desarrollador extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(FontAwesomeIcons.twitch),
-            title: const Text("Twitch"),
+            title: Text(AppLocalizations.of(context)!.twitch),
             contentPadding: const EdgeInsets.symmetric(horizontal: 50),
             textColor: Colors.white,
             onTap: () => CustomLinks().lanzarUrl("https://www.twitch.tv/fabiancho13"),
@@ -118,7 +119,7 @@ class Desarrollador extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(FontAwesomeIcons.youtube),
-            title: const Text("Youtube"),
+            title: Text(AppLocalizations.of(context)!.youtube),
             contentPadding: const EdgeInsets.symmetric(horizontal: 50),
             textColor: Colors.white,
             onTap: () => CustomLinks().lanzarUrl("https://www.youtube.com/channel/UC1jyPT2CCXnUs8k11UWVjyQ"),
@@ -129,7 +130,7 @@ class Desarrollador extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(FontAwesomeIcons.paypal),
-            title: const Text("Paypal"),
+            title: Text(AppLocalizations.of(context)!.paypal),
             contentPadding: const EdgeInsets.symmetric(horizontal: 50),
             textColor: Colors.white,
             onTap: () => CustomLinks().lanzarUrl("https://www.paypal.com/donate/?hosted_button_id=88R47UE5XYDSQ"),

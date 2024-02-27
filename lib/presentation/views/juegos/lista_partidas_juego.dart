@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/juegos/informacion_juego_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
@@ -18,7 +19,7 @@ class ListaPartidas extends ConsumerWidget {
     final ColorScheme color = Theme.of(context).colorScheme;
 
     if (primeraPartida == null && ultimaPartida == null) {
-      return const Center(child: Text('El juego no cuenta con partidas registradas'));
+      return Center(child: Text(AppLocalizations.of(context)!.juego_sin_partidas));
     }
 
     final TextTheme styleTexto = Theme.of(context).textTheme;
@@ -42,7 +43,7 @@ class ListaPartidas extends ConsumerWidget {
                         Text(primeraPartida!.nombre.toString(), style: styleTexto.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis),
                         Text(primeraPartida!.fecha.toString(), style: styleTexto.bodySmall),
                         Text(
-                          'Primera ${primeraPartida!.id == ultimaPartida!.id ? 'y única ' : ''}partida',
+                          AppLocalizations.of(context)!.primera_partida((primeraPartida!.id == ultimaPartida!.id).toString()),
                           style: styleTexto.bodyLarge?.copyWith(color: color.outline),
                         )
                       ],
@@ -59,7 +60,7 @@ class ListaPartidas extends ConsumerWidget {
                             Text(ultimaPartida!.nombreJugador.toString(), style: styleTexto.titleMedium),
                             Text(ultimaPartida!.nombre.toString(), style: styleTexto.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis),
                             Text(ultimaPartida!.fecha.toString(), style: styleTexto.bodySmall),
-                            Text('Ultima partida', style: styleTexto.bodyLarge?.copyWith(color: color.outline))
+                            Text(AppLocalizations.of(context)!.ultima_partida, style: styleTexto.bodyLarge?.copyWith(color: color.outline))
                           ],
                           accion: () => navegarPartida(context, ref, ultimaPartida!)))
                 ]),

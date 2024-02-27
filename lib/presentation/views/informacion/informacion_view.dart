@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/views/informacion/informacion_data.dart';
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
@@ -20,7 +21,7 @@ class PreguntasFrecuentesView extends StatelessWidget {
           drawer: const CustomNavigation(),
           appBar: AppBar(
             forceMaterialTransparency: true,
-            title: const Text("Preguntas frecuentes"),
+            title: Text(AppLocalizations.of(context)!.preguntas_frecuentes),
           ),
           body: const Contenido(),
         ),

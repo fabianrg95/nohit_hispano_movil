@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:no_hit/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -24,7 +24,7 @@ class Aplicacion extends StatelessWidget {
               drawer: const CustomNavigation(),
               appBar: AppBar(
                 forceMaterialTransparency: true,
-                title: const Text("Aplicación"),
+                title: Text(AppLocalizations.of(context)!.aplicacion),
               ),
               body: contenido(context, snapshot),
             ),
@@ -37,7 +37,7 @@ class Aplicacion extends StatelessWidget {
   Widget contenido(BuildContext context, AsyncSnapshot snapshot) {
     // final TextTheme styleTexto = Theme.of(context).textTheme;
     final ColorScheme color = Theme.of(context).colorScheme;
-    // final Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
     if (snapshot.hasError) {
       return Center(
         child: Text(snapshot.error.toString()),
@@ -56,12 +56,12 @@ class Aplicacion extends StatelessWidget {
                 height: 200,
               ),
             ),
-            item('Proyecto de código abierto', null),
-            item('App Version', packageInfo.version),
-            item('Build Number', packageInfo.buildNumber),
+            item(AppLocalizations.of(context)!.proyecto_codigo_abierto, null),
+            item(AppLocalizations.of(context)!.app_version, packageInfo.version),
+            item(AppLocalizations.of(context)!.numero_construccion, packageInfo.buildNumber),
             ListTile(
               leading: const Icon(FontAwesomeIcons.github),
-              title: const Text("Github"),
+              title: Text(AppLocalizations.of(context)!.github),
               contentPadding: const EdgeInsets.symmetric(horizontal: 50),
               textColor: Colors.white,
               onTap: () => CustomLinks().lanzarUrl("https://github.com/fabianrg95/nohit_hispano_movil"),
@@ -73,7 +73,7 @@ class Aplicacion extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(FontAwesomeIcons.googlePlay),
-              title: const Text("Google play"),
+              title: Text(AppLocalizations.of(context)!.google_play),
               contentPadding: const EdgeInsets.symmetric(horizontal: 50),
               textColor: Colors.white,
               onTap: () => CustomLinks().lanzarUrl("https://play.google.com/store/apps/details?id=com.fabianrodriguez.nohit.hispano"),

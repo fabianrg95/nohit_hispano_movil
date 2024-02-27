@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/delegates/jugadores/buscar_jugadores_delegate.dart';
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
 import 'package:no_hit/presentation/views/jugadores/jugador_view.dart';
@@ -50,11 +51,11 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
           drawer: const CustomNavigation(),
           appBar: AppBar(
             actions: [_accionBuscar(context)],
-            title: const Text('Jugadores'),
+            title: Text(AppLocalizations.of(context)!.jugadores(true.toString())),
             forceMaterialTransparency: true,
           ),
           body: RefreshIndicator(
-              onRefresh: () => _actualizarPartidas(), color: color.surfaceTint, backgroundColor: color.tertiary, child: _contenidoPagina()),
+              onRefresh: () => _actualizarPartidas(), color: color.surfaceTint, backgroundColor: color.tertiary, child: _contenidoPagina(context)),
         ),
       ),
     );
@@ -70,16 +71,12 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
   Widget _accionBuscar(BuildContext context) {
     return IconButton(
         onPressed: () {
-          showSearch(
-              context: context,
-              delegate: BuscarJugadoresDelegate(
-                listaInicial: ref.watch(jugadorProvider),
-              ));
+          showSearch(context: context, delegate: BuscarJugadoresDelegate(listaInicial: ref.watch(jugadorProvider), context: context));
         },
         icon: const Icon(Icons.search));
   }
 
-  Widget _contenidoPagina() {
+  Widget _contenidoPagina(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
@@ -90,7 +87,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
             padding: const EdgeInsets.only(top: 10),
             child: Column(
               children: [
-                Text('Jugadores nuevos', style: styleTexto.titleLarge),
+                Text(AppLocalizations.of(context)!.jugadores_nuevos, style: styleTexto.titleLarge),
                 const SizedBox(height: 10),
                 Divider(color: color.tertiary, thickness: 2, height: 1),
                 SizedBox(

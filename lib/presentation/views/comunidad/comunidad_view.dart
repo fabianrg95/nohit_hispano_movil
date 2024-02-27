@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:no_hit/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
@@ -20,7 +20,7 @@ class Comunidad extends StatelessWidget {
             drawer: const CustomNavigation(),
             appBar: AppBar(
               forceMaterialTransparency: true,
-              title: const Text("Comunidad"),
+              title: Text(AppLocalizations.of(context)!.comunidad),
             ),
             body: contenido(context),
           ),
@@ -29,6 +29,8 @@ class Comunidad extends StatelessWidget {
 
   Widget contenido(BuildContext context) {
     final TextTheme styleTexto = Theme.of(context).textTheme;
+    final Size size = MediaQuery.of(context).size;
+
     return SizedBox(
       height: size.height,
       child: ListView(
@@ -43,14 +45,14 @@ class Comunidad extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Text(
-            "Comunidad no hit hispanohablante",
+            AppLocalizations.of(context)!.comunidad_hispano,
             style: styleTexto.headlineMedium,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 20),
           ListTile(
             leading: const Icon(FontAwesomeIcons.twitter),
-            title: const Text("Twitter"),
+            title: Text(AppLocalizations.of(context)!.twitter),
             contentPadding: const EdgeInsets.symmetric(horizontal: 50),
             textColor: Colors.white,
             onTap: () => CustomLinks().lanzarUrl("https://twitter.com/NoHitHispano"),
@@ -61,7 +63,7 @@ class Comunidad extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(FontAwesomeIcons.youtube),
-            title: const Text("Youtube"),
+            title: Text(AppLocalizations.of(context)!.youtube),
             contentPadding: const EdgeInsets.symmetric(horizontal: 50),
             textColor: Colors.white,
             onTap: () => CustomLinks().lanzarUrl("https://www.youtube.com/channel/UCTjczNq199DwG-nIM9o6oQg"),
@@ -72,7 +74,7 @@ class Comunidad extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(FontAwesomeIcons.twitch),
-            title: const Text("Twitch"),
+            title: Text(AppLocalizations.of(context)!.twitch),
             contentPadding: const EdgeInsets.symmetric(horizontal: 50),
             textColor: Colors.white,
             onTap: () => CustomLinks().lanzarUrl("https://www.twitch.tv/nohithispano"),
@@ -83,7 +85,7 @@ class Comunidad extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(FontAwesomeIcons.discord),
-            title: const Text("Discord"),
+            title: Text(AppLocalizations.of(context)!.discord),
             contentPadding: const EdgeInsets.symmetric(horizontal: 50),
             textColor: Colors.white,
             onTap: () => CustomLinks().lanzarUrl("https://discord.gg/BXrdaQXrCp"),

@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class JugadorCommons {
-  Widget informacionJugadorLite(JugadorDto jugador) {
+  Widget informacionJugadorLite(JugadorDto jugador, BuildContext context) {
     final ColorScheme color = AppTheme().color;
     return Visibility(
         visible: jugador.mostrarInformacion,
-        replacement: const Center(child: Text('Jugador sin informacion')),
+        replacement: Center(child: Text(AppLocalizations.of(context)!.jugador_sin_informacion)),
         child: Column(
           children: [
             Visibility(visible: jugador.pronombre != null, child: Text(jugador.pronombre.toString())),
@@ -44,7 +45,7 @@ class JugadorCommons {
         child: IntrinsicHeight(
           child: Column(
             children: [
-              if (mostrarTitulo) Center(child: Text('Información Jugador', style: styleTexto.titleMedium)),
+              if (mostrarTitulo) Center(child: Text(AppLocalizations.of(context)!.informacion_jugador, style: styleTexto.titleMedium)),
               if (mostrarTitulo) const SizedBox(height: 10),
               if (mostrarTitulo) Divider(color: color.tertiary, thickness: 2, height: 1),
               Row(

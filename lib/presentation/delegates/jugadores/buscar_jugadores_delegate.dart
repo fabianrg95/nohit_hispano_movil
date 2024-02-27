@@ -1,19 +1,23 @@
 import 'dart:async';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:no_hit/infraestructure/dto/jugador/jugador_dto.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class BuscarJugadoresDelegate extends SearchDelegate {
   List<JugadorDto> listaInicial;
   List<JugadorDto>? listaFiltrada = [];
+  BuildContext context;
 
   StreamController<List<JugadorDto>> debouncedJugadores = StreamController.broadcast();
   StreamController<bool> isLoadingStream = StreamController.broadcast();
 
   Timer? _debounceTimer;
 
-  BuscarJugadoresDelegate({required this.listaInicial}) : super(searchFieldLabel: 'Buscar jugador') {
+  BuscarJugadoresDelegate({required this.listaInicial, required this.context})
+      : super(searchFieldLabel: AppLocalizations.of(context)!.buscar_jugador) {
     listaFiltrada = listaInicial;
   }
 
@@ -82,7 +86,7 @@ class BuscarJugadoresDelegate extends SearchDelegate {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Ingrese un nombre de usuario',
+              AppLocalizations.of(context)!.ingrese_usuario,
               style: textStyle.titleMedium?.copyWith(color: color.tertiary),
             ),
           ],

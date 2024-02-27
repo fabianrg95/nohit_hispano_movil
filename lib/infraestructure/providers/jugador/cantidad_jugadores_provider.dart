@@ -21,7 +21,6 @@ class TotalJugadoresNotifier extends StateNotifier<int> {
     loadingdata = true;
 
     if (state == 0 || reload == true) {
-      print("consultando");
       state = await obtenerTotalJugadores();
     }
 

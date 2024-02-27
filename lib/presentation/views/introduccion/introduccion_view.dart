@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class IntroduccionView extends ConsumerStatefulWidget {
   static const nombre = 'introduccion-screen';
@@ -98,7 +99,7 @@ class IntroduccionViewState extends ConsumerState<IntroduccionView> {
                 secondCurve: Curves.linear,
                 duration: const Duration(milliseconds: 300),
                 firstChild: const Icon(Icons.arrow_forward_ios_outlined),
-                secondChild: const Text("Empezar"),
+                secondChild: Text(AppLocalizations.of(context)!.empezar),
                 crossFadeState: indexPage == cantidadPantallas - 1 ? CrossFadeState.showSecond : CrossFadeState.showFirst,
               ),
             ),
@@ -113,7 +114,7 @@ class IntroduccionViewState extends ConsumerState<IntroduccionView> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       alignment: const Alignment(0, 0.3),
       child: Text(
-        'Aca encontraras las partidas, Jugadores y juegos registrados en la comunidad No Hit Hispanohablante.',
+        AppLocalizations.of(context)!.introduccion_1,
         textAlign: TextAlign.center,
         style: TextStyle(color: Colors.white, fontSize: size.width * 0.05),
       ),
@@ -125,28 +126,10 @@ class IntroduccionViewState extends ConsumerState<IntroduccionView> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       alignment: const Alignment(0, 0.3),
       child: Text(
-        'Una partida No hit/hitless consiste en completar un juego de principio a fin sin recibir algún golpe de un enemigo o una trampa.',
+        AppLocalizations.of(context)!.introduccion_2,
         textAlign: TextAlign.center,
         style: TextStyle(color: Colors.white, fontSize: size.width * 0.05),
       ),
-    );
-  }
-
-  Widget pantalla3() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset('assets/images/panel_${color.brightness == Brightness.dark ? 'blanco' : 'negro'}.png', height: 260),
-        Padding(
-          padding: const EdgeInsets.only(left: 25, right: 25, top: 50, bottom: 10),
-          child: Text(
-            'No olvides apoyar a todos.',
-            textAlign: TextAlign.center,
-            style: styleTexto.titleMedium,
-          ),
-        )
-      ],
     );
   }
 }

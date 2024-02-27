@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/views/juegos/detalle_juego_view.dart';
 import 'package:no_hit/presentation/widgets/commons/arrow.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
@@ -218,7 +219,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(child: Text('Información Partida', style: styleTexto.titleMedium)),
+            Center(child: Text(AppLocalizations.of(context)!.informacion_partida, style: styleTexto.titleMedium)),
             const SizedBox(height: 10),
             Divider(color: color.tertiary, thickness: 2, height: 1),
             const SizedBox(height: 10),
@@ -307,7 +308,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(child: Text('¿Primera Partida?', style: styleTexto.titleMedium)),
+            Center(child: Text(AppLocalizations.of(context)!.es_primera_partida, style: styleTexto.titleMedium)),
             const SizedBox(height: 10),
             Divider(color: color.tertiary, thickness: 2, height: 1),
             IntrinsicHeight(
@@ -316,21 +317,21 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
                   ViewData().muestraInformacionAccion(alineacion: CrossAxisAlignment.center, items: [
                     const SizedBox(height: 10),
                     Text(detallePartida.primeraPartidaJugador == true ? 'Si' : 'No', style: styleTexto.titleLarge?.copyWith(color: color.outline)),
-                    const Text('Jugador'),
+                    Text(AppLocalizations.of(context)!.jugadores(false.toString())),
                     const SizedBox(height: 10),
                   ]),
                   VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
                   ViewData().muestraInformacionAccion(alineacion: CrossAxisAlignment.center, items: [
                     const SizedBox(height: 10),
                     Text(detallePartida.primeraPartidaHispano == true ? 'Si' : 'No', style: styleTexto.titleLarge?.copyWith(color: color.outline)),
-                    const Text('Hispano'),
+                    Text(AppLocalizations.of(context)!.hispano),
                     const SizedBox(height: 10),
                   ]),
                   VerticalDivider(color: color.tertiary, thickness: 2, indent: 0),
                   ViewData().muestraInformacionAccion(alineacion: CrossAxisAlignment.center, items: [
                     const SizedBox(height: 10),
                     Text(detallePartida.primeraPartidaMundo == true ? 'Si' : 'No', style: styleTexto.titleLarge?.copyWith(color: color.outline)),
-                    const Text('Mundial'),
+                    Text(AppLocalizations.of(context)!.mundial),
                     const SizedBox(height: 10),
                   ]),
                 ],
@@ -344,7 +345,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
 
   Widget _resumenPartida(JuegoDto juegoDto, PartidaDto? detallePartida, JugadorDto? detalleJugador) {
     if (detallePartida == null || detalleJugador == null) {
-      return const SizedBox(height: 100, child: PantallaCargaBasica(texto: "Consultando las partidas del juego seleccionado"));
+      return SizedBox(height: 100, child: PantallaCargaBasica(texto: AppLocalizations.of(context)!.consultando_partidas));
     }
 
     return IntrinsicHeight(
@@ -353,7 +354,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
           ViewData().muestraInformacionAccion(accion: () => _navegarPage(1), items: [
             Text(detalleJugador.nombre.toString(), style: TextStyle(color: color.tertiary, fontSize: size.width * 0.05)),
             Text(
-              'Jugador',
+              AppLocalizations.of(context)!.jugadores(false.toString()),
               style: TextStyle(color: Colors.white, fontSize: size.width * 0.037),
             )
           ]),
@@ -362,7 +363,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
             items: [
               Text(HumanFormat.fechaSmall(detallePartida.fecha), style: TextStyle(color: color.tertiary, fontSize: size.width * 0.05)),
               Text(
-                'Fecha partida',
+                AppLocalizations.of(context)!.fecha_partida,
                 style: TextStyle(color: Colors.white, fontSize: size.width * 0.037),
               )
             ],
@@ -373,7 +374,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
               Text(detallePartida.nombre.toString(),
                   textAlign: TextAlign.center, style: TextStyle(color: color.tertiary, fontSize: size.width * 0.05)),
               Text(
-                'Nombre partida',
+                AppLocalizations.of(context)!.nombre_partida,
                 style: TextStyle(color: Colors.white, fontSize: size.width * 0.037),
               )
             ],
