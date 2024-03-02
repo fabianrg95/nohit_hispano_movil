@@ -44,14 +44,16 @@ class PartidasViewState extends ConsumerState<PartidasView> {
           if (didPop) return;
           Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, __, ___) => const InicioView()));
         },
-        child: Scaffold(
-          drawer: const CustomNavigation(),
-          appBar: _titulo(context),
-          body: RefreshIndicator(
-            onRefresh: () => _reiniciarPartidas(),
-            color: color.surfaceTint,
-            backgroundColor: color.tertiary,
-            child: _contenido(listaUltimasPartidas),
+        child: SafeArea(
+          child: Scaffold(
+            drawer: const CustomNavigation(),
+            appBar: _titulo(context),
+            body: RefreshIndicator(
+              onRefresh: () => _reiniciarPartidas(),
+              color: color.surfaceTint,
+              backgroundColor: color.tertiary,
+              child: _contenido(listaUltimasPartidas),
+            ),
           ),
         ));
   }

@@ -1,3 +1,4 @@
+
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,11 +24,27 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
   late ColorScheme color;
   late TextTheme styleTexto;
 
+  final ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
-    ref.read(jugadorProvider.notifier).loadData(false);
+    consultarJugadores();
     ref.read(ultimosJugadoresProvider.notifier).loadData(false);
+
+    scrollController.addListener(() {
+      if ((scrollController.position.pixels + 1000) > scrollController.position.maxScrollExtent) {
+        consultarJugadores();
+      }
+    });
+  }
+
+  void consultarJugadores() {
+    ref.read(jugadorProvider.notifier).loadData();
+  }
+
+  void recargarJugadores() {
+    ref.read(jugadorProvider.notifier).reloadData();
   }
 
   @override
@@ -55,15 +72,19 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
             forceMaterialTransparency: true,
           ),
           body: RefreshIndicator(
-              onRefresh: () => _actualizarPartidas(), color: color.surfaceTint, backgroundColor: color.tertiary, child: _contenidoPagina(context)),
+            onRefresh: () => _actualizarJugadores(),
+            color: color.surfaceTint,
+            backgroundColor: color.tertiary,
+            child: _contenidoPagina(context),
+          ),
         ),
       ),
     );
   }
 
-  Future<void> _actualizarPartidas() async {
+  Future<void> _actualizarJugadores() async {
     setState(() {
-      ref.read(jugadorProvider.notifier).loadData(true);
+      recargarJugadores();
       ref.read(ultimosJugadoresProvider.notifier).loadData(true);
     });
   }
@@ -79,6 +100,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
   Widget _contenidoPagina(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
+      controller: scrollController,
       child: Column(
         children: [
           Container(
