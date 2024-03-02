@@ -1,4 +1,3 @@
-
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -90,9 +89,16 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
   }
 
   Widget _accionBuscar(BuildContext context) {
+    final noHitRepository = ref.read(hitlessRepositoryProvider);
+
     return IconButton(
         onPressed: () {
-          showSearch(context: context, delegate: BuscarJugadoresDelegate(listaInicial: ref.watch(jugadorProvider), context: context));
+          showSearch(
+              context: context,
+              delegate: BuscarJugadoresDelegate(
+                buscarJugadoresCallback: noHitRepository.buscarJugadores,
+                context: context,
+              ));
         },
         icon: const Icon(Icons.search));
   }

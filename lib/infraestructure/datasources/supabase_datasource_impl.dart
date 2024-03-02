@@ -17,11 +17,32 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
   }
 
   @override
+  Future<List<JuegoEntity>> buscarJuegos(String busqueda) async {
+    final List<Map<String, dynamic>> respuesta = await supabase
+        .from('juegos')
+        .select('id, nombre, subtitulo, url_imagen, oficial_team_hitless')
+        .ilike('nombre', '%$busqueda%')
+        .order('nombre', ascending: true);
+
+    return respuesta.map((juego) => JuegoEntity.fromJson(juego)).toList();
+  }
+
+  @override
   Future<List<JugadorEntity>> obtenerJugadores(final List<String> letraInicial) async {
     final List<Map<String, dynamic>> respuesta = await supabase
         .from('jugadores')
         .select('id, nombre_usuario, nacionalidad(codigo_bandera))')
         .ilikeAnyOf('nombre_usuario', letraInicial)
+        .order('nombre_usuario', ascending: true);
+    return respuesta.map((jugador) => JugadorEntity.fromJsonBasico(jugador)).toList();
+  }
+
+  @override
+  Future<List<JugadorEntity>> buscarJugadores(String busqueda) async {
+    final List<Map<String, dynamic>> respuesta = await supabase
+        .from('jugadores')
+        .select('id, nombre_usuario, nacionalidad(codigo_bandera))')
+        .ilike('nombre_usuario', '%$busqueda%')
         .order('nombre_usuario', ascending: true);
     return respuesta.map((jugador) => JugadorEntity.fromJsonBasico(jugador)).toList();
   }

@@ -1,24 +1,26 @@
 import 'dart:async';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:no_hit/domain/entities/jugador/jugador_entity.dart';
 import 'package:no_hit/infraestructure/dto/jugador/jugador_dto.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:no_hit/infraestructure/mapper/mappers.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
+typedef BuscarJugadoresCallback = Future<List<JugadorEntity>> Function(String query);
+
 class BuscarJugadoresDelegate extends SearchDelegate {
-  List<JugadorDto> listaInicial;
-  List<JugadorDto>? listaFiltrada = [];
   BuildContext context;
+  BuscarJugadoresCallback buscarJugadoresCallback;
 
   StreamController<List<JugadorDto>> debouncedJugadores = StreamController.broadcast();
   StreamController<bool> isLoadingStream = StreamController.broadcast();
+  List<JugadorDto> jugadoresEncontrador = [];
 
   Timer? _debounceTimer;
 
-  BuscarJugadoresDelegate({required this.listaInicial, required this.context})
-      : super(searchFieldLabel: AppLocalizations.of(context)!.buscar_jugador) {
-    listaFiltrada = listaInicial;
-  }
+  BuscarJugadoresDelegate({required this.buscarJugadoresCallback, required this.context})
+      : super(searchFieldLabel: AppLocalizations.of(context)!.buscar_jugador);
 
   @override
   ThemeData appBarTheme(BuildContext context) {
@@ -77,6 +79,9 @@ class BuscarJugadoresDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    debouncedJugadores.add([]);
+    jugadoresEncontrador = [];
+
     final textStyle = Theme.of(context).textTheme;
     final color = Theme.of(context).colorScheme;
     if (query.isEmpty) {
@@ -92,7 +97,11 @@ class BuscarJugadoresDelegate extends SearchDelegate {
         ),
       );
     }
-    _cambioConsulta(query);
+
+    if (query.isNotEmpty) {
+      _cambioConsulta(query);
+    }
+
     return construirResultado();
   }
 
@@ -100,22 +109,22 @@ class BuscarJugadoresDelegate extends SearchDelegate {
     debouncedJugadores.close();
   }
 
-  void _cambioConsulta(String query) {
+  Future<void> _cambioConsulta(String query) async {
     isLoadingStream.add(true);
 
     if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
 
     _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
-      final jugadores = listaInicial.where((element) => element.nombre!.toLowerCase().contains(query.toLowerCase())).toList();
-      listaFiltrada = jugadores;
+      final jugadores = JugadorMapper.mapearListaJugadores(await buscarJugadoresCallback(query));
       debouncedJugadores.add(jugadores);
+      jugadoresEncontrador.addAll(jugadores);
       isLoadingStream.add(false);
     });
   }
 
   Widget construirResultado() {
     return StreamBuilder(
-      initialData: listaFiltrada,
+      initialData: jugadoresEncontrador,
       stream: debouncedJugadores.stream,
       builder: (context, snapshot) {
         final jugadores = snapshot.data ?? [];

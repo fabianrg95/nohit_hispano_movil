@@ -13,8 +13,18 @@ class SupabaseRepositoryImpl extends SupabaseRepository {
   }
 
   @override
+  Future<List<JuegoEntity>> buscarJuegos(String busqueda) {
+    return datasource.buscarJuegos(busqueda);
+  }
+
+  @override
   Future<List<JugadorEntity>> obtenerJugadores(final List<String> letraInicial) {
     return datasource.obtenerJugadores(letraInicial);
+  }
+
+  @override
+  Future<List<JugadorEntity>> buscarJugadores(String busqueda) {
+    return datasource.buscarJugadores(busqueda);
   }
 
   @override
