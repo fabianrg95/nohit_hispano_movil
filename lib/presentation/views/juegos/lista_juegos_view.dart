@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:no_hit/presentation/delegates/juegos/buscar_juego_delegate.dart';
 import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
@@ -20,12 +21,26 @@ class ListaJuegosView extends ConsumerWidget {
       },
       child: SafeArea(
         child: Scaffold(
+          appBar: AppBar(
+            actions: [accionBuscar(context, ref)],
+            title: Text(AppLocalizations.of(context)!.juegos(true.toString())),
+            forceMaterialTransparency: true,
+          ),
           drawer: const CustomNavigation(),
-          appBar: AppBar(forceMaterialTransparency: true, title: Text(AppLocalizations.of(context)!.juegos(true.toString()))),
           body: const TapbarJuegos(),
         ),
       ),
     );
+  }
+
+  Widget accionBuscar(BuildContext context, ref) {
+    final noHitRepository = ref.read(hitlessRepositoryProvider);
+
+    return IconButton(
+        onPressed: () {
+          showSearch(context: context, delegate: BuscarJuegoDelegate(buscarJuegosCallback: noHitRepository.buscarJuegos, context: context, ref: ref));
+        },
+        icon: const Icon(Icons.search));
   }
 }
 

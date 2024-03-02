@@ -21,7 +21,7 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
     final List<Map<String, dynamic>> respuesta = await supabase
         .from('juegos')
         .select('id, nombre, subtitulo, url_imagen, oficial_team_hitless')
-        .ilike('nombre', '%$busqueda%')
+        .or('nombre.ilike.%$busqueda%, subtitulo.ilike.%$busqueda%')
         .order('nombre', ascending: true);
 
     return respuesta.map((juego) => JuegoEntity.fromJson(juego)).toList();
