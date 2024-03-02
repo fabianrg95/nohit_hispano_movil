@@ -18,7 +18,6 @@ class JuegosNotifier extends StateNotifier<Map<bool, List<JuegoDto>>> {
 
   Future<void> loadData({required bool oficialTeamHitless}) async {
     if (state[oficialTeamHitless] == null || state[oficialTeamHitless]!.isEmpty) {
-      print('consultando');
       state = {...state, oficialTeamHitless: JuegoMapper.mapearListaJuegos(await obtenerJuegos(oficialTeamHitless))};
     }
   }
