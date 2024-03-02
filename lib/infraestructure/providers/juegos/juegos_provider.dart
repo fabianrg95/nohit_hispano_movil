@@ -17,8 +17,13 @@ class JuegosNotifier extends StateNotifier<Map<bool, List<JuegoDto>>> {
   JuegosNotifier(this.obtenerJuegos) : super({});
 
   Future<void> loadData({required bool oficialTeamHitless}) async {
-    if (state[oficialTeamHitless] != null) return;
+    if (state[oficialTeamHitless] == null || state[oficialTeamHitless]!.isEmpty) {
+      print('consultando');
+      state = {...state, oficialTeamHitless: JuegoMapper.mapearListaJuegos(await obtenerJuegos(oficialTeamHitless))};
+    }
+  }
 
-    state = {...state, oficialTeamHitless: JuegoMapper.mapearListaJuegos(await obtenerJuegos(oficialTeamHitless))};
+  void reloadData({required bool oficialTeamHitless}) {
+    state[oficialTeamHitless] = [];
   }
 }

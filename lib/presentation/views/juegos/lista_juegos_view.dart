@@ -123,8 +123,20 @@ class TabViewJuegosState extends ConsumerState<_ListaJuegos> {
     super.dispose();
   }
 
+  void recargarJugadores() {
+    ref.read(juegosProvider.notifier).reloadData(oficialTeamHitless: widget.juegosOficiales);
+  }
+
+  Future<void> _actualizarJuegos(bool juegosOficiales) async {
+    setState(() {
+      recargarJugadores();
+      ref.read(juegosProvider.notifier).loadData(oficialTeamHitless: juegosOficiales);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final ColorScheme color = Theme.of(context).colorScheme;
     final List<JuegoDto>? juegos = ref.watch(juegosProvider)[widget.juegosOficiales];
 
     if (juegos == null) {
@@ -133,14 +145,19 @@ class TabViewJuegosState extends ConsumerState<_ListaJuegos> {
       );
     }
 
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 260),
-      itemCount: juegos.length,
-      shrinkWrap: true,
-      itemBuilder: (BuildContext context, int index) {
-        final JuegoDto juego = juegos[index];
-        return CardJuego(juego: juego, accion: () => navegarJuego(context, juego));
-      },
+    return RefreshIndicator(
+      onRefresh: () => _actualizarJuegos(widget.juegosOficiales),
+      color: color.surfaceTint,
+      backgroundColor: color.tertiary,
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 260),
+        itemCount: juegos.length,
+        shrinkWrap: true,
+        itemBuilder: (BuildContext context, int index) {
+          final JuegoDto juego = juegos[index];
+          return CardJuego(juego: juego, accion: () => navegarJuego(context, juego));
+        },
+      ),
     );
   }
 
