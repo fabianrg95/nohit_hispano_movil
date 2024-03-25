@@ -45,6 +45,7 @@ class MyAppState extends ConsumerState<MyApp> {
     super.initState();
     ref.read(themeNotifierProvider.notifier).cargarTemaSeleccionado();
     ref.read(introduccionProvider.notifier).cargarIntroduccionFinalizada();
+    ref.read(nacionalidadProvider.notifier).loadData();
   }
 
   @override

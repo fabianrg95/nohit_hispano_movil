@@ -1,6 +1,7 @@
 import 'package:no_hit/domain/datasources/supabase_datasource.dart';
 import 'package:no_hit/domain/entities/entities.dart';
 import 'package:no_hit/domain/repositories/supabase_repository.dart';
+import 'package:no_hit/infraestructure/dto/commons/filtro_jugadores_dto.dart';
 
 class SupabaseRepositoryImpl extends SupabaseRepository {
   final SupabaseDatasource datasource;
@@ -18,8 +19,8 @@ class SupabaseRepositoryImpl extends SupabaseRepository {
   }
 
   @override
-  Future<List<JugadorEntity>> obtenerJugadores(final List<String> letraInicial) {
-    return datasource.obtenerJugadores(letraInicial);
+  Future<List<JugadorEntity>> obtenerJugadores(final List<String> letraInicial, final FiltroJugadoresDto? filtros) {
+    return datasource.obtenerJugadores(letraInicial, filtros);
   }
 
   @override
@@ -70,5 +71,10 @@ class SupabaseRepositoryImpl extends SupabaseRepository {
   @override
   Future<JuegoEntity> obtenerInformacionJuego(int idJuego) {
     return datasource.obtenerInformacionJuego(idJuego);
+  }
+
+  @override
+  Future<List<NacionalidadEntity>> obtenerNacionalidades() {
+    return datasource.obtenerNacionalidades();
   }
 }

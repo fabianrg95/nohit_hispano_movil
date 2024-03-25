@@ -1,4 +1,5 @@
 import 'package:no_hit/domain/entities/entities.dart';
+import 'package:no_hit/infraestructure/dto/commons/filtro_jugadores_dto.dart';
 
 abstract class SupabaseRepository {
   Future<int> obtenerCantidadJugadores();
@@ -8,7 +9,7 @@ abstract class SupabaseRepository {
   Future<List<JuegoEntity>> obtenerJuegos(bool oficialTeamHitless);
   Future<List<JuegoEntity>> buscarJuegos(String busqueda);
 
-  Future<List<JugadorEntity>> obtenerJugadores(List<String> letraInicial);
+  Future<List<JugadorEntity>> obtenerJugadores(List<String> letraInicial, final FiltroJugadoresDto? filtros);
   Future<List<JugadorEntity>> buscarJugadores(String busqueda);
 
   Future<JugadorEntity> obtenerInfromacionJugador(int idJugador);
@@ -22,4 +23,6 @@ abstract class SupabaseRepository {
   Future<List<JugadorEntity>> obtenerUltimosJugadores();
 
   Future<PartidaEntity> obtenerInfromacionPartida(int idPartida);
+
+  Future<List<NacionalidadEntity>> obtenerNacionalidades();
 }

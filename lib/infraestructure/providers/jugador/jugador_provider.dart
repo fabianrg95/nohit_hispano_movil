@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/domain/entities/entities.dart';
+import 'package:no_hit/infraestructure/dto/commons/filtro_jugadores_dto.dart';
 import 'package:no_hit/infraestructure/dto/jugador/jugador_dto.dart';
 import 'package:no_hit/infraestructure/mapper/mappers.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
@@ -9,7 +10,7 @@ final jugadorProvider = StateNotifierProvider<JugadorNotifier, List<JugadorDto>>
   return JugadorNotifier(hitlessRepository.obtenerJugadores);
 });
 
-typedef GetJugadoresCallback = Future<List<JugadorEntity>> Function(List<String> letraInicial);
+typedef GetJugadoresCallback = Future<List<JugadorEntity>> Function(List<String> letraInicial, FiltroJugadoresDto? filtros);
 
 class JugadorNotifier extends StateNotifier<List<JugadorDto>> {
   bool loadingdata = false;
@@ -19,26 +20,30 @@ class JugadorNotifier extends StateNotifier<List<JugadorDto>> {
 
   JugadorNotifier(this.obtenerJugadores) : super([]);
 
-  Future<void> loadData() async {
+  Future<void> loadData(final FiltroJugadoresDto? filtros) async {
     if (loadingdata == true) {
       return;
     }
     loadingdata = true;
 
-    if (state.isNotEmpty) {
-      ultimaLetraConsultada = state.last.nombre?.toLowerCase().codeUnitAt(0) ?? 96;
-    }
+    if (filtros == null) {
+      if (state.isNotEmpty) {
+        ultimaLetraConsultada = state.last.nombre?.toLowerCase().codeUnitAt(0) ?? 96;
+      }
 
-    await validarYConsultar(ultimaLetraConsultada);
+      await validarYConsultar(ultimaLetraConsultada, filtros);
+    } else {
+      consultarJugadores([], filtros);
+    }
 
     loadingdata = false;
   }
 
-  Future<void> validarYConsultar(final int numeroLetra) async {
+  Future<void> validarYConsultar(final int numeroLetra, final FiltroJugadoresDto? filtros) async {
     if (numeroLetra >= 96 && numeroLetra <= 122) {
       List<String> letraConsultar = numeroLetra == 122 ? valornumerico : [definirLetraConsultar(numeroLetra)];
 
-      await consultarJugadores(letraConsultar);
+      await consultarJugadores(letraConsultar, filtros);
     }
   }
 
@@ -52,7 +57,7 @@ class JugadorNotifier extends StateNotifier<List<JugadorDto>> {
 
     ultimaLetraConsultada = 96;
 
-    await consultarJugadores([definirLetraConsultar(ultimaLetraConsultada)]);
+    await consultarJugadores([definirLetraConsultar(ultimaLetraConsultada)], null);
 
     loadingdata = false;
   }
@@ -61,19 +66,24 @@ class JugadorNotifier extends StateNotifier<List<JugadorDto>> {
     return '${String.fromCharCode(letra + 1)}%';
   }
 
-  Future<void> consultarJugadores(List<String> letraConsultar) async {
-    final List<JugadorEntity> lista = await obtenerJugadores(letraConsultar);
+  Future<void> consultarJugadores(List<String> letraConsultar, final FiltroJugadoresDto? filtros) async {
+    final List<JugadorEntity> lista = await obtenerJugadores(letraConsultar, filtros);
 
     if (lista.isEmpty) {
-      validarYConsultar(letraConsultar.first.codeUnitAt(0));
+      validarYConsultar(letraConsultar.first.codeUnitAt(0), filtros);
     } else {
-      agregarJugadores(lista);
+      agregarJugadores(lista, filtros);
     }
   }
 
-  void agregarJugadores(List<JugadorEntity> lista) {
+  void agregarJugadores(List<JugadorEntity> lista, final FiltroJugadoresDto? filtros) {
     List<JugadorDto> listaJugadores = JugadorMapper.mapearListaJugadores(lista);
     listaJugadores.sort((a, b) => a.nombre!.toLowerCase().compareTo(b.nombre!.toLowerCase()));
-    state = [...state, ...listaJugadores];
+
+    if (filtros != null && filtros.listaNacionalidades != null && filtros.listaNacionalidades!.isNotEmpty) {
+      state = [...listaJugadores];
+    } else {
+      state = [...state, ...listaJugadores];
+    }
   }
 }

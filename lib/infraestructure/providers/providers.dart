@@ -12,3 +12,4 @@ export 'partidas/cantidad_partidas_provider.dart';
 export 'partidas/detalle_partida_provider.dart';
 export 'partidas/partidas_juego_provider.dart';
 export 'partidas/ultimas_partidas_provider.dart';
+export 'commons/nacionalidades_provider.dart';

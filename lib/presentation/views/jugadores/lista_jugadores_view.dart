@@ -1,9 +1,12 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:no_hit/infraestructure/dto/commons/filtro_jugadores_dto.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/delegates/jugadores/buscar_jugadores_delegate.dart';
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
 import 'package:no_hit/presentation/views/jugadores/jugador_view.dart';
@@ -20,6 +23,12 @@ class ListaJugadoresView extends ConsumerStatefulWidget {
 class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
   List<JugadorDto> listaJugadores = [];
   List<JugadorDto> ultimosJugadores = [];
+  List<NacionalidadDto> nacionalidades = [];
+
+  List<int> nacionalidadesSeleccionadas = [];
+
+  late PersistentBottomSheetController bottomSheetController;
+
   late ColorScheme color;
   late TextTheme styleTexto;
 
@@ -32,14 +41,25 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
     ref.read(ultimosJugadoresProvider.notifier).loadData(false);
 
     scrollController.addListener(() {
-      if ((scrollController.position.pixels + 1000) > scrollController.position.maxScrollExtent) {
-        consultarJugadores();
+      if (nacionalidadesSeleccionadas.isEmpty) {
+        if ((scrollController.position.pixels + 1000) > scrollController.position.maxScrollExtent) {
+          consultarJugadores();
+        }
       }
     });
   }
 
   void consultarJugadores() {
-    ref.read(jugadorProvider.notifier).loadData();
+    ref.read(jugadorProvider.notifier).loadData(null);
+  }
+
+  void filtrarJugadores() {
+    FiltroJugadoresDto? filtroJugadoresDto = FiltroJugadoresDto(listaNacionalidades: nacionalidadesSeleccionadas);
+    if (nacionalidadesSeleccionadas.isEmpty) {
+      ref.read(jugadorProvider.notifier).reloadData();
+    } else {
+      ref.read(jugadorProvider.notifier).loadData(filtroJugadoresDto);
+    }
   }
 
   void recargarJugadores() {
@@ -50,6 +70,8 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
   Widget build(BuildContext context) {
     listaJugadores = ref.watch(jugadorProvider);
     ultimosJugadores = ref.watch(ultimosJugadoresProvider);
+    nacionalidades = ref.watch(nacionalidadProvider);
+
     color = Theme.of(context).colorScheme;
     styleTexto = Theme.of(context).textTheme;
 
@@ -65,6 +87,18 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
       child: SafeArea(
         child: Scaffold(
           drawer: const CustomNavigation(),
+          endDrawer: _filtroJugadores(nacionalidades: nacionalidades, contexts: context),
+          floatingActionButton: Builder(builder: (context) {
+            return TextButton(
+              onPressed: () => Scaffold.of(context).openEndDrawer(),
+              style: TextButton.styleFrom(backgroundColor: color.tertiary),
+              child: const Icon(
+                Icons.filter_alt_outlined,
+                size: 40,
+                weight: 0.1,
+              ),
+            );
+          }),
           appBar: AppBar(
             actions: [_accionBuscar(context)],
             title: Text(AppLocalizations.of(context)!.jugadores(true.toString())),
@@ -159,5 +193,119 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
         ],
       ),
     );
+  }
+
+  Widget _filtroJugadores({required List<NacionalidadDto> nacionalidades, required BuildContext contexts}) {
+    final ColorScheme color = Theme.of(contexts).colorScheme;
+    final TextTheme styleTexto = Theme.of(contexts).textTheme;
+
+    return Drawer(
+      width: size.width * 0.9,
+      child: Column(
+        children: [
+          const SizedBox(height: 10),
+          Center(child: Text('Filtros', style: styleTexto.titleLarge)),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.only(right: 10, left: 10),
+            child: Divider(color: color.tertiary.withOpacity(0.5), thickness: 2, height: 1),
+          ),
+          const SizedBox(height: 20),
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ListView(
+                children: [
+                  Text(
+                    'Nacionalidad',
+                    style: styleTexto.titleMedium,
+                  ),
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: nacionalidades.length,
+                    itemBuilder: (context, index) => ListTile(
+                      title: Text(nacionalidades[index].pais!),
+                      dense: true,
+                      onTap: () => seleccionarNacionalidad(null, nacionalidades, index),
+                      trailing: Checkbox(
+                        value: nacionalidadesSeleccionadas.contains(nacionalidades[index].id!),
+                        activeColor: color.tertiary,
+                        onChanged: (value) {
+                          seleccionarNacionalidad(value, nacionalidades, index);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: TextButton(
+                    style: TextButton.styleFrom(backgroundColor: color.tertiary),
+                    onPressed: () {
+                      limpiarFiltros();
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Limpiar filtros'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: TextButton(
+                    style: TextButton.styleFrom(backgroundColor: color.tertiary),
+                    onPressed: () {
+                      aplicarFiltros();
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Aplicar filtros'),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  void seleccionarNacionalidad(bool? value, List<NacionalidadDto> nacionalidades, int index) {
+    setState(() {
+      if (value == null) {
+        if (nacionalidadesSeleccionadas.contains(nacionalidades[index].id!)) {
+          value == false;
+        } else {
+          value = true;
+        }
+      }
+
+      if (value == true) {
+        nacionalidadesSeleccionadas.add(nacionalidades[index].id!);
+      } else {
+        nacionalidadesSeleccionadas.remove(nacionalidades[index].id!);
+      }
+    });
+  }
+
+  void aplicarFiltros() {
+    setState(() {
+      filtrarJugadores();
+    });
+  }
+
+  void limpiarFiltros() {
+    setState(() {
+      nacionalidadesSeleccionadas = [];
+      filtrarJugadores();
+    });
   }
 }

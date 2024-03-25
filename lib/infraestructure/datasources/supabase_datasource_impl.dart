@@ -1,5 +1,6 @@
 import 'package:no_hit/domain/datasources/supabase_datasource.dart';
 import 'package:no_hit/domain/entities/entities.dart';
+import 'package:no_hit/infraestructure/dto/commons/filtro_jugadores_dto.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseDatasourceImpl extends SupabaseDatasource {
@@ -28,12 +29,18 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
   }
 
   @override
-  Future<List<JugadorEntity>> obtenerJugadores(final List<String> letraInicial) async {
-    final List<Map<String, dynamic>> respuesta = await supabase
-        .from('jugadores')
-        .select('id, nombre_usuario, nacionalidad(codigo_bandera))')
-        .ilikeAnyOf('nombre_usuario', letraInicial)
-        .order('nombre_usuario', ascending: true);
+  Future<List<JugadorEntity>> obtenerJugadores(final List<String> letraInicial, final FiltroJugadoresDto? filtros) async {
+    PostgrestFilterBuilder query = supabase.from('jugadores').select('''id, nombre_usuario, nacionalidad!left(id, codigo_bandera))''');
+
+    if (filtros == null || filtros.listaNacionalidades == null || filtros.listaNacionalidades!.isEmpty) {
+      query = query.ilikeAnyOf('nombre_usuario', letraInicial);
+    }
+
+    if (filtros != null && filtros.listaNacionalidades != null && filtros.listaNacionalidades!.isNotEmpty) {
+      query = query.inFilter('nacionalidad_id', filtros.listaNacionalidades!);
+    }
+
+    final List<Map<String, dynamic>> respuesta = await query.order('nombre_usuario', ascending: true);
     return respuesta.map((jugador) => JugadorEntity.fromJsonBasico(jugador)).toList();
   }
 
@@ -143,5 +150,13 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
         .single();
 
     return JuegoEntity.fromJson(respuesta);
+  }
+
+  @override
+  Future<List<NacionalidadEntity>> obtenerNacionalidades() async {
+    final List<Map<String, dynamic>> respuesta =
+        await supabase.from('nacionalidad').select('id, pais, codigo_bandera').order('pais', ascending: true);
+
+    return respuesta.map((nacionalidad) => NacionalidadEntity.basicFromJson(nacionalidad)).toList();
   }
 }
