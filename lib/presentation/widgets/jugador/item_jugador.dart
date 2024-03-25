@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:no_hit/infraestructure/dto/jugador/jugador_dto.dart';
+import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/presentation/views/jugadores/jugador_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/domain/entities/entities.dart';
-import 'package:no_hit/infraestructure/dto/juego/juego_dto.dart';
-import 'package:no_hit/infraestructure/mapper/juego/juego_mapper.dart';
+import 'package:no_hit/infraestructure/dto/dtos.dart';
+import 'package:no_hit/infraestructure/mapper/mappers.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 
 final juegosProvider = StateNotifierProvider<JuegosNotifier, Map<bool, List<JuegoDto>>>((ref) {

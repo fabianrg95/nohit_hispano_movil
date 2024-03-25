@@ -47,6 +47,12 @@
   "paypal":"PayPal",
   "introduccion_1":"Aca encontraras las partidas, Jugadores y juegos registrados en la comunidad No Hit Hispanohablante.",
   "introduccion_2":"Una partida No hit/hitless consiste en completar un juego de principio a fin sin recibir algún golpe de un enemigo o una trampa.",
-  "empezar":"Empezar"
-
+  "empezar":"Empezar",
+  "lista_completa":"Lista completa",
+  "jugadores_vacio":"No se encontraron jugadores.",
+  "filtros":"Filtros",
+  "nacionalidad":"Nacionalidad",
+  "generos":"Generos",
+  "limpiar_filtros":"Limpiar filtros",
+  "aplicar_filtros":"Aplicar filtros"
 }

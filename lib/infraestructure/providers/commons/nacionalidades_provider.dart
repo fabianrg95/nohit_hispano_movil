@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/domain/entities/entities.dart';
-import 'package:no_hit/infraestructure/dto/commons/nacionalidad_dto.dart';
-import 'package:no_hit/infraestructure/mapper/commons/nacionaludad_mapper.dart';
+import 'package:no_hit/infraestructure/dto/dtos.dart';
+import 'package:no_hit/infraestructure/mapper/mappers.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 
 final nacionalidadProvider = StateNotifierProvider<NacionalidadNotifier, List<NacionalidadDto>>((ref) {

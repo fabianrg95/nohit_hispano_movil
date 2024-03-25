@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:no_hit/infraestructure/dto/juego/juego_dto.dart';
+import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 class CardJuego extends StatelessWidget {

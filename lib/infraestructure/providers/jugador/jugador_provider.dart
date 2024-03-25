@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/domain/entities/entities.dart';
-import 'package:no_hit/infraestructure/dto/commons/filtro_jugadores_dto.dart';
-import 'package:no_hit/infraestructure/dto/jugador/jugador_dto.dart';
+import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/mapper/mappers.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 
@@ -69,7 +68,7 @@ class JugadorNotifier extends StateNotifier<List<JugadorDto>> {
   Future<void> consultarJugadores(List<String> letraConsultar, final FiltroJugadoresDto? filtros) async {
     final List<JugadorEntity> lista = await obtenerJugadores(letraConsultar, filtros);
 
-    if (lista.isEmpty) {
+    if (lista.isEmpty && validarFiltroExistente(filtros) == false) {
       validarYConsultar(letraConsultar.first.codeUnitAt(0), filtros);
     } else {
       agregarJugadores(lista, filtros);
@@ -80,10 +79,16 @@ class JugadorNotifier extends StateNotifier<List<JugadorDto>> {
     List<JugadorDto> listaJugadores = JugadorMapper.mapearListaJugadores(lista);
     listaJugadores.sort((a, b) => a.nombre!.toLowerCase().compareTo(b.nombre!.toLowerCase()));
 
-    if (filtros != null && filtros.listaNacionalidades != null && filtros.listaNacionalidades!.isNotEmpty) {
+    if (validarFiltroExistente(filtros)) {
       state = [...listaJugadores];
     } else {
       state = [...state, ...listaJugadores];
     }
+  }
+
+  bool validarFiltroExistente(FiltroJugadoresDto? filtros) {
+    return filtros != null &&
+        ((filtros.listaNacionalidades != null && filtros.listaNacionalidades!.isNotEmpty) ||
+            (filtros.listaGeneros != null && filtros.listaGeneros!.isNotEmpty));
   }
 }

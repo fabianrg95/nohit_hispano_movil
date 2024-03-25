@@ -2,8 +2,8 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:no_hit/infraestructure/dto/commons/filtro_jugadores_dto.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
+import 'package:no_hit/infraestructure/providers/commons/genero_provider.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/main.dart';
@@ -24,8 +24,10 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
   List<JugadorDto> listaJugadores = [];
   List<JugadorDto> ultimosJugadores = [];
   List<NacionalidadDto> nacionalidades = [];
+  List<GeneroDto> generos = [];
 
   List<int> nacionalidadesSeleccionadas = [];
+  List<int> generosSeleccionados = [];
 
   late PersistentBottomSheetController bottomSheetController;
 
@@ -41,7 +43,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
     ref.read(ultimosJugadoresProvider.notifier).loadData(false);
 
     scrollController.addListener(() {
-      if (nacionalidadesSeleccionadas.isEmpty) {
+      if (nacionalidadesSeleccionadas.isEmpty && generosSeleccionados.isEmpty) {
         if ((scrollController.position.pixels + 1000) > scrollController.position.maxScrollExtent) {
           consultarJugadores();
         }
@@ -54,8 +56,8 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
   }
 
   void filtrarJugadores() {
-    FiltroJugadoresDto? filtroJugadoresDto = FiltroJugadoresDto(listaNacionalidades: nacionalidadesSeleccionadas);
-    if (nacionalidadesSeleccionadas.isEmpty) {
+    FiltroJugadoresDto? filtroJugadoresDto = FiltroJugadoresDto(listaNacionalidades: nacionalidadesSeleccionadas, listaGeneros: generosSeleccionados);
+    if (nacionalidadesSeleccionadas.isEmpty && generosSeleccionados.isEmpty) {
       ref.read(jugadorProvider.notifier).reloadData();
     } else {
       ref.read(jugadorProvider.notifier).loadData(filtroJugadoresDto);
@@ -71,6 +73,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
     listaJugadores = ref.watch(jugadorProvider);
     ultimosJugadores = ref.watch(ultimosJugadoresProvider);
     nacionalidades = ref.watch(nacionalidadProvider);
+    generos = ref.watch(generoProvider);
 
     color = Theme.of(context).colorScheme;
     styleTexto = Theme.of(context).textTheme;
@@ -87,7 +90,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
       child: SafeArea(
         child: Scaffold(
           drawer: const CustomNavigation(),
-          endDrawer: _filtroJugadores(nacionalidades: nacionalidades, contexts: context),
+          endDrawer: _filtroJugadores(),
           floatingActionButton: Builder(builder: (context) {
             return TextButton(
               onPressed: () => Scaffold.of(context).openEndDrawer(),
@@ -183,28 +186,37 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
             ),
           ),
           const SizedBox(height: 10),
-          ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: listaJugadores.length,
-              itemBuilder: (context, index) {
-                return ItemJugador(jugador: listaJugadores[index]);
-              }),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 50),
+            child: Divider(),
+          ),
+          Text(AppLocalizations.of(context)!.lista_completa, style: styleTexto.titleMedium),
+          Visibility(
+            visible: listaJugadores.isNotEmpty,
+            replacement: Text(AppLocalizations.of(context)!.jugadores_vacio),
+            child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: listaJugadores.length,
+                itemBuilder: (context, index) {
+                  return ItemJugador(jugador: listaJugadores[index]);
+                }),
+          ),
         ],
       ),
     );
   }
 
-  Widget _filtroJugadores({required List<NacionalidadDto> nacionalidades, required BuildContext contexts}) {
-    final ColorScheme color = Theme.of(contexts).colorScheme;
-    final TextTheme styleTexto = Theme.of(contexts).textTheme;
+  Widget _filtroJugadores() {
+    final ColorScheme color = Theme.of(context).colorScheme;
+    final TextTheme styleTexto = Theme.of(context).textTheme;
 
     return Drawer(
       width: size.width * 0.9,
       child: Column(
         children: [
           const SizedBox(height: 10),
-          Center(child: Text('Filtros', style: styleTexto.titleLarge)),
+          Center(child: Text(AppLocalizations.of(context)!.filtros, style: styleTexto.titleLarge)),
           const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.only(right: 10, left: 10),
@@ -218,7 +230,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
               child: ListView(
                 children: [
                   Text(
-                    'Nacionalidad',
+                    AppLocalizations.of(context)!.nacionalidad,
                     style: styleTexto.titleMedium,
                   ),
                   ListView.builder(
@@ -234,6 +246,27 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
                         activeColor: color.tertiary,
                         onChanged: (value) {
                           seleccionarNacionalidad(value, nacionalidades, index);
+                        },
+                      ),
+                    ),
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.generos,
+                    style: styleTexto.titleMedium,
+                  ),
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: generos.length,
+                    itemBuilder: (context, index) => ListTile(
+                      title: Text(generos[index].genero!),
+                      dense: true,
+                      onTap: () => seleccionarGenero(null, generos, index),
+                      trailing: Checkbox(
+                        value: generosSeleccionados.contains(generos[index].id!),
+                        activeColor: color.tertiary,
+                        onChanged: (value) {
+                          seleccionarGenero(value, generos, index);
                         },
                       ),
                     ),
@@ -256,7 +289,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
                       limpiarFiltros();
                       Navigator.pop(context);
                     },
-                    child: const Text('Limpiar filtros'),
+                    child: Text(AppLocalizations.of(context)!.limpiar_filtros),
                   ),
                 ),
                 Padding(
@@ -267,7 +300,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
                       aplicarFiltros();
                       Navigator.pop(context);
                     },
-                    child: const Text('Aplicar filtros'),
+                    child: Text(AppLocalizations.of(context)!.aplicar_filtros),
                   ),
                 ),
               ],
@@ -296,6 +329,24 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
     });
   }
 
+  void seleccionarGenero(bool? value, List<GeneroDto> generos, int index) {
+    setState(() {
+      if (value == null) {
+        if (generosSeleccionados.contains(generos[index].id!)) {
+          value == false;
+        } else {
+          value = true;
+        }
+      }
+
+      if (value == true) {
+        generosSeleccionados.add(generos[index].id!);
+      } else {
+        generosSeleccionados.remove(generos[index].id!);
+      }
+    });
+  }
+
   void aplicarFiltros() {
     setState(() {
       filtrarJugadores();
@@ -305,6 +356,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
   void limpiarFiltros() {
     setState(() {
       nacionalidadesSeleccionadas = [];
+      generosSeleccionados = [];
       filtrarJugadores();
     });
   }

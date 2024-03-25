@@ -1,5 +1,5 @@
 import 'package:no_hit/domain/entities/entities.dart';
-import 'package:no_hit/infraestructure/dto/commons/filtro_jugadores_dto.dart';
+import 'package:no_hit/infraestructure/dto/dtos.dart';
 
 abstract class SupabaseRepository {
   Future<int> obtenerCantidadJugadores();
@@ -25,4 +25,6 @@ abstract class SupabaseRepository {
   Future<PartidaEntity> obtenerInfromacionPartida(int idPartida);
 
   Future<List<NacionalidadEntity>> obtenerNacionalidades();
+
+  Future<List<PronombreEntity>> obtenerPronombres();
 }
