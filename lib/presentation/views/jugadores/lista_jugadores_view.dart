@@ -94,7 +94,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
               style: TextButton.styleFrom(backgroundColor: color.tertiary),
               child: const Icon(
                 Icons.filter_alt_outlined,
-                size: 40,
+                size: 25,
                 weight: 0.1,
               ),
             );
