@@ -118,6 +118,17 @@ class Desarrollador extends StatelessWidget {
             child: Divider(),
           ),
           ListTile(
+            leading: const Icon(FontAwesomeIcons.discord),
+            title: Text(AppLocalizations.of(context)!.discord),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 50),
+            textColor: Colors.white,
+            onTap: () => CustomLinks().lanzarUrl("https://discord.gg/pDmvE2TSp9"),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 50),
+            child: Divider(),
+          ),
+          ListTile(
             leading: const Icon(FontAwesomeIcons.youtube),
             title: Text(AppLocalizations.of(context)!.youtube),
             contentPadding: const EdgeInsets.symmetric(horizontal: 50),
