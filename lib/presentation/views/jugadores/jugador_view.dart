@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
+import 'package:no_hit/infraestructure/providers/jugador/jugadores_favoritos_provider.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
@@ -23,6 +24,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
   late TextTheme styleTexto;
   late Size size;
   IconData iconoFlechaAtras = Icons.arrow_back;
+  bool jugadorFavorito = false;
 
   int pageViewIndex = 0;
   final Map<int, String> titulosPageView = {0: '', 1: 'Juegos'};
@@ -34,6 +36,8 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
   void initState() {
     super.initState();
     ref.read(detalleJugadorProvider.notifier).loadData(widget.idJugador);
+    ref.read(jugadoresFavoritosProvider.notifier).obtenerJugadoresFavoritos();
+
     _pageController.addListener(_pageListener);
 
     if (Platform.isIOS) {
@@ -55,12 +59,26 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
     offset.value = offsetValue.clamp(0, 1);
   }
 
+  void _guardarJugadorFavorito() {
+    if (jugadorFavorito) {
+      ref.read(jugadoresFavoritosProvider.notifier).eliminarJugadorFavorito(widget.idJugador);
+      jugadorFavorito = false;
+    } else {
+      ref.read(jugadoresFavoritosProvider.notifier).guardarJugadorFavorito(widget.idJugador);
+      jugadorFavorito = true;
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final JugadorDto? jugador = ref.watch(detalleJugadorProvider)[widget.idJugador];
     color = Theme.of(context).colorScheme;
     styleTexto = Theme.of(context).textTheme;
     size = MediaQuery.of(context).size;
+    List<int> jugadoresFavorito = ref.watch(jugadoresFavoritosProvider);
+
+    jugadorFavorito = jugadoresFavorito.contains(widget.idJugador);
 
     if (jugador == null || jugador.id == 0 || jugador.id != widget.idJugador) {
       return const PantallaCargaBasica(texto: "Consultando la información del jugador");
@@ -79,15 +97,39 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
               child: Scaffold(
                 extendBodyBehindAppBar: true,
                 appBar: AppBar(
-                    leading: IconButton(
-                      onPressed: () {
-                        controlarBack(context);
-                      },
-                      icon: Icon(iconoFlechaAtras),
-                    ),
-                    forceMaterialTransparency: pageViewIndex == 0,
-                    elevation: 0,
-                    title: Text(titulosPageView[pageViewIndex]!)),
+                  leading: IconButton(
+                    onPressed: () {
+                      controlarBack(context);
+                    },
+                    icon: Icon(iconoFlechaAtras),
+                  ),
+                  forceMaterialTransparency: pageViewIndex == 0,
+                  elevation: 0,
+                  title: Text(titulosPageView[pageViewIndex]!),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          _guardarJugadorFavorito();
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: color.tertiary,
+                              action: SnackBarAction(
+                                label: 'Deshacer',
+                                onPressed: () => _guardarJugadorFavorito(),
+                                textColor: color.surfaceVariant,
+                              ),
+                              content: Text(
+                                'Jugador ${jugadorFavorito ? 'agregado a' : 'eliminado de'} favoritos.',
+                                style: styleTexto.bodyLarge?.copyWith(color: color.primary),
+                              )));
+                        },
+                        child: Visibility(
+                            visible: jugadorFavorito, replacement: const Icon(Icons.favorite_border_outlined), child: const Icon(Icons.favorite)),
+                      ),
+                    )
+                  ],
+                ),
                 body: Stack(children: [
                   _cabecera(jugador, offsetValue),
                   PageView(
@@ -168,6 +210,17 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
+                    stops: const [0, 0.2],
+                    colors: [color.primary, Colors.transparent],
+                  ),
+                ),
+              ),
+            if (jugador.codigoBandera != null)
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
                     stops: const [0, 0.2],
                     colors: [color.primary, Colors.transparent],
                   ),

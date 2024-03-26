@@ -54,5 +54,7 @@
   "nacionalidad":"Nacionalidad",
   "generos":"Generos",
   "limpiar_filtros":"Limpiar filtros",
-  "aplicar_filtros":"Aplicar filtros"
+  "aplicar_filtros":"Aplicar filtros",
+  "favoritos": "Favoritos",
+  "guias": "Guias"
 }

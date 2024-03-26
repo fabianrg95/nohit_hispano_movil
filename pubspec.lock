@@ -5,10 +5,10 @@ packages:
     dependency: "direct main"
     description:
       name: animate_do
-      sha256: "8a9d0f91d066d5f86bd9de9455e5741e6bbb284b114c76375f01584065dd3da1"
+      sha256: "7a3162729f0ea042f9dd84da217c5bde5472ad9cef644079929d4304a5dc4ca0"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.3"
+    version: "3.3.4"
   ansicolor:
     dependency: transitive
     description:
@@ -21,10 +21,10 @@ packages:
     dependency: transitive
     description:
       name: app_links
-      sha256: "4e392b5eba997df356ca6021f28431ce1cfeb16758699553a94b13add874a3bb"
+      sha256: "3ced568a5d9e309e99af71285666f1f3117bddd0bd5b3317979dccc1a40cada4"
       url: "https://pub.dev"
     source: hosted
-    version: "3.5.0"
+    version: "3.5.1"
   archive:
     dependency: transitive
     description:
@@ -207,18 +207,18 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_native_splash
-      sha256: "58fb249fb19ffe979e4ad288de018a118768988b1f497e6ff0b23ead6f5a1bc5"
+      sha256: edf39bcf4d74aca1eb2c1e43c3e445fd9f494013df7f0da752fefe72020eedc0
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.13"
+    version: "2.4.0"
   flutter_riverpod:
     dependency: "direct main"
     description:
       name: flutter_riverpod
-      sha256: "4bce556b7ecbfea26109638d5237684538d4abc509d253e6c5c4c5733b360098"
+      sha256: "0f1974eff5bbe774bf1d870e406fc6f29e3d6f1c46bd9c58e7172ff68a785d7d"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.10"
+    version: "2.5.1"
   flutter_staggered_grid_view:
     dependency: "direct main"
     description:
@@ -281,10 +281,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: "170c46e237d6eb0e6e9f0e8b3f56101e14fb64f787016e42edd74c39cf8b176a"
+      sha256: "7ecb2f391edbca5473db591b48555a8912dde60edd0fb3013bd6743033b2d3f8"
       url: "https://pub.dev"
     source: hosted
-    version: "13.2.0"
+    version: "13.2.1"
   gotrue:
     dependency: transitive
     description:
@@ -313,10 +313,10 @@ packages:
     dependency: transitive
     description:
       name: http
-      sha256: a2bbf9d017fcced29139daa8ed2bba4ece450ab222871df93ca9eec6f80c34ba
+      sha256: "761a297c042deedc1ffbb156d6e2af13886bb305c2a343a4d972504cd67dd938"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   http_parser:
     dependency: transitive
     description:
@@ -441,10 +441,10 @@ packages:
     dependency: "direct main"
     description:
       name: package_info_plus
-      sha256: "88bc797f44a94814f2213db1c9bd5badebafdfb8290ca9f78d4b9ee2a3db4d79"
+      sha256: cb44f49b6e690fa766f023d5b22cac6b9affe741dd792b6ac7ad4fabe0d7b097
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.1"
+    version: "6.0.0"
   package_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -577,10 +577,10 @@ packages:
     dependency: transitive
     description:
       name: riverpod
-      sha256: "548e2192eb7aeb826eb89387f814edb76594f3363e2c0bb99dd733d795ba3589"
+      sha256: f21b32ffd26a36555e501b04f4a5dca43ed59e16343f1a30c13632b2351dfa4d
       url: "https://pub.dev"
     source: hosted
-    version: "2.5.0"
+    version: "2.5.1"
   rxdart:
     dependency: transitive
     description:
@@ -633,10 +633,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_web
-      sha256: "7b15ffb9387ea3e237bb7a66b8a23d2147663d391cafc5c8f37b2e7b4bde5d21"
+      sha256: "9aee1089b36bd2aafe06582b7d7817fd317ef05fc30e6ba14bff247d0933042a"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.2"
+    version: "2.3.0"
   shared_preferences_windows:
     dependency: transitive
     description:
@@ -806,10 +806,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_web
-      sha256: fff0932192afeedf63cdd50ecbb1bc825d31aed259f02bb8dba0f3b729a5e88b
+      sha256: "3692a459204a33e04bc94f5fb91158faf4f2c8903281ddd82915adecdb1a901d"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.3"
+    version: "2.3.0"
   url_launcher_windows:
     dependency: transitive
     description:
@@ -862,26 +862,26 @@ packages:
     dependency: transitive
     description:
       name: web
-      sha256: "4188706108906f002b3a293509234588823c8c979dc83304e229ff400c996b05"
+      sha256: "97da13628db363c635202ad97068d47c5b8aa555808e7a9411963c533b449b27"
       url: "https://pub.dev"
     source: hosted
-    version: "0.4.2"
+    version: "0.5.1"
   web_socket_channel:
     dependency: transitive
     description:
       name: web_socket_channel
-      sha256: "939ab60734a4f8fa95feacb55804fa278de28bdeef38e616dc08e44a84adea23"
+      sha256: "1d8e795e2a8b3730c41b8a98a2dff2e0fb57ae6f0764a1c46ec5915387d257b2"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.3"
+    version: "2.4.4"
   win32:
     dependency: transitive
     description:
       name: win32
-      sha256: "464f5674532865248444b4c3daca12bd9bf2d7c47f759ce2617986e7229494a8"
+      sha256: "8cb58b45c47dcb42ab3651533626161d6b67a2921917d8d429791f76972b3480"
       url: "https://pub.dev"
     source: hosted
-    version: "5.2.0"
+    version: "5.3.0"
   xdg_directories:
     dependency: transitive
     description:
@@ -915,5 +915,5 @@ packages:
     source: hosted
     version: "2.0.0"
 sdks:
-  dart: ">=3.3.0-279.1.beta <4.0.0"
-  flutter: ">=3.16.6"
+  dart: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
