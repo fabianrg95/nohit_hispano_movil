@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/views/juegos/lista_jugadores_juego.dart';
 import 'package:no_hit/presentation/views/juegos/lista_partidas_juego.dart';
 import 'package:no_hit/presentation/widgets/commons/arrow.dart';
@@ -23,6 +23,7 @@ class DetalleJuego extends ConsumerStatefulWidget {
 class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerProviderStateMixin {
   late JuegoDto? informacionJuego;
   late ResumenJuegoDto? resumenJuego;
+  bool juegoFavorito = false;
 
   final double tamanioImagen = 150;
   late ColorScheme color;
@@ -40,6 +41,8 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
     super.initState();
     ref.read(informacionJuegoProvider.notifier).loadData(idJuego: widget.idJuego);
     ref.read(partidasJuegoProvider.notifier).loadData(widget.idJuego);
+    ref.read(juegosFavoritosLocalProvider.notifier).obtenerJuegosFavoritos();
+
     _pageController.addListener(_pageListener);
 
     if (Platform.isIOS) {
@@ -67,12 +70,27 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
     });
   }
 
+  void _guardarJuegoFavorito() {
+    if (juegoFavorito) {
+      ref.read(juegosFavoritosLocalProvider.notifier).eliminarJuegoFavorito(widget.idJuego);
+      juegoFavorito = false;
+    } else {
+      ref.read(juegosFavoritosLocalProvider.notifier).guardarJuegoFavorito(widget.idJuego);
+      juegoFavorito = true;
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     informacionJuego = ref.watch(informacionJuegoProvider)[widget.idJuego];
     resumenJuego = ref.watch(partidasJuegoProvider)[widget.idJuego];
     color = Theme.of(context).colorScheme;
     styleTexto = Theme.of(context).textTheme;
+
+    List<int> juegosFavorito = ref.watch(juegosFavoritosLocalProvider);
+
+    juegoFavorito = juegosFavorito.contains(widget.idJuego);
 
     return PopScope(
       canPop: pageViewIndex == 0,
@@ -86,6 +104,29 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
           child: Scaffold(
             // drawer: const CustomNavigation(),
             appBar: AppBar(
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      _guardarJuegoFavorito();
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor: color.tertiary,
+                          action: SnackBarAction(
+                            label: 'Deshacer',
+                            onPressed: () => _guardarJuegoFavorito(),
+                            textColor: color.surfaceVariant,
+                          ),
+                          content: Text(
+                            'Juego ${juegoFavorito ? 'agregado a' : 'eliminado de'} favoritos.',
+                            style: styleTexto.bodyLarge?.copyWith(color: color.primary),
+                          )));
+                    },
+                    child: Visibility(
+                        visible: juegoFavorito, replacement: const Icon(Icons.favorite_border_outlined), child: const Icon(Icons.favorite)),
+                  ),
+                )
+              ],
               leading: IconButton(
                 onPressed: () {
                   controlarBack(context);
@@ -180,6 +221,16 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
+                    stops: const [0, 0.3],
+                    colors: [color.primary, Colors.transparent],
+                  ),
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topRight,
+                    end: Alignment.bottomLeft,
                     stops: const [0, 0.3],
                     colors: [color.primary, Colors.transparent],
                   ),

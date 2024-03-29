@@ -82,4 +82,14 @@ class SupabaseRepositoryImpl extends SupabaseRepository {
   Future<List<PronombreEntity>> obtenerPronombres() {
     return datasource.obtenerPronombres();
   }
+
+  @override
+  Future<List<JugadorEntity>> obtenerJugadoresFavoritos(List<int> idsJugadores) async {
+    return datasource.obtenerJugadoresFavoritos(idsJugadores);
+  }
+
+  @override
+  Future<List<JuegoEntity>> obtenerJuegosFavoritos(List<int> idsJuegos) async {
+    return datasource.obtenerJuegosFavoritos(idsJuegos);
+  }
 }

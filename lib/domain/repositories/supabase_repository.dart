@@ -7,9 +7,11 @@ abstract class SupabaseRepository {
   Future<int> obtenerCantidadJuegos();
 
   Future<List<JuegoEntity>> obtenerJuegos(bool oficialTeamHitless);
+  Future<List<JuegoEntity>> obtenerJuegosFavoritos(List<int> idsJuegos);
   Future<List<JuegoEntity>> buscarJuegos(String busqueda);
 
   Future<List<JugadorEntity>> obtenerJugadores(List<String> letraInicial, final FiltroJugadoresDto? filtros);
+  Future<List<JugadorEntity>> obtenerJugadoresFavoritos(List<int> idsJugadores);
   Future<List<JugadorEntity>> buscarJugadores(String busqueda);
 
   Future<JugadorEntity> obtenerInfromacionJugador(int idJugador);

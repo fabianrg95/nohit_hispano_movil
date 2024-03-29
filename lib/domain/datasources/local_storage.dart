@@ -7,4 +7,7 @@ abstract class LocalStorage {
 
   Future<void> guardarJugadorFavorito(final int idJugador, final bool guardar);
   Future<List<int>> obtenerJugadoresFavoritos();
+
+  Future<void> guardarJuegoFavorito(final int idJuego, final bool guardar);
+  Future<List<int>> obtenerJuegosFavoritos();
 }

@@ -50,7 +50,34 @@ class LocalStorageImpl extends LocalStorage {
   @override
   Future<List<int>> obtenerJugadoresFavoritos() {
     final box = GetStorage(BoxLocal.jugadoresFavoritos.nombreAlmacenamiento);
-    final List<int> listaJugadoresFavoritos = (box.read(BoxLocal.jugadoresFavoritos.llaveAlmacenamiento) as List).map((e) => e as int).toList();
+    var read = box.read(BoxLocal.jugadoresFavoritos.llaveAlmacenamiento);
+    final List<int> listaJugadoresFavoritos = read != null ? (read as List).map((e) => e as int).toList() : [];
     return Future.value(listaJugadoresFavoritos);
+  }
+
+  @override
+  Future<void> guardarJuegoFavorito(int idJuego, bool guardar) async {
+    final box = GetStorage(BoxLocal.juegosFavoritos.nombreAlmacenamiento);
+
+    List<int> listaJuegosFavoritos = await obtenerJuegosFavoritos();
+
+    if (guardar == true) {
+      listaJuegosFavoritos.add(idJuego);
+    } else {
+      listaJuegosFavoritos.remove(idJuego);
+    }
+
+    await box.write(BoxLocal.juegosFavoritos.llaveAlmacenamiento, listaJuegosFavoritos);
+    box.save();
+  }
+
+  @override
+  Future<List<int>> obtenerJuegosFavoritos() async {
+    final box = GetStorage(BoxLocal.juegosFavoritos.nombreAlmacenamiento);
+    var read = box.read(BoxLocal.juegosFavoritos.llaveAlmacenamiento);
+    print(read.toString());
+    final List<int> listaJuegosFavoritos = read != null ? (read as List).map((e) => e as int).toList() : [];
+    print(listaJuegosFavoritos.toString());
+    return listaJuegosFavoritos;
   }
 }

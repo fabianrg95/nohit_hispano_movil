@@ -2,18 +2,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/providers/hitless_repository_provider.dart';
 import 'package:no_hit/infraestructure/repositories/local_repository_impl.dart';
 
-final jugadoresFavoritosProvider = StateNotifierProvider<JugadoresFavoritosNotifier, List<int>>((ref) {
+final jugadoresFavoritosLocalProvider = StateNotifierProvider<JugadoresFavoritosLocalNotifier, List<int>>((ref) {
   final localRepository = ref.watch(localRepositoryProvider);
-  return JugadoresFavoritosNotifier(localRepository);
+  return JugadoresFavoritosLocalNotifier(localRepository);
 });
 
-typedef GetJugadoresFavoritosCallback = Future<List<int>> Function();
+typedef GetJugadoresFavoritosLocalCallback = Future<List<int>> Function();
 
 // Controller o Notifier
-class JugadoresFavoritosNotifier extends StateNotifier<List<int>> {
+class JugadoresFavoritosLocalNotifier extends StateNotifier<List<int>> {
   LocalRepositoryImpl localStorage;
 
-  JugadoresFavoritosNotifier(this.localStorage) : super([]);
+  JugadoresFavoritosLocalNotifier(this.localStorage) : super([]);
 
   void guardarJugadorFavorito(int idJugador) async {
     await localStorage.guardarJugadorFavorito(idJugador, true);

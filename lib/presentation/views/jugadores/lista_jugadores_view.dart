@@ -1,11 +1,9 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
-import 'package:no_hit/infraestructure/providers/commons/genero_provider.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/main.dart';
 import 'package:no_hit/presentation/delegates/jugadores/buscar_jugadores_delegate.dart';
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
@@ -162,6 +160,8 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
                       scale: 1,
                       autoplayDelay: 5000,
                       autoplay: true,
+                      fade: 0.1,
+                      outer: true,
                       pagination: SwiperPagination(
                         builder: DotSwiperPaginationBuilder(activeColor: color.tertiary, color: color.primary),
                       ),

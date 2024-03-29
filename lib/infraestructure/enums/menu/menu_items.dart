@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:no_hit/presentation/views/aplicacion/aplicacion_view.dart';
 import 'package:no_hit/presentation/views/comunidad/comunidad_view.dart';
+import 'package:no_hit/presentation/views/favoritos/favoritos_view.dart';
 import 'package:no_hit/presentation/views/introduccion/introduccion_view.dart';
 import 'package:no_hit/presentation/views/views.dart';
 
@@ -68,6 +69,13 @@ enum MenuItem {
     page: IntroduccionView(),
     icon: Icons.view_carousel_outlined,
     nombre: IntroduccionView.nombre,
+  ),
+  favoritos(
+    title: 'Favoritos',
+    link: '/favoritos',
+    page: FavoritosView(),
+    icon: Icons.favorite,
+    nombre: FavoritosView.nombre,
   );
 
   final String title;

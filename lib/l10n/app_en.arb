@@ -56,5 +56,9 @@
   "limpiar_filtros":"Limpiar filtros",
   "aplicar_filtros":"Aplicar filtros",
   "favoritos": "Favoritos",
-  "guias": "Guias"
+  "guias": "Guias",
+  "jugadores_favoritos_vacio": "No se encontraron jugadores marcados como favoritos.",
+  "juegos_favoritos_vacio": "No se encontraron juegos marcados como favoritos.",
+  "consultando_jugadores_favoritos":"Consultando jugadores favoritos",
+  "consultando_juegos_favoritos":"Consultando juegos Favoritos"
 }

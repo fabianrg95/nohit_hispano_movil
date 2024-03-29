@@ -155,22 +155,22 @@ class TabViewJuegosState extends ConsumerState<_ListaJuegos> {
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           final JuegoDto juego = juegos[index];
-          return CardJuego(juego: juego, accion: () => navegarJuego(context, juego));
+          return CardJuego(juego: juego, accion: () => navegarJuego(context, juego, ref));
         },
       ),
     );
   }
+}
 
-  Future<dynamic> navegarJuego(final BuildContext context, final JuegoDto juego) {
-    const duration = Duration(milliseconds: 500);
+Future<dynamic> navegarJuego(final BuildContext context, final JuegoDto juego, WidgetRef ref) {
+  const duration = Duration(milliseconds: 500);
 
-    ref.read(informacionJuegoProvider.notifier).saveData(juegoDto: juego);
+  ref.read(informacionJuegoProvider.notifier).saveData(juegoDto: juego);
 
-    return Navigator.of(context).push(PageRouteBuilder(
-      transitionDuration: duration,
-      reverseTransitionDuration: duration,
-      pageBuilder: (context, __, ___) => DetalleJuego(idJuego: juego.id, heroTag: 'Juego-${juego.id}'),
-      transitionsBuilder: (_, animation, ___, child) => FadeTransition(opacity: animation, child: child),
-    ));
-  }
+  return Navigator.of(context).push(PageRouteBuilder(
+    transitionDuration: duration,
+    reverseTransitionDuration: duration,
+    pageBuilder: (context, __, ___) => DetalleJuego(idJuego: juego.id, heroTag: 'Juego-${juego.id}'),
+    transitionsBuilder: (_, animation, ___, child) => FadeTransition(opacity: animation, child: child),
+  ));
 }

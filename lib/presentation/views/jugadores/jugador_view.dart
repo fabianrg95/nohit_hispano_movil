@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
-import 'package:no_hit/infraestructure/providers/jugador/jugadores_favoritos_provider.dart';
+import 'package:no_hit/infraestructure/providers/jugador/jugadores_favoritos_local_provider.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
@@ -36,7 +36,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
   void initState() {
     super.initState();
     ref.read(detalleJugadorProvider.notifier).loadData(widget.idJugador);
-    ref.read(jugadoresFavoritosProvider.notifier).obtenerJugadoresFavoritos();
+    ref.read(jugadoresFavoritosLocalProvider.notifier).obtenerJugadoresFavoritos();
 
     _pageController.addListener(_pageListener);
 
@@ -61,10 +61,10 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
 
   void _guardarJugadorFavorito() {
     if (jugadorFavorito) {
-      ref.read(jugadoresFavoritosProvider.notifier).eliminarJugadorFavorito(widget.idJugador);
+      ref.read(jugadoresFavoritosLocalProvider.notifier).eliminarJugadorFavorito(widget.idJugador);
       jugadorFavorito = false;
     } else {
-      ref.read(jugadoresFavoritosProvider.notifier).guardarJugadorFavorito(widget.idJugador);
+      ref.read(jugadoresFavoritosLocalProvider.notifier).guardarJugadorFavorito(widget.idJugador);
       jugadorFavorito = true;
     }
     setState(() {});
@@ -76,7 +76,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
     color = Theme.of(context).colorScheme;
     styleTexto = Theme.of(context).textTheme;
     size = MediaQuery.of(context).size;
-    List<int> jugadoresFavorito = ref.watch(jugadoresFavoritosProvider);
+    List<int> jugadoresFavorito = ref.watch(jugadoresFavoritosLocalProvider);
 
     jugadorFavorito = jugadoresFavorito.contains(widget.idJugador);
 

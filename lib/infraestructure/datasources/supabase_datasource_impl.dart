@@ -44,7 +44,6 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
 
     if (filtros != null && filtros.listaGeneros != null && filtros.listaGeneros!.isNotEmpty) {
       query = query.inFilter('pronombre_id', filtros.listaGeneros!);
-      print('consultando generos' + filtros.listaGeneros.toString());
     }
 
     final List<Map<String, dynamic>> respuesta = await query.order('nombre_usuario', ascending: true);
@@ -172,5 +171,26 @@ class SupabaseDatasourceImpl extends SupabaseDatasource {
     final List<Map<String, dynamic>> respuesta = await supabase.from('pronombre').select('id, pronombre, genero').order('genero', ascending: true);
 
     return respuesta.map((pronombre) => PronombreEntity.fromJson(pronombre)).toList();
+  }
+
+  @override
+  Future<List<JugadorEntity>> obtenerJugadoresFavoritos(final List<int> idsJugadores) async {
+    final List<Map<String, dynamic>> respuesta = await supabase
+        .from('jugadores')
+        .select('id, nombre_usuario, nacionalidad(codigo_bandera))')
+        .inFilter('id', idsJugadores)
+        .order('nombre_usuario', ascending: true);
+    return respuesta.map((jugador) => JugadorEntity.fromJsonBasico(jugador)).toList();
+  }
+
+  @override
+  Future<List<JuegoEntity>> obtenerJuegosFavoritos(final List<int> idsJuegos) async {
+    final List<Map<String, dynamic>> respuesta = await supabase
+        .from('juegos')
+        .select('id, nombre, subtitulo, url_imagen, oficial_team_hitless')
+        .inFilter('id', idsJuegos)
+        .order('nombre', ascending: true);
+
+    return respuesta.map((juego) => JuegoEntity.fromJson(juego)).toList();
   }
 }

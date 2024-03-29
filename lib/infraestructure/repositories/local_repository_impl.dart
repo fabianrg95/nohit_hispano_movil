@@ -35,4 +35,14 @@ class LocalRepositoryImpl extends LocalRepository {
   Future<List<int>> obtenerJugadoresFavoritos() {
     return local.obtenerJugadoresFavoritos();
   }
+
+  @override
+  Future<void> guardarJuegoFavorito(int idJuego, bool guardar) async {
+    local.guardarJuegoFavorito(idJuego, guardar);
+  }
+
+  @override
+  Future<List<int>> obtenerJuegosFavoritos() {
+    return local.obtenerJuegosFavoritos();
+  }
 }
