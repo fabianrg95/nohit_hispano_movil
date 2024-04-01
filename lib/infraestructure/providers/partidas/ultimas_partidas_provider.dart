@@ -25,14 +25,23 @@ class UltimasPartidasNotifier extends StateNotifier<List<PartidaDto>> {
 
     final String? fechaUltimaPartida = state.isEmpty ? null : state.last.fecha;
 
+    await consultarPartidas(fechaUltimaPartida);
+    cargando = false;
+  }
+
+  Future<void> consultarPartidas(String? fechaUltimaPartida) async {
     final List<String> fechas = Utilidades.obtenerFiltroFechas(fechaUltimaPartida);
 
     final List<PartidaEntity> lista = await obtenerUltimasPartidas(fechas[0], fechas[1]);
     List<PartidaDto> listaPartidas = PartidaMapper.mapearListaPartidas(lista);
-    for (var partida in listaPartidas) {
-      state = [...state, partida];
+
+    if (listaPartidas.isEmpty || listaPartidas.length == 1) {
+      consultarPartidas(fechas[0]);
+    } else {
+      for (var partida in listaPartidas) {
+        state = [...state, partida];
+      }
     }
-    cargando = false;
   }
 
   Future<void> reloadData() async {
