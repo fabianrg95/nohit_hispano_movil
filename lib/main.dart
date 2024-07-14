@@ -10,7 +10,6 @@ import 'package:no_hit/config/router/app_router.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/infraestructure/enums/enums.dart';
-import 'package:no_hit/infraestructure/providers/commons/genero_provider.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

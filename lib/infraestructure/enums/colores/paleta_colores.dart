@@ -34,7 +34,7 @@ enum PaletaColores {
   ColorScheme getPaletaColor() {
     return ColorScheme.fromSeed(
         seedColor: principal,
-        background: principal,
+        surface: principal,
         primary: principal,
         secondary: secundario,
         tertiary: terciario,

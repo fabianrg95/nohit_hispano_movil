@@ -75,9 +75,7 @@ class LocalStorageImpl extends LocalStorage {
   Future<List<int>> obtenerJuegosFavoritos() async {
     final box = GetStorage(BoxLocal.juegosFavoritos.nombreAlmacenamiento);
     var read = box.read(BoxLocal.juegosFavoritos.llaveAlmacenamiento);
-    print(read.toString());
     final List<int> listaJuegosFavoritos = read != null ? (read as List).map((e) => e as int).toList() : [];
-    print(listaJuegosFavoritos.toString());
     return listaJuegosFavoritos;
   }
 }

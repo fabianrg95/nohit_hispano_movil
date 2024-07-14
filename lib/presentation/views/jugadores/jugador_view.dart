@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
-import 'package:no_hit/infraestructure/providers/jugador/jugadores_favoritos_local_provider.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
@@ -117,7 +116,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
                               action: SnackBarAction(
                                 label: 'Deshacer',
                                 onPressed: () => _guardarJugadorFavorito(),
-                                textColor: color.surfaceVariant,
+                                textColor: color.surfaceContainerHighest,
                               ),
                               content: Text(
                                 'Jugador ${jugadorFavorito ? 'agregado a' : 'eliminado de'} favoritos.',

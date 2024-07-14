@@ -115,7 +115,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
                           action: SnackBarAction(
                             label: 'Deshacer',
                             onPressed: () => _guardarJuegoFavorito(),
-                            textColor: color.surfaceVariant,
+                            textColor: color.surfaceContainerHighest,
                           ),
                           content: Text(
                             'Juego ${juegoFavorito ? 'agregado a' : 'eliminado de'} favoritos.',

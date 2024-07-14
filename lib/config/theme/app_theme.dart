@@ -27,7 +27,8 @@ class AppTheme {
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: color.tertiary,
           foregroundColor: color.surfaceTint,
-        ));
+        ),
+        scaffoldBackgroundColor: color.surface);
   }
 
   ColorScheme generarTema() {
