@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
@@ -9,6 +9,8 @@ import 'package:no_hit/presentation/views/juegos/lista_jugadores_juego.dart';
 import 'package:no_hit/presentation/views/juegos/lista_partidas_juego.dart';
 import 'package:no_hit/presentation/widgets/commons/arrow.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
+
+import '../../../l10n/app_localizations.dart';
 
 class DetalleJuego extends ConsumerStatefulWidget {
   final int idJuego;

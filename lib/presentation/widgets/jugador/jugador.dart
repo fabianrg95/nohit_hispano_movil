@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
+
+import '../../../l10n/app_localizations.dart';
 
 class JugadorCommons {
   Widget informacionJugadorLite(JugadorDto jugador, BuildContext context) {

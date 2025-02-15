@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:no_hit/presentation/views/introduccion/introduccion_view.dart';
 import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
+
+import '../../../l10n/app_localizations.dart';
 
 class InicioView extends ConsumerStatefulWidget {
   static const nombre = 'inicio_view';

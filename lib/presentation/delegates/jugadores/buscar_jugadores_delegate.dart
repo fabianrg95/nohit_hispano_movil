@@ -3,9 +3,11 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:no_hit/domain/entities/entities.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:no_hit/infraestructure/mapper/mappers.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
+
+import '../../../l10n/app_localizations.dart';
 
 typedef BuscarJugadoresCallback = Future<List<JugadorEntity>> Function(String query);
 

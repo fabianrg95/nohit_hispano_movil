@@ -4,10 +4,12 @@ import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/config/helpers/utilidades.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
+
+import '../../../l10n/app_localizations.dart';
 
 class PartidasView extends ConsumerStatefulWidget {
   static const nombre = 'partidas_view';
