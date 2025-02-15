@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/domain/entities/entities.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../l10n/app_localizations.dart';
 import 'package:no_hit/infraestructure/mapper/mappers.dart';
 import 'package:no_hit/infraestructure/providers/juegos/informacion_juego_provider.dart';
 import 'package:no_hit/presentation/views/views.dart';

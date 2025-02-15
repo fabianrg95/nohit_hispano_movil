@@ -1,12 +1,14 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:no_hit/infraestructure/dto/juego/juego_dto.dart';
 import 'package:no_hit/infraestructure/dto/jugador/jugador_dto.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/presentation/views/views.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
+
+import '../../../l10n/app_localizations.dart';
 
 class FavoritosView extends ConsumerWidget {
   static const nombre = 'favoritos-screen';
