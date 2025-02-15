@@ -30,7 +30,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
- animate_do: ^3.0.2
+ animate_do: ^4.0.1
  card_swiper: ^3.0.1
  country_icons: ^3.0.0
  flutter:
@@ -48,12 +48,12 @@ dependencies:
  smooth_page_indicator: ^1.1.0
  supabase_flutter: ^2.1.0
  url_launcher: ^6.1.11
- intl: any
+ intl: ^0.19.0
 
 dev_dependencies:
  change_app_package_name: ^1.1.0
- flutter_launcher_icons: ^0.13.1
- flutter_lints: ^4.0.0
+ flutter_launcher_icons: ^0.14.3
+ flutter_lints: ^5.0.0
  flutter_test:
   sdk: flutter
 

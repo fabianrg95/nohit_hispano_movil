@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
 import 'package:no_hit/presentation/widgets/commons/arrow.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
+
+import '../../../l10n/app_localizations.dart';
 
 class DetalleJugadorView extends ConsumerStatefulWidget {
   final int idJugador;
