@@ -138,7 +138,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                         animation: _controller,
                         builder: (context, child) => Text((totalPartidas * _controller.value).toInt().toString(),
                             style: TextStyle(color: color.outline, fontSize: size.width * 0.08))),
-                    Text(AppLocalizations.of(context)!.partidas('true'), style: TextStyle(color: Colors.white, fontSize: size.width * 0.04)),
+                    Text(AppLocalizations.of(context)!.partidas('true'), style: styleTexto.titleMedium),
                   ],
                 ),
               ),
@@ -159,7 +159,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                           animation: _controller,
                           builder: (context, child) => Text((totalJugadores * _controller.value).toInt().toString(),
                               style: TextStyle(color: color.outline, fontSize: size.width * 0.08))),
-                      Text(AppLocalizations.of(context)!.jugadores('true'), style: TextStyle(color: Colors.white, fontSize: size.width * 0.04)),
+                      Text(AppLocalizations.of(context)!.jugadores('true'), style: styleTexto.titleMedium),
                     ],
                   ),
                 ),
@@ -179,7 +179,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                           animation: _controller,
                           builder: (context, child) => Text((totalJuegos * _controller.value).toInt().toString(),
                               style: TextStyle(color: color.outline, fontSize: size.width * 0.08))),
-                      Text(AppLocalizations.of(context)!.juegos('true'), style: TextStyle(color: Colors.white, fontSize: size.width * 0.04)),
+                      Text(AppLocalizations.of(context)!.juegos('true'), style: styleTexto.titleMedium),
                     ],
                   ),
                 ),
@@ -201,25 +201,25 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                     decoration: ViewData().decorationContainerBasic(color: color),
                     child: Column(
                       children: [
-                        Text(AppLocalizations.of(context)!.preguntas_frecuentes, style: TextStyle(color: Colors.white, fontSize: size.width * 0.04)),
+                        Text(AppLocalizations.of(context)!.preguntas_frecuentes, style: styleTexto.titleMedium),
                       ],
                     ),
                   ),
                 ),
               ),
-              // Expanded(
-              //   child: GestureDetector(
-              //     onTap: () => setState(() {
-              //       ref.read(themeNotifierProvider.notifier).toggleDarkmode();
-              //     }),
-              //     child: Container(
-              //       margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
-              //       padding: const EdgeInsets.only(top: 10, bottom: 10),
-              //       decoration: ViewData().decorationContainerBasic(color: color),
-              //       child: Icon(esTemaClaro ? Icons.dark_mode_outlined : Icons.light_mode_outlined),
-              //     ),
-              //   ),
-              // )
+              Expanded(
+                child: GestureDetector(
+                  onTap: () => setState(() {
+                    ref.read(themeNotifierProvider.notifier).toggleDarkmode();
+                  }),
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
+                    padding: const EdgeInsets.only(top: 10, bottom: 10),
+                    decoration: ViewData().decorationContainerBasic(color: color),
+                    child: Icon(esTemaClaro ? Icons.light_mode_outlined : Icons.dark_mode_outlined),
+                  ),
+                ),
+              )
             ],
           ),
           const SizedBox(height: 10)
