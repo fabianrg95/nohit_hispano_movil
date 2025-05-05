@@ -90,12 +90,12 @@ class PartidasViewState extends ConsumerState<PartidasView> {
           controller: scrollController,
           itemCount: listaUltimasPartidas.length,
           itemBuilder: (context, index) {
-            return _itemPartida(partida: listaUltimasPartidas[index], context: context);
+            return _itemPartidaMinimalista(partida: listaUltimasPartidas[index], context: context);
           }),
     );
   }
 
-  Widget _itemPartida({required PartidaDto partida, required BuildContext context}) {
+  Widget _itemPartidaMinimalista({required PartidaDto partida, required BuildContext context}) {
     final ColorScheme color = Theme.of(context).colorScheme;
     final TextTheme estiloTexto = Theme.of(context).textTheme;
     final Size size = MediaQuery.of(context).size;
@@ -103,30 +103,30 @@ class PartidasViewState extends ConsumerState<PartidasView> {
     final String heroTag = 'Partida-${partida.id}';
 
     return GestureDetector(
-      onTap: () {
-        ref.read(informacionJuegoProvider.notifier).saveData(juegoDto: partida.getJuegoDto());
-        Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
-          return FadeTransition(
-              opacity: animation,
-              child: DetallePartidaView(
-                  partidaId: partida.id,
-                  jugadorId: partida.idJugador,
-                  heroTag: heroTag,
-                  idJuego: partida.idJuego,
-                  nombreJuego: partida.tituloJuego.toString()));
-        }));
-      },
-      child: Container(
-          margin: const EdgeInsets.only(right: 20, left: 20),
-          height: size.width * 1.5,
+        onTap: () {
+          ref.read(informacionJuegoProvider.notifier).saveData(juegoDto: partida.getJuegoDto());
+          Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+            return FadeTransition(
+                opacity: animation,
+                child: DetallePartidaView(
+                    partidaId: partida.id,
+                    jugadorId: partida.idJugador,
+                    heroTag: heroTag,
+                    idJuego: partida.idJuego,
+                    nombreJuego: partida.tituloJuego.toString()));
+          }));
+        },
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 30),
           child: Column(
             children: [
               Row(
                 children: [
                   Container(
-                    width: 55,
+                    padding: EdgeInsets.symmetric(horizontal: 10),
                     height: 55,
-                    decoration: ViewData().decorationContainerBasic(color: color),
+                    decoration: ViewData()
+                        .decorationContainerBasic(borderRadiusBottomLeft: false, borderRadiusTopLeft: false, borderColorLeft: false, color: color),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -164,6 +164,71 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                               )
                             ],
                           )
+                        ],
+                      )),
+                ],
+              ),
+              const SizedBox(height: 5),
+              Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Hero(
+                    tag: heroTag,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
+                      child: Image.network(
+                        partida.urlImagenJuego!,
+                        fit: BoxFit.cover,
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress != null) {
+                            return Center(
+                              child: Column(
+                                children: [
+                                  CircularProgressIndicator(
+                                    color: color.tertiary,
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+
+                          return child;
+                        },
+                      ),
+                    )),
+                Container(
+                  margin: EdgeInsets.only(top: 20, right: 10),
+                  padding: const EdgeInsets.all(16),
+                  width: MediaQuery.of(context).size.width * 0.55,
+                  alignment: Alignment.center,
+                  height: (MediaQuery.of(context).size.width * 0.6) * 0.72,
+                  decoration: ViewData()
+                      .decorationContainerBasic(borderRadiusTopLeft: false, borderRadiusBottomLeft: false, borderColorLeft: false, color: color),
+                  child: Text(
+                    partida.nombre!,
+                    style: estiloTexto.titleSmall,
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                  ),
+                )
+              ]),
+            ],
+          ),
+        )
+
+        /* margin: const EdgeInsets.only(right: 20, left: 20),
+          height: size.width * 1.5,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  ,
+                  Container(
+                      margin: const EdgeInsets.only(left: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          
                         ],
                       )),
                 ],
@@ -221,7 +286,8 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                 color: color.secondary,
               )
             ],
-          )),
-    );
+          ) */
+        // ),
+        );
   }
 }
