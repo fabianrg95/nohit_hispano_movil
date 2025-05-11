@@ -13,7 +13,7 @@ class Comunidad extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-        onPopInvoked: (didPop) {
+        onPopInvokedWithResult: (didPop, result) {
           if (didPop) return;
           Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, __, ___) => const InicioView()));
         },

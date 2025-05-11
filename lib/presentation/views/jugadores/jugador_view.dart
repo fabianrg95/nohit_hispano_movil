@@ -87,7 +87,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
 
     return PopScope(
       canPop: pageViewIndex == 0,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         controlarBack(context);
       },
@@ -406,7 +406,7 @@ class _PartidasState extends ConsumerState<_Partidas> {
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.only(right: 10, left: 10),
-                  child: Divider(color: color.tertiary.withOpacity(0.5), thickness: 2, height: 1),
+                  child: Divider(color: color.tertiary.withAlpha(50), thickness: 2, height: 1),
                 ),
                 const SizedBox(height: 20),
                 ListView.builder(

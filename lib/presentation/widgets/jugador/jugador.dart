@@ -66,11 +66,11 @@ class JugadorCommons {
                         Visibility(
                             visible: detalleJugador.pronombre != null,
                             child: Text(detalleJugador.pronombre.toString(),
-                                style: styleTexto.labelSmall?.copyWith(color: color.inverseSurface.withOpacity(0.7)))),
+                                style: styleTexto.labelSmall?.copyWith(color: color.inverseSurface.withAlpha(70)))),
                         Visibility(
                             visible: detalleJugador.gentilicio != null,
                             child: Text(detalleJugador.gentilicio.toString(),
-                                style: styleTexto.labelSmall?.copyWith(color: color.inverseSurface.withOpacity(0.7)))),
+                                style: styleTexto.labelSmall?.copyWith(color: color.inverseSurface.withAlpha(70)))),
                         const SizedBox(height: 10),
                         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                           CustomLinks().link(detalleJugador.urlYoutube, FontAwesomeIcons.youtube),

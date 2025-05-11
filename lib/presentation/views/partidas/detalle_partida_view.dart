@@ -85,7 +85,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
 
     return PopScope(
       canPop: pageViewIndex == 0,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         controlarBack(context);
       },

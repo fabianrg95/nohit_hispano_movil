@@ -83,7 +83,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
     }
 
     return PopScope(
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, __, ___) => const InicioView()));
       },
@@ -222,7 +222,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
           const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.only(right: 10, left: 10),
-            child: Divider(color: color.tertiary.withOpacity(0.5), thickness: 2, height: 1),
+            child: Divider(color: color.tertiary.withAlpha(50), thickness: 2, height: 1),
           ),
           const SizedBox(height: 20),
           Expanded(

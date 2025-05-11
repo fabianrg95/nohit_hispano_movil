@@ -96,7 +96,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
 
     return PopScope(
       canPop: pageViewIndex == 0,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         controlarBack(context);
       },
