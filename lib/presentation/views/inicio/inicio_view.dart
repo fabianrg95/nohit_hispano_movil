@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:no_hit/config/helpers/app_info.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 
 import 'package:no_hit/presentation/views/introduccion/introduccion_view.dart';
@@ -27,7 +28,6 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
   late bool introduccionFinalizada;
 
   late ColorScheme color;
-  late Size size;
   late TextTheme styleTexto;
 
   late AnimationController _controller;
@@ -64,7 +64,6 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
   @override
   Widget build(BuildContext context) {
     color = Theme.of(context).colorScheme;
-    size = MediaQuery.of(context).size;
     styleTexto = Theme.of(context).textTheme;
 
     totalJugadores = ref.watch(totalJugadoresProvider);
@@ -104,13 +103,14 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
     return SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
       child: SizedBox(
-        height: size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom,
+        height: AppInfo().alto - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom,
         child: Column(
           children: [
             const Expanded(flex: 2, child: SizedBox(height: 1)),
             Hero(
                 tag: "headerNoHit",
-                child: Image.asset('assets/images/panel_${color.brightness == Brightness.dark ? 'blanco' : 'negro'}.png', height: size.width * 0.6)),
+                child: Image.asset('assets/images/panel_${color.brightness == Brightness.dark ? 'blanco' : 'negro'}.png',
+                    height: AppInfo().porcentajeAncho(0.6))),
             const Expanded(flex: 3, child: SizedBox(height: 1)),
             _informacionHispano(context),
           ],
@@ -124,105 +124,75 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
       child: Column(
         children: [
           Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
-            GestureDetector(
-              onTap: () => Navigator.of(context)
-                  .push(PageRouteBuilder(pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: const PartidasView()))),
-              child: Container(
-                margin: const EdgeInsets.only(left: 10, top: 10, right: 10),
-                padding: const EdgeInsets.only(top: 10, bottom: 10),
-                width: size.width * 0.5,
-                decoration: ViewData().decorationContainerBasic(color: color),
-                child: Column(
-                  children: [
-                    AnimatedBuilder(
-                        animation: _controller,
-                        builder: (context, child) => Text((totalPartidas * _controller.value).toInt().toString(),
-                            style: TextStyle(color: color.outline, fontSize: size.width * 0.08))),
-                    Text(AppLocalizations.of(context)!.partidas('true'), style: styleTexto.titleMedium),
-                  ],
-                ),
-              ),
-            ),
+            contenedorInformativoLink(context, totalPartidas, AppLocalizations.of(context)!.partidas('true'), const PartidasView()),
           ]),
           Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: () => Navigator.of(context).push(PageRouteBuilder(
-                    pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: const ListaJugadoresView()))),
-                child: Container(
-                  margin: const EdgeInsets.only(left: 10, top: 10, right: 5),
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  decoration: ViewData().decorationContainerBasic(color: color),
-                  child: Column(
-                    children: [
-                      AnimatedBuilder(
-                          animation: _controller,
-                          builder: (context, child) => Text((totalJugadores * _controller.value).toInt().toString(),
-                              style: TextStyle(color: color.outline, fontSize: size.width * 0.08))),
-                      Text(AppLocalizations.of(context)!.jugadores('true'), style: styleTexto.titleMedium),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: GestureDetector(
-                onTap: () => Navigator.of(context).push(
-                    PageRouteBuilder(pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: const ListaJuegosView()))),
-                child: Container(
-                  margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  decoration: ViewData().decorationContainerBasic(color: color),
-                  child: Column(
-                    children: [
-                      AnimatedBuilder(
-                          animation: _controller,
-                          builder: (context, child) => Text((totalJuegos * _controller.value).toInt().toString(),
-                              style: TextStyle(color: color.outline, fontSize: size.width * 0.08))),
-                      Text(AppLocalizations.of(context)!.juegos('true'), style: styleTexto.titleMedium),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            contenedorInformativoLink(context, totalJugadores, AppLocalizations.of(context)!.jugadores('true'), const ListaJugadoresView()),
+            contenedorInformativoLink(context, totalJuegos, AppLocalizations.of(context)!.juegos('true'), const ListaJuegosView()),
           ]),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                flex: 3,
-                child: GestureDetector(
-                  onTap: () => Navigator.of(context).push(PageRouteBuilder(
-                      pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: const PreguntasFrecuentesView()))),
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    decoration: ViewData().decorationContainerBasic(color: color),
-                    child: Column(
-                      children: [
-                        Text(AppLocalizations.of(context)!.preguntas_frecuentes, style: styleTexto.titleMedium),
-                      ],
-                    ),
+              GestureDetector(
+                onTap: () => Navigator.of(context).push(PageRouteBuilder(
+                    pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: const PreguntasFrecuentesView()))),
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    bottom: 10,
+                  ),
+                  width: AppInfo().porcentajeAncho(0.70),
+                  decoration: ViewData().decorationContainerBasic(color: color),
+                  child: Column(
+                    children: [
+                      Text(AppLocalizations.of(context)!.preguntas_frecuentes, style: styleTexto.titleMedium),
+                    ],
                   ),
                 ),
               ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () => setState(() {
-                    ref.read(themeNotifierProvider.notifier).toggleDarkmode();
-                  }),
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 10, top: 10, left: 5),
-                    padding: const EdgeInsets.only(top: 10, bottom: 10),
-                    decoration: ViewData().decorationContainerBasic(color: color),
-                    child: Icon(esTemaClaro ? Icons.light_mode_outlined : Icons.dark_mode_outlined),
-                  ),
+              GestureDetector(
+                onTap: () => setState(() {
+                  ref.read(themeNotifierProvider.notifier).toggleDarkmode();
+                }),
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  width: AppInfo().porcentajeAncho(0.20),
+                  decoration: ViewData().decorationContainerBasic(color: color),
+                  child: Icon(esTemaClaro ? Icons.light_mode_outlined : Icons.dark_mode_outlined),
                 ),
               )
             ],
           ),
           const SizedBox(height: 10)
+        ],
+      ),
+    );
+  }
+
+  GestureDetector contenedorInformativoLink(BuildContext context, int cantidad, String dato, Widget destino) {
+    return GestureDetector(
+      onTap: () =>
+          Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: destino))),
+      child: contenedorInformativo(context, totalPartidas, dato),
+    );
+  }
+
+  Container contenedorInformativo(BuildContext context, int cantidad, String dato) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
+      width: AppInfo().porcentajeAncho(0.45),
+      decoration: ViewData().decorationContainerBasic(color: color),
+      child: Column(
+        children: [
+          AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) => Text((cantidad * _controller.value).toInt().toString(),
+                  style: TextStyle(color: color.outline, fontSize: AppInfo().porcentajeAncho(0.08)))),
+          Text(dato, style: styleTexto.titleMedium),
         ],
       ),
     );
