@@ -6,6 +6,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:no_hit/config/contants/environment.dart';
+import 'package:no_hit/config/helpers/app_info.dart';
 import 'package:no_hit/config/router/app_router.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 
@@ -53,6 +54,7 @@ class MyAppState extends ConsumerState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    AppInfo().init(MediaQuery.of(context)); // inicializar una vez
     final AppTheme appTheme = ref.watch(themeNotifierProvider);
     styleTexto = Theme.of(context).textTheme;
     size = MediaQuery.of(context).size;
