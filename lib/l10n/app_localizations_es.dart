@@ -67,13 +67,15 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get juego_sin_jugadores => 'El juego no cuenta con jugadores registradas';
+  String get juego_sin_jugadores =>
+      'El juego no cuenta con jugadores registradas';
 
   @override
   String get ultimo_jugador => 'Ultimo jugador';
 
   @override
-  String get juego_sin_partidas => 'El juego no cuenta con partidas registradas';
+  String get juego_sin_partidas =>
+      'El juego no cuenta con partidas registradas';
 
   @override
   String primera_partida(String isEnabled) {
@@ -116,7 +118,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get informacion_jugador => 'Información Jugador';
 
   @override
-  String get consultando_partidas => 'Consultando las partidas del juego seleccionado';
+  String get consultando_partidas =>
+      'Consultando las partidas del juego seleccionado';
 
   @override
   String get fecha_partida => 'Fecha partida';
@@ -188,10 +191,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get paypal => 'PayPal';
 
   @override
-  String get introduccion_1 => 'Aca encontraras las partidas, Jugadores y juegos registrados en la comunidad No Hit Hispanohablante.';
+  String get introduccion_1 =>
+      'Aca encontraras las partidas, Jugadores y juegos registrados en la comunidad No Hit Hispanohablante.';
 
   @override
-  String get introduccion_2 => 'Una partida No hit/hitless consiste en completar un juego de principio a fin sin recibir algún golpe de un enemigo o una trampa.';
+  String get introduccion_2 =>
+      'Una partida No hit/hitless consiste en completar un juego de principio a fin sin recibir algún golpe de un enemigo o una trampa.';
 
   @override
   String get empezar => 'Empezar';
@@ -224,13 +229,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get guias => 'Guias';
 
   @override
-  String get jugadores_favoritos_vacio => 'No se encontraron jugadores marcados como favoritos.';
+  String get jugadores_favoritos_vacio =>
+      'No se encontraron jugadores marcados como favoritos.';
 
   @override
-  String get juegos_favoritos_vacio => 'No se encontraron juegos marcados como favoritos.';
+  String get juegos_favoritos_vacio =>
+      'No se encontraron juegos marcados como favoritos.';
 
   @override
-  String get consultando_jugadores_favoritos => 'Consultando jugadores favoritos';
+  String get consultando_jugadores_favoritos =>
+      'Consultando jugadores favoritos';
 
   @override
   String get consultando_juegos_favoritos => 'Consultando juegos Favoritos';
