@@ -13,7 +13,9 @@ class Utilidades {
     DateTime fechaOriginal = DateTime.now();
 
     if (fechaUltimaPartida != null) {
-      fechaOriginal = DateTime.parse(fechaUltimaPartida).subtract(const Duration(days: 1));
+      final DateTime fechaParsed = DateTime.parse(fechaUltimaPartida);
+      final int numeroDia = fechaParsed.day;
+      fechaOriginal = fechaParsed.subtract(Duration(days: numeroDia));
     }
 
     String primeraFechaDelMes = DateFormat('yyyy-MM-dd').format(DateTime(fechaOriginal.year, fechaOriginal.month, 1));
