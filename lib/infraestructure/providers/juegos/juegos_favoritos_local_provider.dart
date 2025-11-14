@@ -1,4 +1,4 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:no_hit/infraestructure/providers/hitless_repository_provider.dart';
 import 'package:no_hit/infraestructure/repositories/local_repository_impl.dart';
 
