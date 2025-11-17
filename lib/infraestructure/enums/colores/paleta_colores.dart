@@ -5,15 +5,15 @@ enum PaletaColores {
       principal: Color(0XffEED6C5),
       secundario: Color(0xFFF5EcE9),
       terciario: Color(0xff282821),
-      textoResaltado: Color(0xff34566E),
-      textoSecundario: Color(0xFFF5EcE9),
+      textoResaltado: Color.fromARGB(255, 0, 0, 0),
+      textoSecundario: Color.fromARGB(255, 98, 98, 97),
       tema: Brightness.light),
   temaOscuro(
       principal: Color(0Xff212121),
       secundario: Color(0xFF444444),
       terciario: Color(0xffb99763),
-      textoResaltado: Color(0xffb99763),
-      textoSecundario: Color(0xFF444444),
+      textoResaltado: Color.fromARGB(255, 255, 255, 255),
+      textoSecundario: Color.fromARGB(255, 229, 226, 226),
       tema: Brightness.dark);
 
   final Color principal;

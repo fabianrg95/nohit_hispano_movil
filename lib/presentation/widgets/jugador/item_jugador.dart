@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/presentation/views/jugadores/jugador_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
+import 'package:no_hit/config/helpers/app_info.dart';
 
 class ItemJugador extends StatelessWidget {
   final JugadorDto jugador;
@@ -35,7 +36,7 @@ class ItemJugador extends StatelessWidget {
           child: ListTile(
             trailing: BanderaJugador(codigoBandera: jugador.codigoBandera, tamanio: 38),
             title: Text(jugador.nombre!, style: styleTexto.titleMedium, maxLines: 2),
-            subtitle: jugador.cantidadPartidasJuego == 0 ? null : Text("${jugador.cantidadPartidasJuego} partidas en este juego"),
+            subtitle: jugador.cantidadPartidasJuego == 0 ? null : Text("Runs: ${jugador.cantidadPartidasJuego}"),
           ),
         ));
   }

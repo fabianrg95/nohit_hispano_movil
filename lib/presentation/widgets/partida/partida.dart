@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:no_hit/config/helpers/app_info.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/juegos/informacion_juego_provider.dart';
@@ -20,16 +21,20 @@ class PartidaCommons {
             decoration: ViewData().decorationContainerBasic(color: color),
             child: Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(HumanFormat.fechaMes(partida.fecha.toString())),
-                      Text(HumanFormat.fechaDia(partida.fecha.toString())),
-                      Text(HumanFormat.fechaAnio(partida.fecha.toString()))
-                    ],
+                Container(
+                  width: AppInfo().porcentajeAncho(0.2),
+                  decoration: BoxDecoration(color: color.tertiary, borderRadius: BorderRadius.all(Radius.circular(18))),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10, right: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(HumanFormat.fechaDia(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: color.primary)),
+                        Text(HumanFormat.fechaMes(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: color.primary)),
+                        Text(HumanFormat.fechaAnio(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: color.primary))
+                      ],
+                    ),
                   ),
                 ),
                 if (!mostrarJugador) const SizedBox(width: 10),

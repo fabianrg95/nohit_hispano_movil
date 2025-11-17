@@ -30,6 +30,6 @@ class HumanFormat {
 
   static String fechaMes(String fecha) {
     var parsedDate = DateTime.parse(fecha);
-    return Utilidades.capitalize(DateFormat.MMMM('es-CO').format(parsedDate).toString());
+    return Utilidades.capitalize(DateFormat.MMM('es-CO').format(parsedDate).toString());
   }
 }

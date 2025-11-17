@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:no_hit/config/helpers/app_info.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/presentation/views/juegos/lista_jugadores_juego.dart';
@@ -30,13 +31,13 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
   final double tamanioImagen = 150;
   late ColorScheme color;
   late TextTheme styleTexto;
-  int pageViewIndex = 0;
+  int pageViewIndex = 1;
   IconData iconoFlechaAtras = Icons.arrow_back;
 
-  final Map<int, String> titulosPageView = {0: '', 1: 'Partidas', 2: 'Jugadores'};
+  final Map<int, String> titulosPageView = {0: 'Partidas', 1: '', 2: 'Jugadores'};
 
   ValueNotifier<double> offset = ValueNotifier(0);
-  final PageController _pageController = PageController();
+  final PageController _pageController = PageController(initialPage: 1);
 
   @override
   void initState() {
@@ -95,99 +96,276 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
     juegoFavorito = juegosFavorito.contains(widget.idJuego);
 
     return PopScope(
-      canPop: pageViewIndex == 0,
+      canPop: pageViewIndex == 1,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         controlarBack(context);
       },
-      child: ValueListenableBuilder(
-        valueListenable: offset,
-        builder: (BuildContext context, offsetValue, _) => SafeArea(
-          child: Scaffold(
-            // drawer: const CustomNavigation(),
-            appBar: AppBar(
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      _guardarJuegoFavorito();
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          backgroundColor: color.tertiary,
-                          action: SnackBarAction(
-                            label: 'Deshacer',
-                            onPressed: () => _guardarJuegoFavorito(),
-                            textColor: color.surfaceContainerHighest,
-                          ),
-                          content: Text(
-                            'Juego ${juegoFavorito ? 'agregado a' : 'eliminado de'} favoritos.',
-                            style: styleTexto.bodyLarge?.copyWith(color: color.primary),
-                          )));
-                    },
-                    child: Visibility(
-                        visible: juegoFavorito, replacement: const Icon(Icons.favorite_border_outlined), child: const Icon(Icons.favorite)),
+      child: Scaffold(
+        // drawer: const CustomNavigation(),
+        appBar: AppBar(
+          actions: [
+            Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: Ink(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: color.primary,
                   ),
-                )
-              ],
-              leading: IconButton(
+                  child: IconButton(
+                      onPressed: () {
+                        _guardarJuegoFavorito();
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: color.primary,
+                            action: SnackBarAction(
+                              label: 'Deshacer',
+                              onPressed: () => _guardarJuegoFavorito(),
+                              textColor: color.surfaceContainerHighest,
+                            ),
+                            content: Text(
+                              'Juego ${juegoFavorito ? 'agregado a' : 'eliminado de'} favoritos.',
+                              style: styleTexto.bodyLarge?.copyWith(color: color.primary),
+                            )));
+                      },
+                      color: color.tertiary,
+                      highlightColor: color.tertiary,
+                      icon: Visibility(
+                          visible: juegoFavorito, replacement: const Icon(Icons.favorite_border_outlined), child: const Icon(Icons.favorite))),
+                ))
+          ],
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Ink(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: color.primary,
+              ),
+              child: IconButton(
                 onPressed: () {
                   controlarBack(context);
                 },
+                color: color.tertiary,
+                highlightColor: color.tertiary,
                 icon: Icon(iconoFlechaAtras),
               ),
-              forceMaterialTransparency: true,
-              elevation: 0,
-              title: Text(titulosPageView[pageViewIndex]!),
             ),
-            extendBodyBehindAppBar: true,
-            body: Stack(children: [
-              cabecera(context, widget.heroTag, offsetValue),
-              if (resumenJuego != null && resumenJuego!.cantidadPartidas > 0)
-                PageView(
-                    scrollDirection: Axis.horizontal,
-                    controller: _pageController,
-                    onPageChanged: (value) => setState(() {
-                          pageViewIndex = value;
-                        }),
-                    children: [
-                      // const SizedBox.shrink(),
-                      Align(
-                          alignment: const FractionalOffset(0, 1),
-                          child: GestureDetector(onTap: () => _navegarPage(1), child: const ShimmerArrows(icon: Icons.keyboard_arrow_right))),
-                      ListaPartidas(
-                          primeraPartida: resumenJuego?.primeraPartida,
-                          ultimaPartida: resumenJuego?.ultimaPartida,
-                          heroTag: widget.heroTag,
-                          listaPartidas: resumenJuego!.partidas),
-                      ListaJugadoresJuego(
-                        listaJugadores: resumenJuego!.jugadores,
-                        primeraPartida: resumenJuego?.primeraPartida,
-                        ultimaPartida: resumenJuego?.ultimaPartida,
-                      )
-                    ]),
-              Align(
-                alignment: FractionalOffset(0.5, 0.88 + offsetValue),
-                child: FadeTransition(
-                  opacity: AlwaysStoppedAnimation(1 - (offsetValue * 1.5)),
-                  child: Column(mainAxisSize: MainAxisSize.min, children: [
-                    JuegoCommons().subtitulo(informacionJuego!, null, context),
-                    const SizedBox(height: 10),
-                    _resumenJuego(informacionJuego!, resumenJuego),
-                  ]),
+          ),
+          forceMaterialTransparency: true,
+          elevation: 0,
+          title: Text(titulosPageView[pageViewIndex]!, style: styleTexto.titleMedium?.copyWith(color: color.tertiary)),
+          centerTitle: true,
+        ),
+        extendBodyBehindAppBar: true,
+        body: PageView(
+            scrollDirection: Axis.horizontal,
+            controller: _pageController,
+            onPageChanged: (value) => setState(() {
+                  pageViewIndex = value;
+                }),
+            children: [
+              // const SizedBox.shrink(),
+              if (resumenJuego != null)
+                ListaPartidas(
+                    primeraPartida: resumenJuego?.primeraPartida,
+                    ultimaPartida: resumenJuego?.ultimaPartida,
+                    heroTag: widget.heroTag,
+                    listaPartidas: resumenJuego!.partidas),
+              if (resumenJuego == null)
+                Center(
+                  child: CircularProgressIndicator(
+                    color: color.primary,
+                  ),
                 ),
+              Column(
+                children: [
+                  SizedBox(
+                    height: AppInfo().porcentajeAlto(0.45),
+                    child: Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              color: color.tertiary,
+                              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(150), bottomRight: Radius.circular(150))),
+                          height: AppInfo().porcentajeAlto(0.24),
+                        ),
+                        Center(
+                          child: Container(
+                            width: AppInfo().porcentajeAncho(0.57),
+                            height: AppInfo().porcentajeAlto(0.57),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: color.primary,
+                            ),
+                          ),
+                        ),
+                        Hero(
+                          tag: widget.heroTag,
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: AppInfo().porcentajeAlto(0.13)),
+                              child: Container(
+                                width: AppInfo().porcentajeAncho(0.43),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(informacionJuego!.urlImagen!, fit: BoxFit.contain),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  JuegoCommons().subtitulo(informacionJuego!, null, context),
+                  SizedBox(height: AppInfo().porcentajeAlto(0.1)),
+                  Center(child: _resumenJuego(informacionJuego!, resumenJuego)),
+                ],
               ),
+              if (resumenJuego != null)
+                ListaJugadoresJuego(
+                  listaJugadores: resumenJuego!.jugadores,
+                  primeraPartida: resumenJuego?.primeraPartida,
+                  ultimaPartida: resumenJuego?.ultimaPartida,
+                ),
+              if (resumenJuego == null)
+                Center(
+                  child: CircularProgressIndicator(
+                    color: color.primary,
+                  ),
+                ),
             ]),
+
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.all(10),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(30),
+            child: BottomNavigationBar(
+              backgroundColor: color.tertiary,
+              selectedItemColor: color.primary,
+              unselectedItemColor: color.primary.withValues(alpha: 0.7),
+              selectedLabelStyle: styleTexto.bodyLarge?.copyWith(color: color.primary),
+              unselectedLabelStyle: styleTexto.bodySmall?.copyWith(color: color.primary.withValues(alpha: 0.7)),
+              selectedIconTheme: const IconThemeData(size: 30),
+              unselectedIconTheme: const IconThemeData(size: 20),
+              currentIndex: pageViewIndex,
+              onTap: _navegarPage,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.workspace_premium),
+                  label: 'Partidas',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.sports_esports),
+                  label: 'Juego',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.groups),
+                  label: 'Jugadores',
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
+
+    // return PopScope(
+    //   canPop: pageViewIndex == 0,
+    //   onPopInvokedWithResult: (didPop, result) {
+    //     if (didPop) return;
+    //     controlarBack(context);
+    //   },
+    //   child: ValueListenableBuilder(
+    //     valueListenable: offset,
+    //     builder: (BuildContext context, offsetValue, _) => SafeArea(
+    //       child: Scaffold(
+    //         // drawer: const CustomNavigation(),
+    //         appBar: AppBar(
+    //           actions: [
+    //             Padding(
+    //               padding: const EdgeInsets.only(right: 10.0),
+    //               child: GestureDetector(
+    //                 onTap: () {
+    //                   _guardarJuegoFavorito();
+    //                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //                       backgroundColor: color.tertiary,
+    //                       action: SnackBarAction(
+    //                         label: 'Deshacer',
+    //                         onPressed: () => _guardarJuegoFavorito(),
+    //                         textColor: color.surfaceContainerHighest,
+    //                       ),
+    //                       content: Text(
+    //                         'Juego ${juegoFavorito ? 'agregado a' : 'eliminado de'} favoritos.',
+    //                         style: styleTexto.bodyLarge?.copyWith(color: color.primary),
+    //                       )));
+    //                 },
+    //                 child: Visibility(
+    //                     visible: juegoFavorito, replacement: const Icon(Icons.favorite_border_outlined), child: const Icon(Icons.favorite)),
+    //               ),
+    //             )
+    //           ],
+    //           leading: IconButton(
+    //             onPressed: () {
+    //               controlarBack(context);
+    //             },
+    //             icon: Icon(iconoFlechaAtras),
+    //           ),
+    //           forceMaterialTransparency: true,
+    //           elevation: 0,
+    //           title: Text(titulosPageView[pageViewIndex]!),
+    //         ),
+    //         extendBodyBehindAppBar: true,
+    //         body: Stack(children: [
+    //           cabecera(context, widget.heroTag, offsetValue),
+    //           if (resumenJuego != null && resumenJuego!.cantidadPartidas > 0)
+    //             PageView(
+    //                 scrollDirection: Axis.horizontal,
+    //                 controller: _pageController,
+    //                 onPageChanged: (value) => setState(() {
+    //                       pageViewIndex = value;
+    //                     }),
+    //                 children: [
+    //                   // const SizedBox.shrink(),
+    //                   Align(
+    //                       alignment: const FractionalOffset(0, 1),
+    //                       child: GestureDetector(onTap: () => _navegarPage(1), child: const ShimmerArrows(icon: Icons.keyboard_arrow_right))),
+    //                   ListaPartidas(
+    //                       primeraPartida: resumenJuego?.primeraPartida,
+    //                       ultimaPartida: resumenJuego?.ultimaPartida,
+    //                       heroTag: widget.heroTag,
+    //                       listaPartidas: resumenJuego!.partidas),
+    //                   ListaJugadoresJuego(
+    //                     listaJugadores: resumenJuego!.jugadores,
+    //                     primeraPartida: resumenJuego?.primeraPartida,
+    //                     ultimaPartida: resumenJuego?.ultimaPartida,
+    //                   )
+    //                 ]),
+    //           Align(
+    //             alignment: FractionalOffset(0.5, 0.88 + offsetValue),
+    //             child: FadeTransition(
+    //               opacity: AlwaysStoppedAnimation(1 - (offsetValue * 1.5)),
+    //               child: Column(mainAxisSize: MainAxisSize.min, children: [
+    //                 JuegoCommons().subtitulo(informacionJuego!, null, context),
+    //                 const SizedBox(height: 10),
+    //                 _resumenJuego(informacionJuego!, resumenJuego),
+    //               ]),
+    //             ),
+    //           ),
+    //         ]),
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   void controlarBack(BuildContext context) {
-    if (pageViewIndex == 0) {
+    if (pageViewIndex == 1) {
       Navigator.of(context).pop();
     } else {
-      _navegarPage(pageViewIndex - 1);
+      _navegarPage(1);
     }
   }
 
@@ -252,25 +430,26 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
 
     return IntrinsicHeight(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ViewData().muestraInformacionSimple(items: [
             Text(AppLocalizations.of(context)!.tipo_juego(informacionJuego.oficialTeamHistless.toString()),
-                style: styleTexto.titleLarge?.copyWith(color: color.outline)),
+                style: styleTexto.titleLarge?.copyWith(color: color.tertiary)),
             Text(AppLocalizations.of(context)!.team_hitless)
           ]),
           Row(
             children: [
               ViewData().muestraInformacionAccion(
-                accion: () => _navegarPage(1),
+                accion: () => _navegarPage(0),
                 items: [
-                  Text(resumenPartidasJuego.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: color.outline)),
+                  Text(resumenPartidasJuego.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: color.tertiary)),
                   Text(AppLocalizations.of(context)!.partidas((resumenPartidasJuego.cantidadPartidas != 1).toString()))
                 ],
               ),
               ViewData().muestraInformacionAccion(
                 accion: () => _navegarPage(2),
                 items: [
-                  Text(resumenPartidasJuego.cantidadJugadores.toString(), style: styleTexto.displaySmall?.copyWith(color: color.outline)),
+                  Text(resumenPartidasJuego.cantidadJugadores.toString(), style: styleTexto.displaySmall?.copyWith(color: color.tertiary)),
                   Text(AppLocalizations.of(context)!.jugadores((resumenPartidasJuego.cantidadJugadores != 1).toString()))
                 ],
               ),

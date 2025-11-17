@@ -18,13 +18,13 @@ class JuegoCommons {
           child: Column(children: [
             Text(
               juego.nombre.toString(),
-              style: TextStyle(color: Colors.white, fontSize: size.width * 0.05),
+              style: TextStyle(color: color.outline, fontSize: size.width * 0.05),
               textAlign: TextAlign.center,
             ),
             if (juego.subtitulo != null)
               Text(
                 juego.subtitulo.toString(),
-                style: styleTexto.titleSmall,
+                style: styleTexto.titleSmall?.copyWith(color: color.surfaceTint),
                 textAlign: TextAlign.center,
               )
           ]),
