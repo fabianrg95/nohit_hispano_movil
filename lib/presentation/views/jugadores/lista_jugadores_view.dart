@@ -148,7 +148,6 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
       child: Column(
         children: [
           Container(
-            decoration: ViewData().decorationContainerBasic(color: color),
             margin: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
             padding: const EdgeInsets.only(top: 10),
             child: Column(
@@ -157,34 +156,123 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
                 const SizedBox(height: 10),
                 Divider(color: color.tertiary, thickness: 2, height: 1),
                 SizedBox(
-                    height: 120,
-                    child: Swiper(
-                      viewportFraction: 1,
-                      scale: 1,
-                      autoplayDelay: 5000,
-                      autoplay: true,
-                      fade: 0.1,
-                      outer: true,
-                      pagination: SwiperPagination(
-                        builder: DotSwiperPaginationBuilder(activeColor: color.tertiary, color: color.primary),
+                  height: 220, // Slightly taller for better content display
+                  child: Swiper(
+                    viewportFraction: 0.85,
+                    scale: 0.7,
+                    autoplayDelay: 6000, // Slightly longer delay
+                    autoplay: true,
+                    duration: 1000, // Smoother transition
+                    fade: 0.3, // Smoother fade
+                    outer: false,
+                    layout: SwiperLayout.STACK,
+                    itemWidth: MediaQuery.of(context).size.width * 0.8,
+                    itemHeight: 200,
+                    loop: true, // Enable infinite loop
+                    physics: const BouncingScrollPhysics(), // Bouncy physics
+                    pagination: SwiperPagination(
+                      margin: const EdgeInsets.only(bottom: .1),
+                      builder: DotSwiperPaginationBuilder(
+                        activeColor: color.tertiary,
+                        color: color.secondary,
+                        size: 10,
+                        activeSize: 12,
+                        space: 8,
                       ),
-                      itemCount: ultimosJugadores.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
-                            return FadeTransition(opacity: animation, child: DetalleJugadorView(idJugador: ultimosJugadores[index].id!));
-                          })),
-                          child: Container(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: Column(
-                                children: [
-                                  BanderaJugador(codigoBandera: ultimosJugadores[index].codigoBandera),
-                                  Text(ultimosJugadores[index].nombre!, style: styleTexto.titleLarge, maxLines: 2)
-                                ],
-                              )),
-                        );
-                      },
-                    )),
+                    ),
+                    itemCount: ultimosJugadores.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, __) => FadeTransition(
+                                opacity: animation,
+                                child: DetalleJugadorView(idJugador: ultimosJugadores[index].id!),
+                              ),
+                              transitionDuration: const Duration(milliseconds: 500),
+                            ),
+                          );
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                          decoration: BoxDecoration(
+                            color: color.secondary,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: color.tertiary.withValues(alpha: 0.3), width: 1.5),
+                            boxShadow: [
+                              BoxShadow(
+                                color: color.tertiary.withValues(alpha: 0.1),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                                spreadRadius: 1,
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                // Content
+                                Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      // Player Flag with Hero animation
+                                      Hero(
+                                        tag: 'carousel_bandera_${ultimosJugadores[index].id}',
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          child: Container(
+                                            padding: const EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              color: color.surface,
+                                              shape: BoxShape.circle,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: color.tertiary.withValues(alpha: 0.3),
+                                                  blurRadius: 15,
+                                                  spreadRadius: 1,
+                                                ),
+                                              ],
+                                            ),
+                                            child: BanderaJugador(
+                                              codigoBandera: ultimosJugadores[index].codigoBandera,
+                                              tamanio: 64,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 16),
+                                      // Player Name
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                                        child: Text(
+                                          ultimosJugadores[index].nombre!,
+                                          style: styleTexto.headlineSmall?.copyWith(
+                                            color: color.onSurface,
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 0.5,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ),
