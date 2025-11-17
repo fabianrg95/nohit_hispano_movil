@@ -91,12 +91,12 @@ class PartidasViewState extends ConsumerState<PartidasView> {
           controller: scrollController,
           itemCount: listaUltimasPartidas.length,
           itemBuilder: (context, index) {
-            return _itemPartidaMinimalista(partida: listaUltimasPartidas[index], context: context);
+            return _itemPartidaGrande(partida: listaUltimasPartidas[index], context: context);
           }),
     );
   }
 
-  Widget _itemPartidaMinimalista({required PartidaDto partida, required BuildContext context}) {
+  Widget _itemPartidaGrande({required PartidaDto partida, required BuildContext context}) {
     final ColorScheme color = Theme.of(context).colorScheme;
     final TextTheme estiloTexto = Theme.of(context).textTheme;
     final Size size = MediaQuery.of(context).size;
@@ -303,6 +303,195 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                           ],
                         ),
                     ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _itemPartidaCompacto({required PartidaDto partida, required BuildContext context}) {
+    final ColorScheme color = Theme.of(context).colorScheme;
+    final TextTheme estiloTexto = Theme.of(context).textTheme;
+    final String heroTag = 'partida_${partida.id}';
+
+    return GestureDetector(
+      onTap: () {
+        ref.read(informacionJuegoProvider.notifier).saveData(juegoDto: partida.getJuegoDto());
+        Navigator.of(context).push(
+          PageRouteBuilder(
+            pageBuilder: (context, animation, __) => FadeTransition(
+              opacity: animation,
+              child: DetallePartidaView(
+                partidaId: partida.id,
+                jugadorId: partida.idJugador,
+                heroTag: heroTag,
+                idJuego: partida.idJuego,
+                nombreJuego: partida.tituloJuego.toString(),
+              ),
+            ),
+            transitionDuration: const Duration(milliseconds: 300),
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        height: 140,
+        decoration: BoxDecoration(
+          color: color.secondary,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: null,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Game Image with Hero Animation
+                Hero(
+                  tag: heroTag,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.horizontal(left: Radius.circular(16)),
+                    child: Container(
+                      width: 120,
+                      decoration: BoxDecoration(
+                        color: color.surfaceVariant,
+                      ),
+                      child: partida.urlImagenJuego != null
+                          ? Image.network(
+                              partida.urlImagenJuego!,
+                              fit: BoxFit.cover,
+                              loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                        : null,
+                                    color: color.primary,
+                                  ),
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) => Center(
+                                child: Icon(
+                                  Icons.sports_esports_rounded,
+                                  size: 40,
+                                  color: color.onSurfaceVariant.withOpacity(0.5),
+                                ),
+                              ),
+                            )
+                          : Center(
+                              child: Icon(
+                                Icons.sports_esports_rounded,
+                                size: 40,
+                                color: color.onSurfaceVariant.withOpacity(0.3),
+                              ),
+                            ),
+                    ),
+                  ),
+                ),
+
+                // Content
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Game Title
+                        Text(
+                          partida.nombre ?? 'Partida sin título',
+                          style: estiloTexto.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: color.onSurface,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+
+                        const SizedBox(height: 4),
+
+                        // Game Subtitle
+                        if (partida.tituloJuego != null)
+                          Text(
+                            partida.tituloJuego!,
+                            style: estiloTexto.bodySmall?.copyWith(
+                              color: color.onSurfaceVariant,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+
+                        const Spacer(),
+
+                        // Player and Date Row
+                        Row(
+                          children: [
+                            // Player Avatar
+                            Container(
+                              width: 28,
+                              height: 28,
+                              decoration: BoxDecoration(
+                                color: color.primaryContainer,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.person,
+                                size: 16,
+                                color: color.onPrimaryContainer,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+
+                            // Player Name
+                            Expanded(
+                              child: Text(
+                                partida.nombreJugador ?? 'Jugador',
+                                style: estiloTexto.bodyMedium?.copyWith(
+                                  color: color.onSurfaceVariant,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+
+                            // Date
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.calendar_today_rounded,
+                                  size: 14,
+                                  color: color.onSurfaceVariant.withOpacity(0.6),
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  HumanFormat.fechaDia(partida.fecha.toString()),
+                                  style: estiloTexto.labelSmall?.copyWith(
+                                    color: color.onSurfaceVariant.withOpacity(0.8),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 4),
+
+                        // Additional Info
+                      ],
+                    ),
                   ),
                 ),
               ],
