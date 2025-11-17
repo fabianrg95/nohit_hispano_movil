@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
-import 'package:no_hit/config/helpers/utilidades.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 
@@ -10,6 +9,46 @@ import 'package:no_hit/presentation/views/partidas/detalle_partida_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 import '../../../l10n/app_localizations.dart';
+
+enum PartidaViewMode { grande, compacto }
+
+class FadeInListItem extends StatelessWidget {
+  final int index;
+  final Widget child;
+  final Duration duration;
+  final Curve curve;
+
+  const FadeInListItem({
+    super.key,
+    required this.index,
+    required this.child,
+    this.duration = const Duration(milliseconds: 300),
+    this.curve = Curves.easeOut,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0.0, end: 1.0),
+      duration: duration,
+      curve: Interval(
+        (0.1 * index).clamp(0.0, 1.0),
+        1.0,
+        curve: curve,
+      ),
+      child: child,
+      builder: (context, double value, child) {
+        return Opacity(
+          opacity: value,
+          child: Transform.translate(
+            offset: Offset(0.0, (1 - value) * 20),
+            child: child,
+          ),
+        );
+      },
+    );
+  }
+}
 
 class PartidasView extends ConsumerStatefulWidget {
   static const nombre = 'partidas_view';
@@ -24,6 +63,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
   List<PartidaDto>? listaUltimasPartidas = [];
   late ColorScheme color;
   final ScrollController scrollController = ScrollController();
+  PartidaViewMode _viewMode = PartidaViewMode.grande;
 
   @override
   void initState() {
@@ -73,10 +113,26 @@ class PartidasViewState extends ConsumerState<PartidasView> {
   }
 
   AppBar _titulo(BuildContext context) {
+    final ColorScheme color = Theme.of(context).colorScheme;
+
     return AppBar(
       title: Text(AppLocalizations.of(context)!.ultimas_partidas),
       centerTitle: true,
       forceMaterialTransparency: true,
+      actions: [
+        IconButton(
+          icon: Icon(
+            _viewMode == PartidaViewMode.grande ? Icons.view_agenda_rounded : Icons.view_stream_rounded,
+            color: color.tertiary,
+          ),
+          onPressed: () {
+            setState(() {
+              _viewMode = _viewMode == PartidaViewMode.grande ? PartidaViewMode.compacto : PartidaViewMode.grande;
+            });
+          },
+          tooltip: _viewMode == PartidaViewMode.grande ? 'Vista compacta' : 'Vista ampliada',
+        ),
+      ],
     );
   }
 
@@ -88,11 +144,23 @@ class PartidasViewState extends ConsumerState<PartidasView> {
     return SizedBox(
       height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
       child: ListView.builder(
-          controller: scrollController,
-          itemCount: listaUltimasPartidas.length,
-          itemBuilder: (context, index) {
-            return _itemPartidaGrande(partida: listaUltimasPartidas[index], context: context);
-          }),
+        controller: scrollController,
+        itemCount: listaUltimasPartidas.length,
+        itemBuilder: (context, index) {
+          return FadeInListItem(
+            index: index,
+            child: _viewMode == PartidaViewMode.grande
+                ? _itemPartidaGrande(
+                    partida: listaUltimasPartidas[index],
+                    context: context,
+                  )
+                : _itemPartidaCompacto(
+                    partida: listaUltimasPartidas[index],
+                    context: context,
+                  ),
+          );
+        },
+      ),
     );
   }
 
@@ -122,7 +190,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
           color: color.secondary,
           borderRadius: BorderRadius.circular(20),
@@ -338,14 +406,14 @@ class PartidasViewState extends ConsumerState<PartidasView> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        height: 140,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        height: 160,
         decoration: BoxDecoration(
           color: color.secondary,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
+              color: Colors.black.withValues(alpha: 0.08),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -367,7 +435,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                     child: Container(
                       width: 120,
                       decoration: BoxDecoration(
-                        color: color.surfaceVariant,
+                        color: color.tertiary,
                       ),
                       child: partida.urlImagenJuego != null
                           ? Image.network(
@@ -388,7 +456,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                                 child: Icon(
                                   Icons.sports_esports_rounded,
                                   size: 40,
-                                  color: color.onSurfaceVariant.withOpacity(0.5),
+                                  color: color.onSurfaceVariant.withValues(alpha: 0.5),
                                 ),
                               ),
                             )
@@ -396,7 +464,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                               child: Icon(
                                 Icons.sports_esports_rounded,
                                 size: 40,
-                                color: color.onSurfaceVariant.withOpacity(0.3),
+                                color: color.onSurfaceVariant.withValues(alpha: 0.3),
                               ),
                             ),
                     ),
@@ -410,6 +478,25 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Icon(
+                              Icons.calendar_today_rounded,
+                              size: 14,
+                              color: color.tertiary,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              "${HumanFormat.fechaDia(partida.fecha.toString())} • ${HumanFormat.fechaMes(partida.fecha.toString())} • ${HumanFormat.fechaAnio(partida.fecha.toString())}",
+                              style: estiloTexto.labelSmall?.copyWith(
+                                color: color.onSurfaceVariant.withValues(alpha: 0.8),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
                         // Game Title
                         Text(
                           partida.nombre ?? 'Partida sin título',
@@ -437,49 +524,35 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                         const Spacer(),
 
                         // Player and Date Row
-                        Row(
+                        Column(
                           children: [
-                            // Player Avatar
-                            Container(
-                              width: 28,
-                              height: 28,
-                              decoration: BoxDecoration(
-                                color: color.primaryContainer,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.person,
-                                size: 16,
-                                color: color.onPrimaryContainer,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-
-                            // Player Name
-                            Expanded(
-                              child: Text(
-                                partida.nombreJugador ?? 'Jugador',
-                                style: estiloTexto.bodyMedium?.copyWith(
-                                  color: color.onSurfaceVariant,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-
-                            // Date
                             Row(
                               children: [
-                                Icon(
-                                  Icons.calendar_today_rounded,
-                                  size: 14,
-                                  color: color.onSurfaceVariant.withOpacity(0.6),
+                                // Player Avatar
+                                Container(
+                                  width: 28,
+                                  height: 28,
+                                  decoration: BoxDecoration(
+                                    color: color.tertiary,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 16,
+                                    color: color.primary,
+                                  ),
                                 ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  HumanFormat.fechaDia(partida.fecha.toString()),
-                                  style: estiloTexto.labelSmall?.copyWith(
-                                    color: color.onSurfaceVariant.withOpacity(0.8),
+                                const SizedBox(width: 8),
+
+                                // Player Name
+                                Expanded(
+                                  child: Text(
+                                    partida.nombreJugador ?? 'Jugador',
+                                    style: estiloTexto.bodyMedium?.copyWith(
+                                      color: color.onSurfaceVariant,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
