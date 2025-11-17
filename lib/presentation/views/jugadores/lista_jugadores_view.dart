@@ -105,6 +105,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
           appBar: AppBar(
             actions: [_accionBuscar(context)],
             title: Text(AppLocalizations.of(context)!.jugadores(true.toString())),
+            centerTitle: true,
             forceMaterialTransparency: true,
           ),
           body: RefreshIndicator(
