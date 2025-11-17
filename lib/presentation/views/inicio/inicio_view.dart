@@ -120,54 +120,205 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
   }
 
   Widget _informacionHispano(BuildContext context) {
+    final color = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return FadeInUp(
-      child: Column(
-        children: [
-          Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
-            contenedorInformativoLink(context, totalPartidas, AppLocalizations.of(context)!.partidas('true'), const PartidasView()),
-          ]),
-          Row(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center, children: [
-            contenedorInformativoLink(context, totalJugadores, AppLocalizations.of(context)!.jugadores('true'), const ListaJugadoresView()),
-            contenedorInformativoLink(context, totalJuegos, AppLocalizations.of(context)!.juegos('true'), const ListaJuegosView()),
-          ]),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Column(
+          children: [
+            // First row - Partidas (full width)
+            _buildActionCard(
+              context: context,
+              count: totalPartidas,
+              label: AppLocalizations.of(context)!.partidas('true').toUpperCase(),
+              icon: Icons.workspace_premium_rounded,
+              color: color.tertiary,
+              onTap: () => _navigateTo(const PartidasView()),
+            ),
+            const SizedBox(height: 16),
+
+            // Second row - Jugadores and Juegos
+            Row(
+              children: [
+                Expanded(
+                  child: _buildActionCard(
+                    context: context,
+                    count: totalJugadores,
+                    label: AppLocalizations.of(context)!.jugadores('true').toUpperCase(),
+                    icon: Icons.people_alt_rounded,
+                    color: color.tertiary,
+                    onTap: () => _navigateTo(const ListaJugadoresView()),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _buildActionCard(
+                    context: context,
+                    count: totalJuegos,
+                    label: AppLocalizations.of(context)!.juegos('true').toUpperCase(),
+                    icon: Icons.sports_esports_rounded,
+                    color: color.tertiary,
+                    onTap: () => _navigateTo(const ListaJuegosView()),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // Third row - Preguntas Frecuentes and Tema
+            Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: _buildActionCard(
+                    context: context,
+                    label: AppLocalizations.of(context)!.preguntas_frecuentes.toUpperCase(),
+                    icon: Icons.help_outline_rounded,
+                    color: color.tertiary,
+                    textColor: color.tertiary,
+                    onTap: () => _navigateTo(const PreguntasFrecuentesView()),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  flex: 1,
+                  child: _buildThemeToggle(context, isDark),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionCard({
+    required BuildContext context,
+    int? count,
+    required String label,
+    required IconData icon,
+    required Color color,
+    Color? textColor,
+    required VoidCallback onTap,
+  }) {
+    final textTheme = Theme.of(context).textTheme;
+    final isSmall = MediaQuery.of(context).size.width < 350;
+
+    return Material(
+      color: color.withValues(alpha: 0.1),
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: color.withValues(alpha: 0.2)),
+          ),
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GestureDetector(
-                onTap: () => Navigator.of(context).push(PageRouteBuilder(
-                    pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: const PreguntasFrecuentesView()))),
-                child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  padding: const EdgeInsets.only(
-                    top: 10,
-                    bottom: 10,
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: color.withValues(alpha: 0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(icon, color: color, size: isSmall ? 20 : 24),
                   ),
-                  width: AppInfo().porcentajeAncho(0.70),
-                  decoration: ViewData().decorationContainerBasic(color: color),
-                  child: Column(
-                    children: [
-                      Text(AppLocalizations.of(context)!.preguntas_frecuentes, style: styleTexto.titleMedium),
-                    ],
-                  ),
-                ),
+                  if (count != null) ...[
+                    const Spacer(),
+                    Column(
+                      children: [
+                        AnimatedBuilder(
+                            animation: _controller,
+                            builder: (context, child) => Text((count * _controller.value).toInt().toString(),
+                                style: TextStyle(color: color, fontSize: AppInfo().porcentajeAncho(0.08)))),
+                      ],
+                    ),
+                  ],
+                ],
               ),
-              GestureDetector(
-                onTap: () => setState(() {
-                  ref.read(themeNotifierProvider.notifier).toggleDarkmode();
-                }),
-                child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  width: AppInfo().porcentajeAncho(0.20),
-                  decoration: ViewData().decorationContainerBasic(color: color),
-                  child: Icon(esTemaClaro ? Icons.light_mode_outlined : Icons.dark_mode_outlined),
-                ),
-              )
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    label,
+                    style: textTheme.labelLarge?.copyWith(
+                      color: textColor ?? color,
+                      letterSpacing: 0.5,
+                      fontSize: isSmall ? 10 : null,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (count != null) Icon(Icons.arrow_forward_ios, color: color, size: 16),
+                ],
+              ),
             ],
           ),
-          const SizedBox(height: 10)
-        ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildThemeToggle(BuildContext context, bool isDark) {
+    final color = Theme.of(context).colorScheme;
+
+    return Material(
+      color: color.secondary,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: () {
+          ref.read(themeNotifierProvider.notifier).toggleDarkmode();
+        },
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: color.outline.withValues(alpha: 0.2)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
+                color: color.outline,
+                size: 24,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                isDark ? 'Claro' : 'Oscuro',
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: color.onSurface,
+                    ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _navigateTo(Widget page) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => FadeTransition(
+          opacity: animation,
+          child: page,
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
       ),
     );
   }
