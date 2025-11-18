@@ -35,7 +35,12 @@ class UltimasPartidasNotifier extends StateNotifier<List<PartidaDto>> {
     final List<PartidaEntity> lista = await obtenerUltimasPartidas(fechas[0], fechas[1]);
     List<PartidaDto> listaPartidas = PartidaMapper.mapearListaPartidas(lista);
 
-    if (listaPartidas.isEmpty || listaPartidas.length <= 6) {
+    if (listaPartidas.isEmpty) {
+      consultarPartidas(fechas[0]);
+    } else if (listaPartidas.length <= 6) {
+      for (var partida in listaPartidas) {
+        state = [...state, partida];
+      }
       consultarPartidas(fechas[0]);
     } else {
       for (var partida in listaPartidas) {
