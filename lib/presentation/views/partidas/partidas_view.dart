@@ -167,7 +167,6 @@ class PartidasViewState extends ConsumerState<PartidasView> {
   Widget _itemPartidaGrande({required PartidaDto partida, required BuildContext context}) {
     final ColorScheme color = Theme.of(context).colorScheme;
     final TextTheme estiloTexto = Theme.of(context).textTheme;
-    final Size size = MediaQuery.of(context).size;
     final String heroTag = 'partida_${partida.id}';
 
     return GestureDetector(

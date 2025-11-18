@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/presentation/views/jugadores/jugador_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
-import 'package:no_hit/config/helpers/app_info.dart';
 
 class ItemJugador extends StatelessWidget {
   final JugadorDto jugador;
@@ -111,7 +110,7 @@ class ItemJugador extends StatelessWidget {
                   // Chevron Icon
                   Icon(
                     Icons.chevron_right_rounded,
-                    color: color.tertiary.withOpacity(0.7),
+                    color: color.tertiary.withValues(alpha: 0.7),
                     size: 24,
                   ),
                 ],

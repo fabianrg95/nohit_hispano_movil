@@ -121,7 +121,6 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
 
   Widget _informacionHispano(BuildContext context) {
     final color = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return FadeInUp(

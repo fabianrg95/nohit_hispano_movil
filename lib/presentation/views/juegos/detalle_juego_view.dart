@@ -8,7 +8,6 @@ import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/presentation/views/juegos/lista_jugadores_juego.dart';
 import 'package:no_hit/presentation/views/juegos/lista_partidas_juego.dart';
-import 'package:no_hit/presentation/widgets/commons/arrow.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 import '../../../l10n/app_localizations.dart';
@@ -307,7 +306,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
                       duration: const Duration(milliseconds: 200),
                       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                       decoration: BoxDecoration(
-                        color: pageViewIndex == 1 ? color.primary.withOpacity(0.1) : Colors.transparent,
+                        color: pageViewIndex == 1 ? color.primary.withValues(alpha: 0.1) : Colors.transparent,
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: const Icon(Icons.sports_esports),
@@ -319,7 +318,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
                       duration: const Duration(milliseconds: 200),
                       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                       decoration: BoxDecoration(
-                        color: pageViewIndex == 2 ? color.primary.withOpacity(0.1) : Colors.transparent,
+                        color: pageViewIndex == 2 ? color.primary.withValues(alpha: 0.1) : Colors.transparent,
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: const Icon(Icons.groups),
