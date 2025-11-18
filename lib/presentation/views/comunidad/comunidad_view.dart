@@ -23,6 +23,7 @@ class Comunidad extends StatelessWidget {
             appBar: AppBar(
               forceMaterialTransparency: true,
               title: Text(AppLocalizations.of(context)!.comunidad),
+              centerTitle: true,
             ),
             body: contenido(context),
           ),
@@ -30,97 +31,141 @@ class Comunidad extends StatelessWidget {
   }
 
   Widget contenido(BuildContext context) {
-    final TextTheme styleTexto = Theme.of(context).textTheme;
-    final Size size = MediaQuery.of(context).size;
+    final color = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    final size = MediaQuery.of(context).size;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return SizedBox(
-      height: size.height,
-      child: ListView(
-        shrinkWrap: true,
-        children: [
-          Center(
-            child: Image.asset(
-              "assets/images/comunidadNoHit.png",
-              width: 200,
-              height: 200,
+    return Center(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Logo
+            Container(
+              width: size.width * 0.5,
+              height: size.width * 0.5,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: color.surfaceVariant.withOpacity(0.3),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: color.outline.withOpacity(0.1),
+                  width: 1,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: color.shadow.withOpacity(0.1),
+                    blurRadius: 20,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: Image.asset(
+                'assets/images/comunidadNoHit.png',
+                fit: BoxFit.contain,
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            AppLocalizations.of(context)!.comunidad_hispano,
-            style: styleTexto.headlineMedium,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 20),
-          ListTile(
-            leading: const Icon(FontAwesomeIcons.twitter),
-            title: Text(AppLocalizations.of(context)!.twitter),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 50),
-            textColor: Colors.white,
-            onTap: () => CustomLinks().lanzarUrl("https://twitter.com/NoHitHispano"),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50),
-            child: Divider(),
-          ),
-          ListTile(
-            leading: const Icon(FontAwesomeIcons.youtube),
-            title: Text(AppLocalizations.of(context)!.youtube),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 50),
-            textColor: Colors.white,
-            onTap: () => CustomLinks().lanzarUrl("https://www.youtube.com/channel/UCTjczNq199DwG-nIM9o6oQg"),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50),
-            child: Divider(),
-          ),
-          ListTile(
-            leading: const Icon(FontAwesomeIcons.twitch),
-            title: Text(AppLocalizations.of(context)!.twitch),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 50),
-            textColor: Colors.white,
-            onTap: () => CustomLinks().lanzarUrl("https://www.twitch.tv/nohithispano"),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50),
-            child: Divider(),
-          ),
-          ListTile(
-            leading: const Icon(FontAwesomeIcons.discord),
-            title: Text(AppLocalizations.of(context)!.discord),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 50),
-            textColor: Colors.white,
-            onTap: () => CustomLinks().lanzarUrl("https://discord.gg/BXrdaQXrCp"),
-          ),
-        ],
+            const SizedBox(height: 32),
+
+            // Title
+            Text(
+              'Síguenos en redes',
+              style: textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: color.onSurface,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Conéctate con nuestra comunidad',
+              style: textTheme.bodyMedium?.copyWith(
+                color: color.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: 32),
+
+            // Social Media Buttons
+            _buildSocialButton(
+              context,
+              icon: FontAwesomeIcons.twitter,
+              label: 'Twitter',
+              color: const Color(0xFF1DA1F2),
+              onTap: () => CustomLinks().lanzarUrl("https://twitter.com/NoHitHispano"),
+            ),
+            const SizedBox(height: 16),
+            _buildSocialButton(
+              context,
+              icon: FontAwesomeIcons.youtube,
+              label: 'YouTube',
+              color: const Color(0xFFFF0000),
+              onTap: () => CustomLinks().lanzarUrl("https://www.youtube.com/channel/UCTjczNq199DwG-nIM9o6oQg"),
+            ),
+            const SizedBox(height: 16),
+            _buildSocialButton(
+              context,
+              icon: FontAwesomeIcons.twitch,
+              label: 'Twitch',
+              color: const Color(0xFF9146FF),
+              onTap: () => CustomLinks().lanzarUrl("https://www.twitch.tv/nohithispano"),
+            ),
+            const SizedBox(height: 16),
+            _buildSocialButton(
+              context,
+              icon: FontAwesomeIcons.discord,
+              label: 'Discord',
+              color: const Color(0xFF5865F2),
+              onTap: () => CustomLinks().lanzarUrl("https://discord.gg/BXrdaQXrCp"),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  item(String name, String? value) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(vertical: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            name,
-            style: const TextStyle(
-              fontSize: 16,
-            ),
+  Widget _buildSocialButton(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return Material(
+      color: color.withOpacity(0.1),
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: color.withOpacity(0.2)),
           ),
-          if (value != null) const SizedBox(height: 10),
-          if (value != null)
-            Text(
-              value.toString(),
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+          child: Row(
+            children: [
+              FaIcon(icon, color: color, size: 24),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Text(
+                  label,
+                  style: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
               ),
-            ),
-        ],
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 16,
+                color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.6),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
