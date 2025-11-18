@@ -48,10 +48,10 @@ class Comunidad extends StatelessWidget {
               height: size.width * 0.5,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: color.surfaceVariant.withOpacity(0.3),
+                color: !isDark ? color.tertiary : color.surface,
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: color.outline.withOpacity(0.1),
+                  color: color.outline.withValues(alpha: 0.1),
                   width: 1,
                 ),
                 boxShadow: [
