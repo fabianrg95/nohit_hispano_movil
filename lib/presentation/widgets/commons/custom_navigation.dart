@@ -65,24 +65,112 @@ class _ItemMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme color = Theme.of(context).colorScheme;
-    return ListTile(
-        contentPadding: EdgeInsets.only(left: size.width * 0.1),
-        leading: Icon(
-          item.icon,
-          color: color.tertiary,
-          size: size.width * 0.08,
-        ),
-        title: Padding(
-          padding: EdgeInsets.only(left: size.width * 0.001),
-          child: Text(
-            item.title,
-            style: TextStyle(color: color.tertiary, fontSize: size.width * 0.04),
+    final color = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
+      child: Material(
+        color: Colors.transparent,
+        child: Ink(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                color.tertiary.withValues(alpha: 0.3),
+                color.tertiary.withValues(alpha: 0.3),
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: color.shadow.withValues(alpha: 0.1),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, ___) => FadeTransition(
+                    opacity: animation,
+                    child: item.page,
+                  ),
+                  transitionDuration: const Duration(milliseconds: 300),
+                ),
+              );
+            },
+            borderRadius: BorderRadius.circular(16),
+            splashColor: color.primary.withValues(alpha: 0.2),
+            highlightColor: Colors.transparent,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: color.outline.withValues(alpha: 0.1),
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                children: [
+                  // Icon Container
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          color.primary.withValues(alpha: 0.9),
+                          color.primary.withValues(alpha: 0.7),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: color.primary.withValues(alpha: 0.3),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      item.icon,
+                      color: color.tertiary,
+                      size: 24,
+                    ),
+                  ),
+
+                  const SizedBox(width: 16),
+
+                  // Title
+                  Expanded(
+                    child: Text(
+                      item.title,
+                      style: textTheme.titleMedium?.copyWith(
+                        color: color.outline,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.2,
+                      ),
+                    ),
+                  ),
+
+                  // Chevron
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: color.onSurfaceVariant.withValues(alpha: 0.6),
+                    size: 16,
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
-        onTap: () {
-          Navigator.of(context)
-              .push(PageRouteBuilder(pageBuilder: (context, animation, ___) => FadeTransition(opacity: animation, child: item.page)));
-        });
+      ),
+    );
   }
 }
