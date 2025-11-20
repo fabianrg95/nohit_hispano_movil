@@ -56,7 +56,7 @@ class Comunidad extends StatelessWidget {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: color.shadow.withOpacity(0.1),
+                    color: color.shadow.withValues(alpha: 0.1),
                     blurRadius: 20,
                     spreadRadius: 2,
                   ),
@@ -134,7 +134,7 @@ class Comunidad extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Material(
-      color: color.withOpacity(0.1),
+      color: color.withValues(alpha: 0.1),
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         onTap: onTap,
@@ -143,7 +143,7 @@ class Comunidad extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: color.withOpacity(0.2)),
+            border: Border.all(color: color.withValues(alpha: 0.2)),
           ),
           child: Row(
             children: [
@@ -161,7 +161,7 @@ class Comunidad extends StatelessWidget {
               Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 16,
-                color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.6),
+                color: Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
               ),
             ],
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'package:no_hit/presentation/views/informacion/informacion_data.dart';
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
@@ -24,6 +25,7 @@ class PreguntasFrecuentesView extends StatelessWidget {
           appBar: AppBar(
             forceMaterialTransparency: true,
             title: Text(AppLocalizations.of(context)!.preguntas_frecuentes),
+            centerTitle: true,
           ),
           body: const Contenido(),
         ),
@@ -49,28 +51,109 @@ class ContenidoState extends State<Contenido> {
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme styleTexto = Theme.of(context).textTheme;
-    return SingleChildScrollView(
-      child: ExpansionPanelList(
-          expansionCallback: (int index, bool isExpanded) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            colorScheme.surface,
+            colorScheme.surfaceVariant.withValues(alpha: 0.5),
+          ],
+        ),
+      ),
+      child: Column(
+        children: [
+          // FAQ List
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(16),
+              itemCount: informacion.length,
+              itemBuilder: (context, index) {
+                final item = informacion[index];
+                return _buildFaqItem(context, item, index);
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFaqItem(BuildContext context, Item item, int index) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.only(bottom: 16),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+        side: BorderSide(
+          color: colorScheme.outline.withValues(alpha: 0.1),
+          width: 1,
+        ),
+      ),
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          dividerColor: Colors.transparent,
+          cardTheme: const CardThemeData(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+            ),
+            elevation: 0,
+            margin: EdgeInsets.zero,
+          ),
+        ),
+        child: ExpansionTile(
+          key: PageStorageKey<int>(index),
+          tilePadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          title: Text(
+            item.headerValue,
+            style: textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: colorScheme.onSurface,
+            ),
+          ),
+          onExpansionChanged: (expanded) {
             setState(() {
-              informacion[index].isExpanded = isExpanded;
+              item.isExpanded = expanded;
             });
           },
-          children: informacion.map<ExpansionPanel>((Item dato) {
-            return ExpansionPanel(
-              canTapOnHeader: true,
-              headerBuilder: (context, isExpanded) {
-                return ListTile(
-                    title: Text(
-                  dato.headerValue,
-                  style: styleTexto.titleMedium,
-                ));
-              },
-              body: Container(padding: const EdgeInsets.symmetric(horizontal: 8), child: dato.expandedValue),
-              isExpanded: dato.isExpanded,
-            );
-          }).toList()),
+          trailing: AnimatedRotation(
+            duration: const Duration(milliseconds: 200),
+            turns: item.isExpanded ? 0.5 : 0,
+            child: Icon(
+              Icons.keyboard_arrow_down_rounded,
+              color: colorScheme.primary,
+              size: 28,
+            ),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          collapsedShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          collapsedBackgroundColor: colorScheme.surfaceVariant.withValues(alpha: 0.3),
+          backgroundColor: colorScheme.surface,
+          children: [
+            Container(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              child: DefaultTextStyle(
+                style: textTheme.bodyLarge!.copyWith(
+                  color: colorScheme.onSurface.withValues(alpha: 0.8),
+                  height: 1.6,
+                ),
+                child: item.expandedValue,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

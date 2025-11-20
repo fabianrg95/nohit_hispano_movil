@@ -25,6 +25,7 @@ class Desarrollador extends StatelessWidget {
           appBar: AppBar(
             forceMaterialTransparency: true,
             title: Text(AppLocalizations.of(context)!.desarrollador),
+            centerTitle: true,
           ),
           body: contenido(context),
         ),
