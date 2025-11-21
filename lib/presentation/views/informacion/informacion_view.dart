@@ -51,35 +51,20 @@ class ContenidoState extends State<Contenido> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
-
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            colorScheme.surface,
-            colorScheme.surfaceVariant.withValues(alpha: 0.5),
-          ],
-        ),
-      ),
-      child: Column(
-        children: [
-          // FAQ List
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: informacion.length,
-              itemBuilder: (context, index) {
-                final item = informacion[index];
-                return _buildFaqItem(context, item, index);
-              },
-            ),
+    return Column(
+      children: [
+        // FAQ List
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: informacion.length,
+            itemBuilder: (context, index) {
+              final item = informacion[index];
+              return _buildFaqItem(context, item, index);
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -93,7 +78,7 @@ class ContenidoState extends State<Contenido> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
         side: BorderSide(
-          color: colorScheme.outline.withValues(alpha: 0.1),
+          color: colorScheme.tertiary,
           width: 1,
         ),
       ),
@@ -115,7 +100,7 @@ class ContenidoState extends State<Contenido> {
             item.headerValue,
             style: textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w600,
-              color: colorScheme.onSurface,
+              color: colorScheme.outline,
             ),
           ),
           onExpansionChanged: (expanded) {
@@ -128,7 +113,7 @@ class ContenidoState extends State<Contenido> {
             turns: item.isExpanded ? 0.5 : 0,
             child: Icon(
               Icons.keyboard_arrow_down_rounded,
-              color: colorScheme.primary,
+              color: colorScheme.outline,
               size: 28,
             ),
           ),
@@ -138,17 +123,40 @@ class ContenidoState extends State<Contenido> {
           collapsedShape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          collapsedBackgroundColor: colorScheme.surfaceVariant.withValues(alpha: 0.3),
+          collapsedBackgroundColor: colorScheme.surfaceContainerHighest,
           backgroundColor: colorScheme.surface,
           children: [
             Container(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-              child: DefaultTextStyle(
-                style: textTheme.bodyLarge!.copyWith(
-                  color: colorScheme.onSurface.withValues(alpha: 0.8),
-                  height: 1.6,
-                ),
-                child: item.expandedValue,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DefaultTextStyle(
+                    style: textTheme.bodyLarge!.copyWith(
+                      color: colorScheme.outline,
+                      height: 1.6,
+                    ),
+                    child: item.expandedValue,
+                  ),
+                  if (item.buttons.isNotEmpty) ...[
+                    const SizedBox(height: 16),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: item.buttons.map((button) {
+                        return ElevatedButton.icon(
+                          onPressed: button.action,
+                          icon: button.icon != null ? Icon(button.icon) : const SizedBox.shrink(),
+                          label: Text(button.label),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: colorScheme.tertiary,
+                            foregroundColor: colorScheme.onTertiary,
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ],
               ),
             ),
           ],

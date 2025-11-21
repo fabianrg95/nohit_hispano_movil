@@ -46,6 +46,6 @@ class ViewData {
         right: borderColorRight ? BorderSide(color: colorSheme.tertiary, width: 2) : BorderSide.none,
         left: borderColorLeft ? BorderSide(color: colorSheme.tertiary, width: 2) : BorderSide.none);
 
-    return BoxDecoration(color: colorSheme.secondary, borderRadius: borderRadius, border: borderColor);
+    return BoxDecoration(color: colorSheme.surfaceContainerHighest, borderRadius: borderRadius, border: borderColor);
   }
 }

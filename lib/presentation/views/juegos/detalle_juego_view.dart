@@ -115,15 +115,16 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
                       onPressed: () {
                         _guardarJuegoFavorito();
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            backgroundColor: color.primary,
+                            backgroundColor: color.surfaceContainerHighest,
                             action: SnackBarAction(
+                              backgroundColor: color.tertiary,
                               label: 'Deshacer',
                               onPressed: () => _guardarJuegoFavorito(),
-                              textColor: color.surfaceContainerHighest,
+                              textColor: color.onTertiary,
                             ),
                             content: Text(
                               'Juego ${juegoFavorito ? 'agregado a' : 'eliminado de'} favoritos.',
-                              style: styleTexto.bodyLarge?.copyWith(color: color.primary),
+                              style: styleTexto.bodyLarge?.copyWith(color: color.outline),
                             )));
                       },
                       color: color.tertiary,
@@ -219,7 +220,6 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
                     ),
                   ),
                   JuegoCommons().subtitulo(informacionJuego!, null, context),
-                  SizedBox(height: AppInfo().porcentajeAlto(0.1)),
                   Center(child: _resumenJuego(informacionJuego!, resumenJuego)),
                 ],
               ),
@@ -238,7 +238,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
             ]),
 
         bottomNavigationBar: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
             boxShadow: [
@@ -401,34 +401,203 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
       return SizedBox(height: 100, child: PantallaCargaBasica(texto: AppLocalizations.of(context)!.consultando_partidas));
     }
 
-    return IntrinsicHeight(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ViewData().muestraInformacionSimple(items: [
-            Text(AppLocalizations.of(context)!.tipo_juego(informacionJuego.oficialTeamHistless.toString()),
-                style: styleTexto.titleLarge?.copyWith(color: color.tertiary)),
-            Text(AppLocalizations.of(context)!.team_hitless)
-          ]),
-          Row(
-            children: [
-              ViewData().muestraInformacionAccion(
-                accion: () => _navegarPage(0),
-                items: [
-                  Text(resumenPartidasJuego.cantidadPartidas.toString(), style: styleTexto.displaySmall?.copyWith(color: color.tertiary)),
-                  Text(AppLocalizations.of(context)!.partidas((resumenPartidasJuego.cantidadPartidas != 1).toString()))
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            color.surfaceContainerHighest,
+            color.surfaceContainerHighest.withValues(alpha: 0.7),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: color.tertiary.withValues(alpha: 0.25),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: color.tertiary.withValues(alpha: 0.15),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
+          ),
+          BoxShadow(
+            color: color.shadow.withValues(alpha: 0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+        child: Column(
+          children: [
+            // Tipo de juego - Header mejorado
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: informacionJuego.oficialTeamHistless != null && informacionJuego.oficialTeamHistless!
+                    ? color.surfaceBright.withValues(alpha: 0.12)
+                    : color.error.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: color.tertiary.withValues(alpha: 0.25),
+                  width: 1.2,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.tipo_juego(informacionJuego.oficialTeamHistless.toString()),
+                        style: styleTexto.titleMedium?.copyWith(
+                          color: color.tertiary,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    AppLocalizations.of(context)!.team_hitless,
+                    style: styleTexto.labelMedium?.copyWith(
+                      color: color.onSurfaceVariant.withValues(alpha: 0.8),
+                      letterSpacing: 0.6,
+                    ),
+                  ),
                 ],
               ),
-              ViewData().muestraInformacionAccion(
-                accion: () => _navegarPage(2),
-                items: [
-                  Text(resumenPartidasJuego.cantidadJugadores.toString(), style: styleTexto.displaySmall?.copyWith(color: color.tertiary)),
-                  Text(AppLocalizations.of(context)!.jugadores((resumenPartidasJuego.cantidadJugadores != 1).toString()))
-                ],
+            ),
+            // Estadísticas con diseño mejorado
+            const SizedBox(height: 24),
+            Row(
+              children: [
+                Expanded(
+                  child: _estadisticaCard(
+                    numero: resumenPartidasJuego.cantidadPartidas.toString(),
+                    label: AppLocalizations.of(context)!.partidas((resumenPartidasJuego.cantidadPartidas != 1).toString()),
+                    icono: Icons.sports_esports_rounded,
+                    color: color.tertiary,
+                    onTap: () => _navegarPage(0),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _estadisticaCard(
+                    numero: resumenPartidasJuego.cantidadJugadores.toString(),
+                    label: AppLocalizations.of(context)!.jugadores((resumenPartidasJuego.cantidadJugadores != 1).toString()),
+                    icono: Icons.people_rounded,
+                    color: color.tertiary,
+                    onTap: () => _navegarPage(2),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _estadisticaCard({
+    required String numero,
+    required String label,
+    required IconData icono,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        splashColor: color.withValues(alpha: 0.2),
+        highlightColor: color.withValues(alpha: 0.1),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                color.withValues(alpha: 0.12),
+                color.withValues(alpha: 0.05),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: color.withValues(alpha: 0.25),
+              width: 1.2,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: color.withValues(alpha: 0.1),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
               ),
             ],
-          )
-        ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Icono con fondo circular
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      color.withValues(alpha: 0.25),
+                      color.withValues(alpha: 0.15),
+                    ],
+                  ),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: color.withValues(alpha: 0.15),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Icon(
+                  icono,
+                  color: color,
+                  size: 20,
+                ),
+              ),
+              // Número principal
+              Text(
+                numero,
+                style: styleTexto.headlineMedium?.copyWith(
+                  color: this.color.tertiary,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: -0.5,
+                ),
+              ),
+              // Etiqueta
+              Text(
+                label,
+                style: styleTexto.labelSmall?.copyWith(
+                  color: this.color.onSurfaceVariant.withValues(alpha: 0.75),
+                  fontWeight: FontWeight.w600,
+                  height: 1.2,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

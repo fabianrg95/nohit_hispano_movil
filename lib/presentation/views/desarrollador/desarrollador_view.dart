@@ -79,6 +79,7 @@ class Desarrollador extends StatelessWidget {
           // Profile Section
           Card(
             elevation: 4,
+            color: colorScheme.surfaceContainerHighest,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
@@ -130,16 +131,6 @@ class Desarrollador extends StatelessWidget {
                       color: colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  // Player Info
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: colorScheme.surfaceVariant.withValues(alpha: 0.5),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: JugadorCommons().informacionJugadorLite(jugadorDto, context),
-                  ),
                 ],
               ),
             ),
@@ -150,6 +141,7 @@ class Desarrollador extends StatelessWidget {
           // Contact Card
           Card(
             elevation: 4,
+            color: colorScheme.surfaceContainerHighest,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
@@ -179,6 +171,7 @@ class Desarrollador extends StatelessWidget {
           // Social Media Card
           Card(
             elevation: 4,
+            color: colorScheme.surfaceContainerHighest,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),

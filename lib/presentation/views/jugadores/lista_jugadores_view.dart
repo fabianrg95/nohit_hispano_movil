@@ -152,11 +152,10 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
             padding: const EdgeInsets.only(top: 10),
             child: Column(
               children: [
-                Text(AppLocalizations.of(context)!.jugadores_nuevos, style: styleTexto.titleLarge),
-                const SizedBox(height: 10),
-                Divider(color: color.tertiary, thickness: 2, height: 1),
+                Text(AppLocalizations.of(context)!.jugadores_nuevos, style: styleTexto.titleSmall),
+                Divider(color: color.tertiary, thickness: 1, height: 1),
                 SizedBox(
-                  height: 220, // Slightly taller for better content display
+                  height: 185, // Slightly taller for better content display
                   child: Swiper(
                     viewportFraction: 0.85,
                     scale: 0.7,
@@ -167,14 +166,14 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
                     outer: false,
                     layout: SwiperLayout.STACK,
                     itemWidth: MediaQuery.of(context).size.width * 0.8,
-                    itemHeight: 200,
+                    itemHeight: 160,
                     loop: true, // Enable infinite loop
                     physics: const BouncingScrollPhysics(), // Bouncy physics
                     pagination: SwiperPagination(
                       margin: const EdgeInsets.only(bottom: .1),
                       builder: DotSwiperPaginationBuilder(
                         activeColor: color.tertiary,
-                        color: color.secondary,
+                        color: color.surfaceContainerHighest,
                         size: 10,
                         activeSize: 12,
                         space: 8,
@@ -198,9 +197,9 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
                           duration: const Duration(milliseconds: 300),
                           margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
                           decoration: BoxDecoration(
-                            color: color.secondary,
+                            color: color.surfaceContainerHighest,
                             borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: color.tertiary.withValues(alpha: 0.3), width: 1.5),
+                            border: Border.all(color: color.tertiary, width: 1.5),
                             boxShadow: [
                               BoxShadow(
                                 color: color.tertiary.withValues(alpha: 0.1),
@@ -241,18 +240,17 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
                                             ),
                                             child: BanderaJugador(
                                               codigoBandera: ultimosJugadores[index].codigoBandera,
-                                              tamanio: 64,
+                                              tamanio: 40,
                                             ),
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(height: 16),
                                       // Player Name
                                       Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 16),
                                         child: Text(
                                           ultimosJugadores[index].nombre!,
-                                          style: styleTexto.headlineSmall?.copyWith(
+                                          style: styleTexto.titleLarge?.copyWith(
                                             color: color.onSurface,
                                             fontWeight: FontWeight.bold,
                                             letterSpacing: 0.5,
@@ -276,11 +274,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
               ],
             ),
           ),
-          const SizedBox(height: 10),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50),
-            child: Divider(),
-          ),
+          Container(margin: const EdgeInsets.symmetric(horizontal: 10), child: Divider(color: color.tertiary, thickness: 1, height: 1)),
           Text(AppLocalizations.of(context)!.lista_completa, style: styleTexto.titleMedium),
           Visibility(
             visible: listaJugadores.isNotEmpty,

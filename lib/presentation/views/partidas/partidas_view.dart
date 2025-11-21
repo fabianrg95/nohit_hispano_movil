@@ -191,8 +191,9 @@ class PartidasViewState extends ConsumerState<PartidasView> {
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: color.secondary,
+          color: color.tertiary,
           borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: color.tertiary, width: 2),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.1),
@@ -213,7 +214,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                 Hero(
                   tag: heroTag,
                   child: ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
                     child: Stack(
                       children: [
                         // Game Image
@@ -301,16 +302,16 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: color.tertiary,
+                              color: color.primary,
                               shape: BoxShape.circle,
                               border: Border.all(
-                                color: color.tertiary,
+                                color: color.primary,
                                 width: 1.5,
                               ),
                             ),
                             child: Icon(
                               Icons.person,
-                              color: color.primary,
+                              color: color.tertiary,
                               size: 20,
                             ),
                           ),
@@ -325,6 +326,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                                   partida.nombreJugador ?? 'Jugador',
                                   style: estiloTexto.titleMedium?.copyWith(
                                     fontWeight: FontWeight.w600,
+                                    color: color.onTertiary,
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -333,7 +335,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                                 Text(
                                   '${HumanFormat.fechaDia(partida.fecha.toString())} • ${HumanFormat.fechaMes(partida.fecha.toString())} • ${HumanFormat.fechaAnio(partida.fecha.toString())}',
                                   style: estiloTexto.bodySmall?.copyWith(
-                                    color: color.onSurfaceVariant,
+                                    color: color.onTertiary,
                                   ),
                                 ),
                               ],
@@ -359,7 +361,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                                 child: Text(
                                   partida.tituloJuego!,
                                   style: estiloTexto.bodyMedium?.copyWith(
-                                    color: color.onSurfaceVariant,
+                                    color: color.onTertiary,
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -408,7 +410,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         height: 160,
         decoration: BoxDecoration(
-          color: color.secondary,
+          color: color.tertiary,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -455,7 +457,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                                 child: Icon(
                                   Icons.sports_esports_rounded,
                                   size: 40,
-                                  color: color.onSurfaceVariant.withValues(alpha: 0.5),
+                                  color: color.onTertiary.withValues(alpha: 0.5),
                                 ),
                               ),
                             )
@@ -463,7 +465,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                               child: Icon(
                                 Icons.sports_esports_rounded,
                                 size: 40,
-                                color: color.onSurfaceVariant.withValues(alpha: 0.3),
+                                color: color.onTertiary.withValues(alpha: 0.3),
                               ),
                             ),
                     ),
@@ -484,13 +486,13 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                             Icon(
                               Icons.calendar_today_rounded,
                               size: 14,
-                              color: color.tertiary,
+                              color: color.onTertiary,
                             ),
                             const SizedBox(width: 4),
                             Text(
                               "${HumanFormat.fechaDia(partida.fecha.toString())} • ${HumanFormat.fechaMes(partida.fecha.toString())} • ${HumanFormat.fechaAnio(partida.fecha.toString())}",
                               style: estiloTexto.labelSmall?.copyWith(
-                                color: color.onSurfaceVariant.withValues(alpha: 0.8),
+                                color: color.onTertiary.withValues(alpha: 0.8),
                               ),
                             ),
                           ],
@@ -501,7 +503,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                           partida.nombre ?? 'Partida sin título',
                           style: estiloTexto.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
-                            color: color.onSurface,
+                            color: color.onTertiary,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -514,7 +516,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                           Text(
                             partida.tituloJuego!,
                             style: estiloTexto.bodySmall?.copyWith(
-                              color: color.onSurfaceVariant,
+                              color: color.onTertiary,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -532,13 +534,13 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                                   width: 28,
                                   height: 28,
                                   decoration: BoxDecoration(
-                                    color: color.tertiary,
+                                    color: color.primary,
                                     shape: BoxShape.circle,
                                   ),
                                   child: Icon(
                                     Icons.person,
                                     size: 16,
-                                    color: color.primary,
+                                    color: color.tertiary,
                                   ),
                                 ),
                                 const SizedBox(width: 8),
@@ -548,7 +550,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                                   child: Text(
                                     partida.nombreJugador ?? 'Jugador',
                                     style: estiloTexto.bodyMedium?.copyWith(
-                                      color: color.onSurfaceVariant,
+                                      color: color.onTertiary,
                                     ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,

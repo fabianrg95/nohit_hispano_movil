@@ -34,9 +34,9 @@ class ItemJugador extends StatelessWidget {
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
         decoration: BoxDecoration(
-          color: color.secondary,
+          color: color.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: color.tertiary.withValues(alpha: 0.3), width: 1.5),
+          border: Border.all(color: color.tertiary, width: 1.5),
           boxShadow: [
             BoxShadow(
               color: color.tertiary.withValues(alpha: 0.1),

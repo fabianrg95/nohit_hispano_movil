@@ -88,7 +88,7 @@ class Aplicacion extends StatelessWidget {
           // App Logo and Basic Info
           Card(
             elevation: 0,
-            color: color.surfaceVariant.withValues(alpha: 0.5),
+            color: color.surfaceContainerHighest,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
               side: BorderSide(color: color.outline.withValues(alpha: 0.1)),
@@ -200,7 +200,7 @@ class Aplicacion extends StatelessWidget {
 
     return Card(
       elevation: 0,
-      color: color.surfaceVariant.withValues(alpha: 0.3),
+      color: color.surfaceContainerHighest,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(color: color.outline.withValues(alpha: 0.1)),
@@ -268,7 +268,7 @@ class Aplicacion extends StatelessWidget {
 
     return Card(
       elevation: 0,
-      color: color.surfaceVariant.withValues(alpha: 0.3),
+      color: color.surfaceContainerHighest,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(color: color.outline.withValues(alpha: 0.1)),

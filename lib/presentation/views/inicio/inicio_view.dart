@@ -273,7 +273,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
     final color = Theme.of(context).colorScheme;
 
     return Material(
-      color: color.secondary,
+      color: color.tertiary,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: () {
@@ -291,15 +291,13 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
             children: [
               Icon(
                 isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
-                color: color.outline,
+                color: color.onTertiary,
                 size: 24,
               ),
               const SizedBox(height: 8),
               Text(
                 isDark ? 'Claro' : 'Oscuro',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: color.onSurface,
-                    ),
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(color: color.onTertiary),
               ),
             ],
           ),
