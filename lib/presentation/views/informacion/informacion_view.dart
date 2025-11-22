@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import 'package:no_hit/presentation/views/informacion/informacion_data.dart';
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';

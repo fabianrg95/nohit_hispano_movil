@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:no_hit/infraestructure/dto/dtos.dart';
 
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
@@ -55,16 +54,6 @@ class Desarrollador extends StatelessWidget {
   Widget contenido(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-
-    final JugadorDto jugadorDto = JugadorDto(
-      id: 148,
-      anioNacimiento: "1995",
-      codigoBandera: "co",
-      pronombre: "He/Him",
-      nacionalidad: "Colombiano",
-    )
-      ..mostrarInformacion = true
-      ..gentilicio = "Colombiano";
 
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
