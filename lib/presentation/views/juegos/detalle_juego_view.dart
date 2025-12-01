@@ -404,17 +404,10 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            color.surfaceContainerHighest,
-            color.surfaceContainerHighest.withValues(alpha: 0.7),
-          ],
-        ),
+        color: color.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: color.tertiary.withValues(alpha: 0.25),
+          color: color.tertiary.withValues(alpha: 0.5),
           width: 1.5,
         ),
         boxShadow: [
@@ -486,6 +479,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
                     label: AppLocalizations.of(context)!.partidas((resumenPartidasJuego.cantidadPartidas != 1).toString()),
                     icono: Icons.sports_esports_rounded,
                     color: color.tertiary,
+                    colorIcono: color.primary,
                     onTap: () => _navegarPage(0),
                   ),
                 ),
@@ -496,6 +490,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
                     label: AppLocalizations.of(context)!.jugadores((resumenPartidasJuego.cantidadJugadores != 1).toString()),
                     icono: Icons.people_rounded,
                     color: color.tertiary,
+                    colorIcono: color.primary,
                     onTap: () => _navegarPage(2),
                   ),
                 ),
@@ -512,6 +507,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
     required String label,
     required IconData icono,
     required Color color,
+    required Color colorIcono,
     required VoidCallback onTap,
   }) {
     return Material(
@@ -524,14 +520,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                color.withValues(alpha: 0.12),
-                color.withValues(alpha: 0.05),
-              ],
-            ),
+            color: color.withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: color.withValues(alpha: 0.25),
@@ -552,18 +541,11 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      color.withValues(alpha: 0.25),
-                      color.withValues(alpha: 0.15),
-                    ],
-                  ),
+                  color: colorIcono.withValues(alpha: 0.5),
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: color.withValues(alpha: 0.15),
+                      color: colorIcono.withValues(alpha: 0.15),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),

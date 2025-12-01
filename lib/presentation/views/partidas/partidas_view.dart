@@ -191,9 +191,9 @@ class PartidasViewState extends ConsumerState<PartidasView> {
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: color.tertiary,
+          color: color.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: color.tertiary, width: 2),
+          border: Border.all(color: color.tertiary.withValues(alpha: 0.5), width: 1),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.1),
@@ -214,7 +214,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                 Hero(
                   tag: heroTag,
                   child: ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
                     child: Stack(
                       children: [
                         // Game Image
@@ -326,7 +326,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                                   partida.nombreJugador ?? 'Jugador',
                                   style: estiloTexto.titleMedium?.copyWith(
                                     fontWeight: FontWeight.w600,
-                                    color: color.onTertiary,
+                                    color: color.onSurface,
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
@@ -335,7 +335,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                                 Text(
                                   '${HumanFormat.fechaDia(partida.fecha.toString())} • ${HumanFormat.fechaMes(partida.fecha.toString())} • ${HumanFormat.fechaAnio(partida.fecha.toString())}',
                                   style: estiloTexto.bodySmall?.copyWith(
-                                    color: color.onTertiary,
+                                    color: color.onSurface,
                                   ),
                                 ),
                               ],
@@ -349,26 +349,20 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                       // Game Info
                       if (partida.tituloJuego != null)
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            if (partida.tituloJuego != null) ...[
-                              Icon(
-                                Icons.sports_esports_outlined,
-                                size: 16,
-                                color: color.tertiary,
-                              ),
-                              const SizedBox(width: 6),
-                              Expanded(
-                                child: Text(
+                            Column(
+                              children: [
+                                Text(
                                   partida.tituloJuego!,
                                   style: estiloTexto.bodyMedium?.copyWith(
-                                    color: color.onTertiary,
+                                    color: color.onSurface.withValues(alpha: 0.8),
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                              const SizedBox(width: 12),
-                            ],
+                              ],
+                            ),
                           ],
                         ),
                     ],
@@ -410,7 +404,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         height: 160,
         decoration: BoxDecoration(
-          color: color.tertiary,
+          color: color.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -457,7 +451,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                                 child: Icon(
                                   Icons.sports_esports_rounded,
                                   size: 40,
-                                  color: color.onTertiary.withValues(alpha: 0.5),
+                                  color: color.onSurface.withValues(alpha: 0.5),
                                 ),
                               ),
                             )
@@ -465,7 +459,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                               child: Icon(
                                 Icons.sports_esports_rounded,
                                 size: 40,
-                                color: color.onTertiary.withValues(alpha: 0.3),
+                                color: color.onSurface.withValues(alpha: 0.3),
                               ),
                             ),
                     ),
@@ -486,13 +480,13 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                             Icon(
                               Icons.calendar_today_rounded,
                               size: 14,
-                              color: color.onTertiary,
+                              color: color.onSurface,
                             ),
                             const SizedBox(width: 4),
                             Text(
                               "${HumanFormat.fechaDia(partida.fecha.toString())} • ${HumanFormat.fechaMes(partida.fecha.toString())} • ${HumanFormat.fechaAnio(partida.fecha.toString())}",
                               style: estiloTexto.labelSmall?.copyWith(
-                                color: color.onTertiary.withValues(alpha: 0.8),
+                                color: color.onSurface.withValues(alpha: 0.8),
                               ),
                             ),
                           ],
@@ -503,7 +497,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                           partida.nombre ?? 'Partida sin título',
                           style: estiloTexto.titleMedium?.copyWith(
                             fontWeight: FontWeight.w600,
-                            color: color.onTertiary,
+                            color: color.onSurface,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -516,7 +510,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                           Text(
                             partida.tituloJuego!,
                             style: estiloTexto.bodySmall?.copyWith(
-                              color: color.onTertiary,
+                              color: color.onSurface.withValues(alpha: 0.8),
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -550,7 +544,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
                                   child: Text(
                                     partida.nombreJugador ?? 'Jugador',
                                     style: estiloTexto.bodyMedium?.copyWith(
-                                      color: color.onTertiary,
+                                      color: color.onSurface,
                                     ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,

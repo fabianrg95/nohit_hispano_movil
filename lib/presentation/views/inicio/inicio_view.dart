@@ -207,7 +207,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
     final isSmall = MediaQuery.of(context).size.width < 350;
 
     return Material(
-      color: color.withValues(alpha: 0.1),
+      color: color.withValues(alpha: 0.3),
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,

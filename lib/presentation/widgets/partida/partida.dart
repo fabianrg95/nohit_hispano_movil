@@ -23,16 +23,19 @@ class PartidaCommons {
               children: [
                 Container(
                   width: AppInfo().porcentajeAncho(0.2),
-                  decoration: BoxDecoration(color: color.tertiary, borderRadius: BorderRadius.all(Radius.circular(18))),
+                  decoration: BoxDecoration(color: color.tertiary.withValues(alpha: 0.6), borderRadius: BorderRadius.all(Radius.circular(18))),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10, right: 20),
+                    padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(HumanFormat.fechaDia(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: color.primary)),
-                        Text(HumanFormat.fechaMes(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: color.primary)),
-                        Text(HumanFormat.fechaAnio(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: color.primary))
+                        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                          Text(HumanFormat.fechaDia(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: color.outline)),
+                          Text(" "),
+                          Text(HumanFormat.fechaMes(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: color.outline)),
+                        ]),
+                        Text(HumanFormat.fechaAnio(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: color.outline))
                       ],
                     ),
                   ),
@@ -40,17 +43,20 @@ class PartidaCommons {
                 if (!mostrarJugador) const SizedBox(width: 10),
                 Expanded(
                   child: Center(
-                    child: Column(children: [
-                      if (mostrarJugador)
-                        Center(child: Text(partida.nombreJugador.toString(), style: styleTexto.titleMedium, textAlign: TextAlign.center)),
-                      Center(
-                        child: Text(partida.nombre.toString(),
-                            style: mostrarJugador ? styleTexto.labelSmall : styleTexto.labelMedium,
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis),
-                      )
-                    ]),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Column(children: [
+                        if (mostrarJugador)
+                          Center(child: Text(partida.nombreJugador.toString(), style: styleTexto.titleMedium, textAlign: TextAlign.center)),
+                        Center(
+                          child: Text(partida.nombre.toString(),
+                              style: mostrarJugador ? styleTexto.labelSmall : styleTexto.labelMedium,
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis),
+                        )
+                      ]),
+                    ),
                   ),
                 ),
               ],
