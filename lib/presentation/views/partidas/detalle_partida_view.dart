@@ -10,7 +10,6 @@ import 'package:no_hit/infraestructure/providers/providers.dart';
 
 import 'package:no_hit/presentation/views/juegos/detalle_juego_view.dart';
 import 'package:no_hit/presentation/views/jugadores/jugador_view.dart';
-import 'package:no_hit/presentation/widgets/commons/arrow.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
 
 import '../../../l10n/app_localizations.dart';
