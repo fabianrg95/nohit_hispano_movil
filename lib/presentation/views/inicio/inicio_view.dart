@@ -135,6 +135,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
               label: AppLocalizations.of(context)!.partidas('true').toUpperCase(),
               icon: Icons.workspace_premium_rounded,
               color: color.tertiary,
+              colorPrimario: color.primary,
               onTap: () => _navigateTo(const PartidasView()),
             ),
             const SizedBox(height: 16),
@@ -149,6 +150,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                     label: AppLocalizations.of(context)!.jugadores('true').toUpperCase(),
                     icon: Icons.people_alt_rounded,
                     color: color.tertiary,
+                    colorPrimario: color.primary,
                     onTap: () => _navigateTo(const ListaJugadoresView()),
                   ),
                 ),
@@ -160,6 +162,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                     label: AppLocalizations.of(context)!.juegos('true').toUpperCase(),
                     icon: Icons.sports_esports_rounded,
                     color: color.tertiary,
+                    colorPrimario: color.primary,
                     onTap: () => _navigateTo(const ListaJuegosView()),
                   ),
                 ),
@@ -177,6 +180,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                     label: AppLocalizations.of(context)!.preguntas_frecuentes.toUpperCase(),
                     icon: Icons.help_outline_rounded,
                     color: color.tertiary,
+                    colorPrimario: color.primary,
                     textColor: color.tertiary,
                     onTap: () => _navigateTo(const PreguntasFrecuentesView()),
                   ),
@@ -200,6 +204,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
     required String label,
     required IconData icon,
     required Color color,
+    required Color colorPrimario,
     Color? textColor,
     required VoidCallback onTap,
   }) {
@@ -227,7 +232,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: color.withValues(alpha: 0.2),
+                      color: colorPrimario,
                       shape: BoxShape.circle,
                     ),
                     child: Icon(icon, color: color, size: isSmall ? 20 : 24),
