@@ -100,232 +100,234 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
         if (didPop) return;
         controlarBack(context);
       },
-      child: Scaffold(
-        // drawer: const CustomNavigation(),
-        appBar: AppBar(
-          actions: [
-            Padding(
-                padding: const EdgeInsets.only(right: 10.0),
-                child: Ink(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: color.primary,
-                  ),
-                  child: IconButton(
-                      onPressed: () {
-                        _guardarJuegoFavorito();
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            backgroundColor: color.surfaceContainerHighest,
-                            action: SnackBarAction(
-                              backgroundColor: color.tertiary,
-                              label: 'Deshacer',
-                              onPressed: () => _guardarJuegoFavorito(),
-                              textColor: color.onTertiary,
-                            ),
-                            content: Text(
-                              'Juego ${juegoFavorito ? 'agregado a' : 'eliminado de'} favoritos.',
-                              style: styleTexto.bodyLarge?.copyWith(color: color.outline),
-                            )));
-                      },
-                      color: color.tertiary,
-                      highlightColor: color.tertiary,
-                      icon: Visibility(
-                          visible: juegoFavorito, replacement: const Icon(Icons.favorite_border_outlined), child: const Icon(Icons.favorite))),
-                ))
-          ],
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: Ink(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: color.primary,
-              ),
-              child: IconButton(
-                onPressed: () {
-                  controlarBack(context);
-                },
-                color: color.tertiary,
-                highlightColor: color.tertiary,
-                icon: Icon(iconoFlechaAtras),
+      child: SafeArea(
+        top: false,
+        child: Scaffold(
+          // drawer: const CustomNavigation(),
+          appBar: AppBar(
+            actions: [
+              Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: Ink(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: color.primary,
+                    ),
+                    child: IconButton(
+                        onPressed: () {
+                          _guardarJuegoFavorito();
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: color.surfaceContainerHighest,
+                              action: SnackBarAction(
+                                backgroundColor: color.tertiary,
+                                label: 'Deshacer',
+                                onPressed: () => _guardarJuegoFavorito(),
+                                textColor: color.onTertiary,
+                              ),
+                              content: Text(
+                                'Juego ${juegoFavorito ? 'agregado a' : 'eliminado de'} favoritos.',
+                                style: styleTexto.bodyLarge?.copyWith(color: color.outline),
+                              )));
+                        },
+                        color: color.tertiary,
+                        highlightColor: color.tertiary,
+                        icon: Visibility(
+                            visible: juegoFavorito, replacement: const Icon(Icons.favorite_border_outlined), child: const Icon(Icons.favorite))),
+                  ))
+            ],
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: Ink(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: color.primary,
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    controlarBack(context);
+                  },
+                  color: color.tertiary,
+                  highlightColor: color.tertiary,
+                  icon: Icon(iconoFlechaAtras),
+                ),
               ),
             ),
+            forceMaterialTransparency: true,
+            elevation: 0,
+            title: Text(titulosPageView[pageViewIndex]!, style: styleTexto.titleMedium?.copyWith(color: color.tertiary)),
+            centerTitle: true,
           ),
-          forceMaterialTransparency: true,
-          elevation: 0,
-          title: Text(titulosPageView[pageViewIndex]!, style: styleTexto.titleMedium?.copyWith(color: color.tertiary)),
-          centerTitle: true,
-        ),
-        extendBodyBehindAppBar: true,
-        body: PageView(
-            scrollDirection: Axis.horizontal,
-            controller: _pageController,
-            onPageChanged: (value) => setState(() {
-                  pageViewIndex = value;
-                }),
-            children: [
-              // const SizedBox.shrink(),
-              if (resumenJuego != null)
-                ListaPartidas(
-                    primeraPartida: resumenJuego?.primeraPartida,
-                    ultimaPartida: resumenJuego?.ultimaPartida,
-                    heroTag: widget.heroTag,
-                    listaPartidas: resumenJuego!.partidas),
-              if (resumenJuego == null)
-                Center(
-                  child: CircularProgressIndicator(
-                    color: color.primary,
+          extendBodyBehindAppBar: true,
+          body: PageView(
+              scrollDirection: Axis.horizontal,
+              controller: _pageController,
+              onPageChanged: (value) => setState(() {
+                    pageViewIndex = value;
+                  }),
+              children: [
+                // const SizedBox.shrink(),
+                if (resumenJuego != null)
+                  ListaPartidas(
+                      primeraPartida: resumenJuego?.primeraPartida,
+                      ultimaPartida: resumenJuego?.ultimaPartida,
+                      heroTag: widget.heroTag,
+                      listaPartidas: resumenJuego!.partidas),
+                if (resumenJuego == null)
+                  Center(
+                    child: CircularProgressIndicator(
+                      color: color.primary,
+                    ),
                   ),
-                ),
-              Column(
-                children: [
-                  SizedBox(
-                    height: AppInfo().porcentajeAlto(0.45),
-                    child: Stack(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              color: color.tertiary,
-                              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(150), bottomRight: Radius.circular(150))),
-                          height: AppInfo().porcentajeAlto(0.24),
-                        ),
-                        Center(
-                          child: Container(
-                            width: AppInfo().porcentajeAncho(0.57),
-                            height: AppInfo().porcentajeAlto(0.57),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: AppInfo().porcentajeAlto(0.45),
+                      child: Stack(
+                        children: [
+                          Container(
                             decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: color.primary,
+                                color: color.tertiary,
+                                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(150), bottomRight: Radius.circular(150))),
+                            height: AppInfo().porcentajeAlto(0.24),
+                          ),
+                          Center(
+                            child: Container(
+                              width: AppInfo().porcentajeAncho(0.57),
+                              height: AppInfo().porcentajeAlto(0.57),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: color.primary,
+                              ),
                             ),
                           ),
-                        ),
-                        Hero(
-                          tag: widget.heroTag,
-                          child: Center(
-                            child: Padding(
-                              padding: EdgeInsets.only(top: AppInfo().porcentajeAlto(0.13)),
-                              child: Container(
-                                width: AppInfo().porcentajeAncho(0.43),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: Image.network(informacionJuego!.urlImagen!, fit: BoxFit.contain),
+                          Hero(
+                            tag: widget.heroTag,
+                            child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(top: AppInfo().porcentajeAlto(0.13)),
+                                child: Container(
+                                  width: AppInfo().porcentajeAncho(0.43),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.network(informacionJuego!.urlImagen!, fit: BoxFit.contain),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                    ),
+                    JuegoCommons().subtitulo(informacionJuego!, null, context),
+                    Center(child: _resumenJuego(informacionJuego!, resumenJuego)),
+                  ],
+                ),
+                if (resumenJuego != null)
+                  ListaJugadoresJuego(
+                    listaJugadores: resumenJuego!.jugadores,
+                    primeraPartida: resumenJuego?.primeraPartida,
+                    ultimaPartida: resumenJuego?.ultimaPartida,
+                  ),
+                if (resumenJuego == null)
+                  Center(
+                    child: CircularProgressIndicator(
+                      color: color.primary,
                     ),
                   ),
-                  JuegoCommons().subtitulo(informacionJuego!, null, context),
-                  Center(child: _resumenJuego(informacionJuego!, resumenJuego)),
-                ],
-              ),
-              if (resumenJuego != null)
-                ListaJugadoresJuego(
-                  listaJugadores: resumenJuego!.jugadores,
-                  primeraPartida: resumenJuego?.primeraPartida,
-                  ultimaPartida: resumenJuego?.ultimaPartida,
+              ]),
+          bottomNavigationBar: Container(
+            margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: [
+                BoxShadow(
+                  color: color.tertiary.withValues(alpha: 0.1),
+                  blurRadius: 15,
+                  offset: const Offset(0, 5),
                 ),
-              if (resumenJuego == null)
-                Center(
-                  child: CircularProgressIndicator(
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: color.tertiary,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: BottomNavigationBar(
+                  elevation: 0,
+                  backgroundColor: Colors.transparent,
+                  selectedItemColor: color.onTertiary,
+                  unselectedItemColor: color.onTertiary.withValues(alpha: 0.5),
+                  selectedLabelStyle: styleTexto.bodyLarge?.copyWith(
                     color: color.primary,
+                    fontWeight: FontWeight.w600,
                   ),
-                ),
-            ]),
-
-        bottomNavigationBar: Container(
-          margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            boxShadow: [
-              BoxShadow(
-                color: color.tertiary.withValues(alpha: 0.1),
-                blurRadius: 15,
-                offset: const Offset(0, 5),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(30),
-            child: Container(
-              decoration: BoxDecoration(
-                color: color.tertiary,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: BottomNavigationBar(
-                elevation: 0,
-                backgroundColor: Colors.transparent,
-                selectedItemColor: color.onTertiary,
-                unselectedItemColor: color.onTertiary.withValues(alpha: 0.5),
-                selectedLabelStyle: styleTexto.bodyLarge?.copyWith(
-                  color: color.primary,
-                  fontWeight: FontWeight.w600,
-                ),
-                unselectedLabelStyle: styleTexto.bodySmall?.copyWith(
-                  color: color.primary.withValues(alpha: 0.5),
-                ),
-                selectedIconTheme: IconThemeData(
-                  size: 28,
-                  color: color.primary,
-                  shadows: [
-                    Shadow(
-                      color: color.primary.withValues(alpha: 0.3),
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
+                  unselectedLabelStyle: styleTexto.bodySmall?.copyWith(
+                    color: color.primary.withValues(alpha: 0.5),
+                  ),
+                  selectedIconTheme: IconThemeData(
+                    size: 28,
+                    color: color.primary,
+                    shadows: [
+                      Shadow(
+                        color: color.primary.withValues(alpha: 0.3),
+                        blurRadius: 10,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  unselectedIconTheme: IconThemeData(
+                    size: 24,
+                    color: color.primary.withValues(alpha: 0.5),
+                  ),
+                  currentIndex: pageViewIndex,
+                  onTap: _navegarPage,
+                  type: BottomNavigationBarType.fixed,
+                  showSelectedLabels: true,
+                  showUnselectedLabels: true,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: pageViewIndex == 0 ? color.primary.withValues(alpha: 0.1) : Colors.transparent,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: const Icon(Icons.workspace_premium),
+                      ),
+                      label: 'Partidas',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: pageViewIndex == 1 ? color.primary.withValues(alpha: 0.1) : Colors.transparent,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: const Icon(Icons.sports_esports),
+                      ),
+                      label: 'Juego',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                        decoration: BoxDecoration(
+                          color: pageViewIndex == 2 ? color.primary.withValues(alpha: 0.1) : Colors.transparent,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: const Icon(Icons.groups),
+                      ),
+                      label: 'Jugadores',
                     ),
                   ],
                 ),
-                unselectedIconTheme: IconThemeData(
-                  size: 24,
-                  color: color.primary.withValues(alpha: 0.5),
-                ),
-                currentIndex: pageViewIndex,
-                onTap: _navegarPage,
-                type: BottomNavigationBarType.fixed,
-                showSelectedLabels: true,
-                showUnselectedLabels: true,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                      decoration: BoxDecoration(
-                        color: pageViewIndex == 0 ? color.primary.withValues(alpha: 0.1) : Colors.transparent,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: const Icon(Icons.workspace_premium),
-                    ),
-                    label: 'Partidas',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                      decoration: BoxDecoration(
-                        color: pageViewIndex == 1 ? color.primary.withValues(alpha: 0.1) : Colors.transparent,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: const Icon(Icons.sports_esports),
-                    ),
-                    label: 'Juego',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                      decoration: BoxDecoration(
-                        color: pageViewIndex == 2 ? color.primary.withValues(alpha: 0.1) : Colors.transparent,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: const Icon(Icons.groups),
-                    ),
-                    label: 'Jugadores',
-                  ),
-                ],
               ),
             ),
           ),

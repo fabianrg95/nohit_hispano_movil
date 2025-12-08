@@ -25,6 +25,7 @@ Future<void> main() async {
   await _definirVariablesEntorno();
   await _inicializarSupabase();
   await _inicializarStorageLocal();
+  _configurarEdgeToEdge();
   runApp(const ProviderScope(child: MyApp()));
 
   SystemChrome.setPreferredOrientations([
@@ -93,4 +94,21 @@ Future<void> _inicializarStorageLocal() async {
   for (var almacenamiento in BoxLocal.values) {
     await GetStorage.init(almacenamiento.nombreAlmacenamiento);
   }
+}
+
+void _configurarEdgeToEdge() {
+  // Configurar la aplicación para usar edge-to-edge (Android 5.0+)
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.edgeToEdge,
+  );
+
+  // Configurar los colores de las barras del sistema para que sean transparentes
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ),
+  );
 }
