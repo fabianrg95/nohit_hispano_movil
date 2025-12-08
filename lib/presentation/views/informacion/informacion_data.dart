@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
@@ -7,11 +6,25 @@ class Item {
     required this.expandedValue,
     required this.headerValue,
     this.isExpanded = false,
+    this.buttons = const [],
   });
 
   Widget expandedValue;
   String headerValue;
   bool isExpanded;
+  List<ItemButton> buttons;
+}
+
+class ItemButton {
+  ItemButton({
+    required this.label,
+    required this.action,
+    this.icon,
+  });
+
+  String label;
+  VoidCallback action;
+  IconData? icon;
 }
 
 class Informacion {
@@ -29,18 +42,16 @@ class Informacion {
         headerValue: '¿De donde se obtiene esta información?'));
 
     listaInformacion.add(Item(
-        expandedValue: RichText(
-            text: TextSpan(children: [
-          const TextSpan(text: 'Solo los juegos que son avalados por la pagina '),
-          TextSpan(
-              text: 'teamhitless.com',
-              style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
-              recognizer: TapGestureRecognizer()..onTap = () => launchUrlString('https://www.teamhitless.com')),
-          const TextSpan(
-              text:
-                  ' son los que se determinan como oficiales, cualquier otro juego que no se encuentre en dicha pagina se considera como un juego no oficial'),
-        ])),
-        headerValue: '¿Por que hay juegos oficiales y no oficiales?'));
+        expandedValue: const Text(
+            'Solo los juegos que son avalados por la comunidad teamhitless son los que se determinan como oficiales, cualquier otro juego que no sea avalado por la comunidad se considera como un juego no oficial'),
+        headerValue: '¿Por que hay juegos oficiales y no oficiales?',
+        buttons: [
+          ItemButton(
+            label: 'Visitar TeamHitless',
+            icon: Icons.open_in_browser,
+            action: () => launchUrlString('https://www.teamhitless.com'),
+          ),
+        ]));
     return listaInformacion;
   }
 }

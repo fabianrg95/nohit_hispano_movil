@@ -18,7 +18,7 @@ class FavoritosView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     return PopScope(
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, __, ___) => const InicioView()));
       },
@@ -27,6 +27,7 @@ class FavoritosView extends ConsumerWidget {
           appBar: AppBar(
             title: Text(AppLocalizations.of(context)!.favoritos),
             forceMaterialTransparency: true,
+            centerTitle: true,
           ),
           drawer: const CustomNavigation(),
           body: const TapbarFavoritos(),
@@ -84,11 +85,12 @@ class TapbarFavoritosState extends ConsumerState<TapbarFavoritos> with SingleTic
         child: TabBar(
             controller: tabController,
             labelStyle: styleTexto.titleMedium,
-            labelColor: color.surfaceTint,
-            unselectedLabelStyle: styleTexto.bodySmall,
+            labelColor: color.onTertiary,
+            unselectedLabelStyle: styleTexto.bodySmall?.copyWith(color: color.onSurfaceVariant),
             indicator: BoxDecoration(color: color.tertiary, borderRadius: BorderRadius.circular(15.5)),
             indicatorSize: TabBarIndicatorSize.tab,
             padding: const EdgeInsets.all(2),
+            dividerHeight: 0,
             tabs: [Tab(text: AppLocalizations.of(context)!.jugadores('true')), Tab(text: AppLocalizations.of(context)!.juegos('true'))]));
   }
 }

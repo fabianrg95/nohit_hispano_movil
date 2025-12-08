@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:no_hit/config/helpers/app_info.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/juegos/informacion_juego_provider.dart';
@@ -20,32 +21,42 @@ class PartidaCommons {
             decoration: ViewData().decorationContainerBasic(color: color),
             child: Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(HumanFormat.fechaMes(partida.fecha.toString())),
-                      Text(HumanFormat.fechaDia(partida.fecha.toString())),
-                      Text(HumanFormat.fechaAnio(partida.fecha.toString()))
-                    ],
+                Container(
+                  width: AppInfo().porcentajeAncho(0.2),
+                  decoration: BoxDecoration(color: color.tertiary.withValues(alpha: 0.6), borderRadius: BorderRadius.all(Radius.circular(18))),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                          Text(HumanFormat.fechaDia(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: Colors.white)),
+                          Text(" "),
+                          Text(HumanFormat.fechaMes(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: Colors.white)),
+                        ]),
+                        Text(HumanFormat.fechaAnio(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: Colors.white))
+                      ],
+                    ),
                   ),
                 ),
                 if (!mostrarJugador) const SizedBox(width: 10),
                 Expanded(
                   child: Center(
-                    child: Column(children: [
-                      if (mostrarJugador)
-                        Center(child: Text(partida.nombreJugador.toString(), style: styleTexto.titleMedium, textAlign: TextAlign.center)),
-                      Center(
-                        child: Text(partida.nombre.toString(),
-                            style: mostrarJugador ? styleTexto.labelSmall : styleTexto.labelMedium,
-                            textAlign: TextAlign.center,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis),
-                      )
-                    ]),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Column(children: [
+                        if (mostrarJugador)
+                          Center(child: Text(partida.nombreJugador.toString(), style: styleTexto.titleMedium, textAlign: TextAlign.center)),
+                        Center(
+                          child: Text(partida.nombre.toString(),
+                              style: mostrarJugador ? styleTexto.labelSmall : styleTexto.labelMedium,
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis),
+                        )
+                      ]),
+                    ),
                   ),
                 ),
               ],

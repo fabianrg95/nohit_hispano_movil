@@ -23,19 +23,29 @@ class ViewData {
   }
 
   BoxDecoration decorationContainerBasic(
-      {bool topLeft = true, bool bottomLeft = true, bool bottomRight = true, bool topRight = true, ColorScheme? color}) {
+      {bool borderRadiusTopLeft = true,
+      bool borderRadiusBottomLeft = true,
+      bool borderRadiusBottomRight = true,
+      bool borderRadiusTopRight = true,
+      bool borderColorTop = true,
+      bool borderColorBottom = true,
+      bool borderColorRight = true,
+      bool borderColorLeft = true,
+      ColorScheme? color}) {
     ColorScheme colorSheme = color ?? AppTheme().color;
 
     BorderRadius borderRadius = BorderRadius.only(
-        bottomLeft: Radius.circular(bottomLeft ? 20 : 0),
-        bottomRight: Radius.circular(bottomRight ? 20 : 0),
-        topLeft: Radius.circular(topLeft ? 20 : 0),
-        topRight: Radius.circular(topRight ? 20 : 0));
+        bottomLeft: Radius.circular(borderRadiusBottomLeft ? 20 : 0),
+        bottomRight: Radius.circular(borderRadiusBottomRight ? 20 : 0),
+        topLeft: Radius.circular(borderRadiusTopLeft ? 20 : 0),
+        topRight: Radius.circular(borderRadiusTopRight ? 20 : 0));
 
-    return BoxDecoration(
-      color: colorSheme.secondary,
-      borderRadius: borderRadius,
-      border: Border.all(color: colorSheme.tertiary, width: 2),
-    );
+    Border borderColor = Border(
+        top: borderColorTop ? BorderSide(color: colorSheme.tertiary, width: 2) : BorderSide.none,
+        bottom: borderColorBottom ? BorderSide(color: colorSheme.tertiary, width: 2) : BorderSide.none,
+        right: borderColorRight ? BorderSide(color: colorSheme.tertiary, width: 2) : BorderSide.none,
+        left: borderColorLeft ? BorderSide(color: colorSheme.tertiary, width: 2) : BorderSide.none);
+
+    return BoxDecoration(color: colorSheme.surfaceContainerHighest, borderRadius: borderRadius, border: borderColor);
   }
 }

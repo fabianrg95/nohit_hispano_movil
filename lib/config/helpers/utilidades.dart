@@ -9,10 +9,10 @@ class Utilidades {
     return "${titulo ?? ''} ${subtitulo ?? ''}";
   }
 
-  static List<String> obtenerFiltroFechas(String? fechaUltimaPartida) {
+  static List<String> obtenerFiltroFechas(String? fechaUltimaPartida, final bool esReload) {
     DateTime fechaOriginal = DateTime.now();
 
-    if (fechaUltimaPartida != null) {
+    if (!esReload && fechaUltimaPartida != null) {
       final DateTime fechaParsed = DateTime.parse(fechaUltimaPartida);
       final int numeroDia = fechaParsed.day;
       fechaOriginal = fechaParsed.subtract(Duration(days: numeroDia));

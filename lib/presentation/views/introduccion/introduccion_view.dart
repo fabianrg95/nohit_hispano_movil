@@ -6,7 +6,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../l10n/app_localizations.dart';
 
-
 class IntroduccionView extends ConsumerStatefulWidget {
   static const nombre = 'introduccion-screen';
   const IntroduccionView({super.key});
@@ -33,7 +32,7 @@ class IntroduccionViewState extends ConsumerState<IntroduccionView> {
     super.dispose();
   }
 
-  _marcarIntroduccionFinalizada() async {
+  Future<void> _marcarIntroduccionFinalizada() async {
     setState(() {
       ref.read(introduccionProvider.notifier).introduccionFinalizada();
       Navigator.of(context)
@@ -41,7 +40,7 @@ class IntroduccionViewState extends ConsumerState<IntroduccionView> {
     });
   }
 
-  _avanzarPagina(int page) async {
+  Future<void> _avanzarPagina(int page) async {
     if (page <= cantidadPantallas - 1) {
       setState(() {
         indexPage = page;

@@ -83,7 +83,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
     }
 
     return PopScope(
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, __, ___) => const InicioView()));
       },
@@ -105,6 +105,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
           appBar: AppBar(
             actions: [_accionBuscar(context)],
             title: Text(AppLocalizations.of(context)!.jugadores(true.toString())),
+            centerTitle: true,
             forceMaterialTransparency: true,
           ),
           body: RefreshIndicator(
@@ -147,51 +148,133 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
       child: Column(
         children: [
           Container(
-            decoration: ViewData().decorationContainerBasic(color: color),
             margin: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
             padding: const EdgeInsets.only(top: 10),
             child: Column(
               children: [
-                Text(AppLocalizations.of(context)!.jugadores_nuevos, style: styleTexto.titleLarge),
-                const SizedBox(height: 10),
-                Divider(color: color.tertiary, thickness: 2, height: 1),
+                Text(AppLocalizations.of(context)!.jugadores_nuevos, style: styleTexto.titleSmall),
+                Divider(color: color.tertiary, thickness: 1, height: 1),
                 SizedBox(
-                    height: 120,
-                    child: Swiper(
-                      viewportFraction: 1,
-                      scale: 1,
-                      autoplayDelay: 5000,
-                      autoplay: true,
-                      fade: 0.1,
-                      outer: true,
-                      pagination: SwiperPagination(
-                        builder: DotSwiperPaginationBuilder(activeColor: color.tertiary, color: color.primary),
+                  height: 185, // Slightly taller for better content display
+                  child: Swiper(
+                    viewportFraction: 0.85,
+                    scale: 0.7,
+                    autoplayDelay: 6000, // Slightly longer delay
+                    autoplay: true,
+                    duration: 1000, // Smoother transition
+                    fade: 0.3, // Smoother fade
+                    outer: false,
+                    layout: SwiperLayout.STACK,
+                    itemWidth: MediaQuery.of(context).size.width * 0.8,
+                    itemHeight: 160,
+                    loop: true, // Enable infinite loop
+                    physics: const BouncingScrollPhysics(), // Bouncy physics
+                    pagination: SwiperPagination(
+                      margin: const EdgeInsets.only(bottom: .1),
+                      builder: DotSwiperPaginationBuilder(
+                        activeColor: color.tertiary,
+                        color: color.surfaceContainerHighest,
+                        size: 10,
+                        activeSize: 12,
+                        space: 8,
                       ),
-                      itemCount: ultimosJugadores.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
-                            return FadeTransition(opacity: animation, child: DetalleJugadorView(idJugador: ultimosJugadores[index].id!));
-                          })),
-                          child: Container(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: Column(
-                                children: [
-                                  BanderaJugador(codigoBandera: ultimosJugadores[index].codigoBandera),
-                                  Text(ultimosJugadores[index].nombre!, style: styleTexto.titleLarge, maxLines: 2)
-                                ],
-                              )),
-                        );
-                      },
-                    )),
+                    ),
+                    itemCount: ultimosJugadores.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation, __) => FadeTransition(
+                                opacity: animation,
+                                child: DetalleJugadorView(idJugador: ultimosJugadores[index].id!),
+                              ),
+                              transitionDuration: const Duration(milliseconds: 500),
+                            ),
+                          );
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                          decoration: BoxDecoration(
+                            color: color.surfaceContainerHighest,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: color.tertiary, width: 1.5),
+                            boxShadow: [
+                              BoxShadow(
+                                color: color.tertiary.withValues(alpha: 0.1),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                                spreadRadius: 1,
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                // Content
+                                Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      // Player Flag with Hero animation
+                                      Hero(
+                                        tag: 'carousel_bandera_${ultimosJugadores[index].id}',
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          child: Container(
+                                            padding: const EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              color: color.surface,
+                                              shape: BoxShape.circle,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: color.tertiary.withValues(alpha: 0.3),
+                                                  blurRadius: 15,
+                                                  spreadRadius: 1,
+                                                ),
+                                              ],
+                                            ),
+                                            child: BanderaJugador(
+                                              codigoBandera: ultimosJugadores[index].codigoBandera,
+                                              tamanio: 40,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      // Player Name
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                                        child: Text(
+                                          ultimosJugadores[index].nombre!,
+                                          style: styleTexto.titleLarge?.copyWith(
+                                            color: color.onSurface,
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 0.5,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ),
-          const SizedBox(height: 10),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50),
-            child: Divider(),
-          ),
+          Container(margin: const EdgeInsets.symmetric(horizontal: 10), child: Divider(color: color.tertiary, thickness: 1, height: 1)),
           Text(AppLocalizations.of(context)!.lista_completa, style: styleTexto.titleMedium),
           Visibility(
             visible: listaJugadores.isNotEmpty,
@@ -222,7 +305,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
           const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.only(right: 10, left: 10),
-            child: Divider(color: color.tertiary.withOpacity(0.5), thickness: 2, height: 1),
+            child: Divider(color: color.tertiary.withAlpha(50), thickness: 2, height: 1),
           ),
           const SizedBox(height: 20),
           Expanded(

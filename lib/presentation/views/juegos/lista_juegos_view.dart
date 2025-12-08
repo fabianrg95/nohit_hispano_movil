@@ -17,7 +17,7 @@ class ListaJuegosView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     return PopScope(
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, __, ___) => const InicioView()));
       },
@@ -95,12 +95,13 @@ class TapbarJuegosState extends ConsumerState<TapbarJuegos> with SingleTickerPro
         child: TabBar(
             controller: tabController,
             labelStyle: styleTexto.titleMedium,
-            labelColor: color.surfaceTint,
-            unselectedLabelStyle: styleTexto.bodySmall,
+            labelColor: color.onTertiary,
+            unselectedLabelStyle: styleTexto.bodySmall?.copyWith(color: color.onSurfaceVariant),
             indicator: BoxDecoration(color: color.tertiary, borderRadius: BorderRadius.circular(15.5)),
             indicatorSize: TabBarIndicatorSize.tab,
             padding: const EdgeInsets.all(2),
-            tabs: const [Tab(text: 'Oficiales'), Tab(text: 'No oficiales')]));
+            tabs: const [Tab(text: 'Oficiales'), Tab(text: 'No oficiales')],
+            dividerHeight: 0));
   }
 }
 

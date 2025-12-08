@@ -6,6 +6,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:no_hit/config/contants/environment.dart';
+import 'package:no_hit/config/helpers/app_info.dart';
 import 'package:no_hit/config/router/app_router.dart';
 import 'package:no_hit/config/theme/app_theme.dart';
 
@@ -24,6 +25,7 @@ Future<void> main() async {
   await _definirVariablesEntorno();
   await _inicializarSupabase();
   await _inicializarStorageLocal();
+  _configurarEdgeToEdge();
   runApp(const ProviderScope(child: MyApp()));
 
   SystemChrome.setPreferredOrientations([
@@ -53,6 +55,7 @@ class MyAppState extends ConsumerState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    AppInfo().init(MediaQuery.of(context)); // inicializar una vez
     final AppTheme appTheme = ref.watch(themeNotifierProvider);
     styleTexto = Theme.of(context).textTheme;
     size = MediaQuery.of(context).size;
@@ -91,4 +94,21 @@ Future<void> _inicializarStorageLocal() async {
   for (var almacenamiento in BoxLocal.values) {
     await GetStorage.init(almacenamiento.nombreAlmacenamiento);
   }
+}
+
+void _configurarEdgeToEdge() {
+  // Configurar la aplicación para usar edge-to-edge (Android 5.0+)
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.edgeToEdge,
+  );
+
+  // Configurar los colores de las barras del sistema para que sean transparentes
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ),
+  );
 }

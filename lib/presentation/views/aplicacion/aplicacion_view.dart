@@ -14,7 +14,7 @@ class Aplicacion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, __, ___) => const InicioView()));
       },
@@ -27,6 +27,7 @@ class Aplicacion extends StatelessWidget {
               appBar: AppBar(
                 forceMaterialTransparency: true,
                 title: Text(AppLocalizations.of(context)!.aplicacion),
+                centerTitle: true,
               ),
               body: contenido(context, snapshot),
             ),
@@ -37,81 +38,267 @@ class Aplicacion extends StatelessWidget {
   }
 
   Widget contenido(BuildContext context, AsyncSnapshot snapshot) {
-    // final TextTheme styleTexto = Theme.of(context).textTheme;
-    final ColorScheme color = Theme.of(context).colorScheme;
-    final Size size = MediaQuery.of(context).size;
+    final color = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+    final size = MediaQuery.of(context).size;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     if (snapshot.hasError) {
       return Center(
-        child: Text(snapshot.error.toString()),
-      );
-    } else if (snapshot.hasData) {
-      PackageInfo packageInfo = snapshot.data!;
-      return SizedBox(
-        height: size.height,
-        child: ListView(
-          shrinkWrap: true,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Center(
-              child: Image.asset(
-                'assets/images/panel_${color.brightness == Brightness.dark ? 'blanco' : 'negro'}.png',
-                width: 200,
-                height: 200,
+            Icon(
+              Icons.error_outline_rounded,
+              color: color.error,
+              size: 48,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Error al cargar la información',
+              style: textTheme.titleMedium?.copyWith(color: color.onSurface),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              child: Text(
+                snapshot.error.toString(),
+                textAlign: TextAlign.center,
+                style: textTheme.bodyMedium?.copyWith(color: color.onSurfaceVariant),
               ),
-            ),
-            item(AppLocalizations.of(context)!.proyecto_codigo_abierto, null),
-            item(AppLocalizations.of(context)!.app_version, packageInfo.version),
-            item(AppLocalizations.of(context)!.numero_construccion, packageInfo.buildNumber),
-            ListTile(
-              leading: const Icon(FontAwesomeIcons.github),
-              title: Text(AppLocalizations.of(context)!.github),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 50),
-              textColor: Colors.white,
-              onTap: () => CustomLinks().lanzarUrl("https://github.com/fabianrg95/nohit_hispano_movil"),
-            ),
-            /* ToDo agregar la redireccion a la tienda de apple */
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 50),
-              child: Divider(),
-            ),
-            ListTile(
-              leading: const Icon(FontAwesomeIcons.googlePlay),
-              title: Text(AppLocalizations.of(context)!.google_play),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 50),
-              textColor: Colors.white,
-              onTap: () => CustomLinks().lanzarUrl("https://play.google.com/store/apps/details?id=com.fabianrodriguez.nohit.hispano"),
             ),
           ],
         ),
       );
-    } else {
-      return const CircularProgressIndicator();
     }
-  }
 
-  item(String name, String? value) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(vertical: 20),
+    if (!snapshot.hasData) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    final PackageInfo packageInfo = snapshot.data!;
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            name,
-            style: const TextStyle(
-              fontSize: 16,
+          // App Logo and Basic Info
+          Card(
+            elevation: 0,
+            color: color.surfaceContainerHighest,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+              side: BorderSide(color: color.outline.withValues(alpha: 0.1)),
             ),
-          ),
-          if (value != null) const SizedBox(height: 10),
-          if (value != null)
-            Text(
-              value.toString(),
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: color.tertiary,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: color.primary.withValues(alpha: 0.1),
+                          blurRadius: 10,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: Image.asset(
+                      'assets/images/panel_${isDark ? 'negro' : 'blanco'}.png',
+                      width: size.width * 0.3,
+                      height: size.width * 0.3,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'No Hit Hispano',
+                    style: textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: color.onSurface,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'v${packageInfo.version}+${packageInfo.buildNumber}',
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: color.onSurfaceVariant,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ],
               ),
             ),
+          ),
+
+          const SizedBox(height: 24),
+
+          // App Info Cards
+          _buildInfoCard(
+            context,
+            title: 'Acerca de',
+            icon: Icons.info_outline_rounded,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildInfoItem(
+                  context,
+                  icon: Icons.update_rounded,
+                  title: 'Última actualización',
+                  value: '17 de Nov, 2023',
+                ),
+                const SizedBox(height: 12),
+                _buildInfoItem(
+                  context,
+                  icon: Icons.storage_rounded,
+                  title: 'Tamaño de la app',
+                  value: '15.2 MB',
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 16),
+
+          // Links Section
+          Text(
+            'Enlaces',
+            style: textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: color.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(height: 12),
+          _buildLinkCard(
+            context,
+            icon: FontAwesomeIcons.github,
+            title: 'GitHub',
+            onTap: () => CustomLinks().lanzarUrl("https://github.com/fabianrg95/nohit_hispano_movil"),
+          ),
+          const SizedBox(height: 12),
+          _buildLinkCard(
+            context,
+            icon: FontAwesomeIcons.googlePlay,
+            title: 'Google Play',
+            onTap: () => CustomLinks().lanzarUrl("https://play.google.com/store/apps/details?id=com.fabianrodriguez.nohit.hispano"),
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildInfoCard(BuildContext context, {required String title, required IconData icon, required Widget child}) {
+    final color = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Card(
+      elevation: 0,
+      color: color.surfaceContainerHighest,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: color.outline.withValues(alpha: 0.1)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, color: color.tertiary, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  title,
+                  style: textTheme.titleSmall?.copyWith(
+                    color: color.onSurfaceVariant,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            child,
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoItem(BuildContext context, {required IconData icon, required String title, required String value}) {
+    final color = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Row(
+      children: [
+        Icon(icon, size: 20, color: color.onSurfaceVariant.withValues(alpha: 0.8)),
+        const SizedBox(width: 12),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: textTheme.bodySmall?.copyWith(
+                color: color.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              value,
+              style: textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+                color: color.onSurface,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLinkCard(BuildContext context, {required IconData icon, required String title, required VoidCallback onTap}) {
+    final color = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Card(
+      elevation: 0,
+      color: color.surfaceContainerHighest,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: color.outline.withValues(alpha: 0.1)),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              FaIcon(icon, color: color.tertiary, size: 20),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Text(
+                  title,
+                  style: textTheme.bodyLarge?.copyWith(
+                    color: color.onSurface,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 16,
+                color: color.onSurfaceVariant.withValues(alpha: 0.6),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
