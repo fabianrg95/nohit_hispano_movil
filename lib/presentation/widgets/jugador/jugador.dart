@@ -145,87 +145,92 @@ class JugadorCommons {
     );
   }
 
-  Widget informacionJugadorMejorada(final JugadorDto detalleJugador, final BuildContext context, {final bool mostrarBandera = true}) {
+  Widget informacionJugadorMejorada(final JugadorDto detalleJugador, final BuildContext context,
+      {final bool mostrarBandera = true, mostrarNombre = true}) {
     final ColorScheme color = Theme.of(context).colorScheme;
     final TextTheme styleTexto = Theme.of(context).textTheme;
     return GestureDetector(
       onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
         return FadeTransition(opacity: animation, child: DetalleJugadorView(idJugador: detalleJugador.id!));
       })),
-      child: Container(
-        margin: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: color.tertiary.withValues(alpha: 0.3), width: 2),
-          color: color.surfaceContainerHighest.withValues(alpha: 0.7),
-        ),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              child: Row(
-                children: [
-                  Visibility(
-                    visible: mostrarBandera,
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: color.primary.withValues(alpha: 0.5),
-                      ),
-                      child: BanderaJugador(codigoBandera: detalleJugador.codigoBandera, tamanio: 30),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          detalleJugador.nombre.toString(),
-                          style: styleTexto.titleMedium?.copyWith(
-                            color: color.tertiary,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+      child: Visibility(
+        visible: detalleJugador.mostrarInformacion,
+        child: Container(
+          margin: const EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: color.tertiary.withValues(alpha: 0.3), width: 2),
+            color: color.surfaceContainerHighest.withValues(alpha: 0.7),
+          ),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                child: Row(
+                  children: [
+                    Visibility(
+                      visible: mostrarBandera,
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: color.primary.withValues(alpha: 0.5),
                         ),
-                        if (detalleJugador.pronombre != null) ...[
-                          const SizedBox(height: 4),
-                          Text(
-                            detalleJugador.pronombre.toString(),
-                            style: styleTexto.bodySmall?.copyWith(
-                              color: color.outline.withValues(alpha: 0.5),
+                        child: BanderaJugador(codigoBandera: detalleJugador.codigoBandera, tamanio: 30),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (mostrarNombre)
+                            Text(
+                              detalleJugador.nombre.toString(),
+                              style: styleTexto.titleMedium?.copyWith(
+                                color: color.tertiary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ),
-                        ],
-                        if (detalleJugador.gentilicio != null) ...[
-                          const SizedBox(height: 2),
-                          Text(
-                            detalleJugador.gentilicio.toString(),
-                            style: styleTexto.labelSmall?.copyWith(
-                              color: color.outline.withValues(alpha: 0.5),
+                          if (detalleJugador.pronombre != null) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              detalleJugador.pronombre.toString(),
+                              style: styleTexto.bodySmall?.copyWith(
+                                color: color.outline.withValues(alpha: 0.5),
+                              ),
                             ),
-                          ),
+                          ],
+                          if (detalleJugador.gentilicio != null) ...[
+                            const SizedBox(height: 2),
+                            Text(
+                              detalleJugador.gentilicio.toString(),
+                              style: styleTexto.labelSmall?.copyWith(
+                                color: color.outline.withValues(alpha: 0.5),
+                              ),
+                            ),
+                          ],
                         ],
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (detalleJugador.urlYoutube != null) CustomLinks().link(detalleJugador.urlYoutube, FontAwesomeIcons.youtube, tamanio: 30),
+                        if (detalleJugador.urlTwitch != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: CustomLinks().link(detalleJugador.urlTwitch, FontAwesomeIcons.twitch, tamanio: 30),
+                          ),
                       ],
                     ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (detalleJugador.urlYoutube != null) CustomLinks().link(detalleJugador.urlYoutube, FontAwesomeIcons.youtube, tamanio: 30),
-                      if (detalleJugador.urlTwitch != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: CustomLinks().link(detalleJugador.urlTwitch, FontAwesomeIcons.twitch, tamanio: 30),
-                        ),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

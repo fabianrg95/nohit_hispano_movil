@@ -129,7 +129,7 @@ Future<dynamic> navegarJugador(final BuildContext context, final int idJugador) 
   return Navigator.of(context).push(PageRouteBuilder(
     transitionDuration: duration,
     reverseTransitionDuration: duration,
-    pageBuilder: (context, animation, __) => DetalleJugadorView(idJugador: idJugador),
+    pageBuilder: (context, _, __) => DetalleJugadorView(idJugador: idJugador),
     transitionsBuilder: (_, animation, ___, child) => FadeTransition(opacity: animation, child: child),
   ));
 }

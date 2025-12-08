@@ -31,11 +31,11 @@ class PartidaCommons {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          Text(HumanFormat.fechaDia(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: color.outline)),
+                          Text(HumanFormat.fechaDia(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: Colors.white)),
                           Text(" "),
-                          Text(HumanFormat.fechaMes(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: color.outline)),
+                          Text(HumanFormat.fechaMes(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: Colors.white)),
                         ]),
-                        Text(HumanFormat.fechaAnio(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: color.outline))
+                        Text(HumanFormat.fechaAnio(partida.fecha.toString()), style: styleTexto.bodySmall?.copyWith(color: Colors.white))
                       ],
                     ),
                   ),

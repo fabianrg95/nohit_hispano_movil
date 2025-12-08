@@ -118,7 +118,6 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
                           _resumenPartida(juegoDto!, detallePartida, detalleJugador),
                           if (detalleJugador != null && detallePartida != null) ...{
                             _recordPartida(detallePartida),
-                            _informacionJugadorMejorada(detalleJugador),
                             _videos(detallePartida.listaVideosCompletos, 'Videos', "La partida no tiene videos."),
                             _videos(detallePartida.listaVideosClips, 'Clips', "La partida no tiene clips."),
                             SizedBox(height: 20),
@@ -354,11 +353,17 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
       ),
       child: Column(
         children: [
-          _resumenPartidaItem(
-            icon: Icons.person_outline,
-            titulo: detalleJugador.nombre.toString(),
-            subtitulo: AppLocalizations.of(context)!.jugadores(false.toString()),
-            mostrarDivisor: true,
+          GestureDetector(
+            onTap: () => Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, __) {
+              return FadeTransition(opacity: animation, child: DetalleJugadorView(idJugador: detalleJugador.id!));
+            })),
+            child: _resumenPartidaItem(
+              icon: Icons.person_outline,
+              titulo: detalleJugador.nombre.toString(),
+              subtitulo: AppLocalizations.of(context)!.jugadores(false.toString()),
+              mostrarDivisor: true,
+              mostrarIcono: true,
+            ),
           ),
           _resumenPartidaItem(
             icon: Icons.calendar_today_outlined,
@@ -379,7 +384,12 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
   }
 
   Widget _resumenPartidaItem(
-      {required IconData icon, required String titulo, required String subtitulo, required bool mostrarDivisor, bool alineacionInversa = false}) {
+      {required IconData icon,
+      required String titulo,
+      required String subtitulo,
+      required bool mostrarDivisor,
+      bool alineacionInversa = false,
+      bool mostrarIcono = false}) {
     return Column(
       children: [
         Material(
@@ -427,6 +437,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
                         ],
                       ),
                     ),
+                    if (mostrarIcono) Icon(Icons.arrow_forward_ios, color: color.tertiary),
                   ],
                   if (alineacionInversa) ...[
                     Expanded(

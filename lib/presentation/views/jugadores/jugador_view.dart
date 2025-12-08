@@ -28,19 +28,13 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
   IconData iconoFlechaAtras = Icons.arrow_back;
   bool jugadorFavorito = false;
 
-  int pageViewIndex = 0;
-  final Map<int, String> titulosPageView = {0: '', 1: 'Juegos'};
-
   ValueNotifier<double> offset = ValueNotifier(0);
-  final PageController _pageController = PageController();
 
   @override
   void initState() {
     super.initState();
     ref.read(detalleJugadorProvider.notifier).loadData(widget.idJugador);
     ref.read(jugadoresFavoritosLocalProvider.notifier).obtenerJugadoresFavoritos();
-
-    _pageController.addListener(_pageListener);
 
     if (Platform.isIOS) {
       iconoFlechaAtras = Icons.arrow_back_ios_new;
@@ -49,16 +43,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
 
   @override
   void dispose() {
-    _pageController
-      ..removeListener(_pageListener)
-      ..dispose();
     super.dispose();
-  }
-
-  void _pageListener() {
-    final tamanioPantalla = MediaQuery.of(context).size.width;
-    final offsetValue = _pageController.offset / tamanioPantalla;
-    offset.value = offsetValue.clamp(0, 1);
   }
 
   void _guardarJugadorFavorito() {
@@ -87,129 +72,81 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
     }
 
     return PopScope(
-      canPop: pageViewIndex == 0,
-      onPopInvokedWithResult: (didPop, result) {
-        if (didPop) return;
-        controlarBack(context);
-      },
-      child: ValueListenableBuilder(
-          valueListenable: offset,
-          builder: (BuildContext context, offsetValue, _) {
-            return SafeArea(
-              child: Scaffold(
-                  extendBodyBehindAppBar: true,
-                  appBar: AppBar(
-                    leading: Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Ink(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: color.primary,
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              controlarBack(context);
-                            },
-                            icon: Icon(iconoFlechaAtras),
-                          )),
-                    ),
-                    forceMaterialTransparency: pageViewIndex == 0,
-                    elevation: 0,
-                    title: Text(titulosPageView[pageViewIndex]!),
-                    actions: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10.0),
-                        child: Ink(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: color.primary,
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                _guardarJugadorFavorito();
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    backgroundColor: color.surfaceContainerHighest,
-                                    action: SnackBarAction(
-                                      backgroundColor: color.tertiary,
-                                      label: 'Deshacer',
-                                      onPressed: () => _guardarJugadorFavorito(),
-                                      textColor: color.onTertiary,
-                                    ),
-                                    content: Text(
-                                      'Jugador ${jugadorFavorito ? 'agregado a' : 'eliminado de'} favoritos.',
-                                      style: styleTexto.bodyLarge?.copyWith(color: color.outline),
-                                    )));
-                              },
-                              color: color.tertiary,
-                              highlightColor: color.tertiary,
-                              icon: Visibility(
-                                  visible: jugadorFavorito,
-                                  replacement: const Icon(Icons.favorite_border_outlined),
-                                  child: const Icon(Icons.favorite)),
-                            )),
-                      )
-                    ],
-                  ),
-                  body: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Stack(children: [
-                          _cabecera(jugador, offsetValue),
-                          Padding(padding: EdgeInsets.only(top: AppInfo().porcentajeAlto(0.29)), child: _contenido(jugador))
-                        ]),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Divider(color: color.tertiary.withValues(alpha: 0.5), thickness: 1, height: 1),
+        canPop: true,
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop) return;
+          controlarBack(context);
+        },
+        child: SafeArea(
+          child: Scaffold(
+              extendBodyBehindAppBar: true,
+              appBar: AppBar(
+                leading: Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Ink(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: color.primary,
+                      ),
+                      child: IconButton(
+                        onPressed: () {
+                          controlarBack(context);
+                        },
+                        icon: Icon(iconoFlechaAtras),
+                      )),
+                ),
+                forceMaterialTransparency: true,
+                elevation: 0,
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10.0),
+                    child: Ink(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: color.primary,
                         ),
-                        const SizedBox(height: 10),
-                        Text('Juegos', style: styleTexto.titleLarge?.copyWith(color: color.tertiary)),
-                        _Partidas(jugador: jugador)
-                      ],
-                    ),
+                        child: IconButton(
+                          onPressed: () {
+                            _guardarJugadorFavorito();
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                backgroundColor: color.surfaceContainerHighest,
+                                action: SnackBarAction(
+                                  backgroundColor: color.tertiary,
+                                  label: 'Deshacer',
+                                  onPressed: () => _guardarJugadorFavorito(),
+                                  textColor: color.onTertiary,
+                                ),
+                                content: Text(
+                                  'Jugador ${jugadorFavorito ? 'agregado a' : 'eliminado de'} favoritos.',
+                                  style: styleTexto.bodyLarge?.copyWith(color: color.outline),
+                                )));
+                          },
+                          color: color.tertiary,
+                          highlightColor: color.tertiary,
+                          icon: Visibility(
+                              visible: jugadorFavorito, replacement: const Icon(Icons.favorite_border_outlined), child: const Icon(Icons.favorite)),
+                        )),
                   )
-
-                  // Stack(children: [
-                  //   _cabecera(jugador, offsetValue),
-                  //   PageView(
-                  //     controller: _pageController,
-                  //     onPageChanged: (value) => setState(() {
-                  //       pageViewIndex = value;
-                  //     }),
-                  //     scrollDirection: Axis.horizontal,
-                  //     children: [
-                  //       Align(
-                  //         alignment: FractionalOffset(0, (jugador.partidas.length > 1 ? 0.57 : 0.48) + offsetValue),
-                  //         child: FadeTransition(
-                  //             opacity: AlwaysStoppedAnimation(1 - (offsetValue * 2)),
-                  //             child: Column(
-                  //               children: [
-                  //                 _contenido(jugador),
-                  //                 const Expanded(child: SizedBox(height: 1)),
-                  //                 GestureDetector(onTap: () => _navegarPage(1), child: const ShimmerArrows(icon: Icons.keyboard_arrow_right)),
-                  //               ],
-                  //             )),
-                  //       ),
-                  //       PageView(physics: const NeverScrollableScrollPhysics(), children: [_Partidas(jugador: jugador)])
-                  //     ],
-                  //   ),
-                  // ]),
-                  ),
-            );
-          }),
-    );
+                ],
+              ),
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Stack(children: [
+                      _cabecera(jugador),
+                      Padding(padding: EdgeInsets.only(top: AppInfo().porcentajeAlto(0.29)), child: _contenido(jugador))
+                    ]),
+                  ],
+                ),
+              )),
+        ));
   }
 
   void controlarBack(BuildContext context) {
-    if (pageViewIndex == 0) {
-      Navigator.of(context).pop();
-    } else {
-      _navegarPage(pageViewIndex - 1);
-    }
+    Navigator.of(context).pop();
   }
 
-  void _navegarPage(int page) => _pageController.animateToPage(page, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
-
-  Widget _cabecera(final JugadorDto jugador, double offsetValue) {
+  Widget _cabecera(final JugadorDto jugador) {
     late ImageProvider<Object> image;
 
     if (jugador.codigoBandera == null) {
@@ -248,7 +185,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(25),
-                child: Image(image: image, fit: BoxFit.cover),
+                child: Hero(tag: 'bandera_${jugador.id}', child: Image(image: image, fit: BoxFit.cover)),
               ),
             ),
           ),
@@ -273,7 +210,7 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
               child: Text(
                 jugador.nombre!,
                 style: styleTexto.titleLarge?.copyWith(
-                  color: color.onSurface,
+                  color: color.tertiary,
                   fontWeight: FontWeight.w600,
                 ),
                 textAlign: TextAlign.center,
@@ -281,9 +218,16 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
             ),
           ),
         ),
-        JugadorCommons().informacionJugadorMejorada(jugador, context, mostrarBandera: false),
+        JugadorCommons().informacionJugadorMejorada(jugador, context, mostrarBandera: false, mostrarNombre: false),
         informacionPartidasJuegos(jugador),
         _resumenPartidas(jugador: jugador),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Divider(color: color.tertiary.withValues(alpha: 0.5), thickness: 1, height: 1),
+        ),
+        const SizedBox(height: 10),
+        Text('Juegos', style: styleTexto.titleLarge?.copyWith(color: color.tertiary)),
+        _Partidas(jugador: jugador)
       ],
     );
   }
@@ -304,11 +248,6 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
               child: _statsItem(
                 valor: jugador.juegos.length.toString(),
                 etiqueta: AppLocalizations.of(context)!.juegos((jugador.juegos.length != 1).toString()),
-                onTap: () {
-                  setState(() {
-                    _pageController.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
-                  });
-                },
               ),
             ),
           ),
@@ -326,11 +265,6 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
               child: _statsItem(
                 valor: jugador.cantidadPartidas.toString(),
                 etiqueta: AppLocalizations.of(context)!.partidas((jugador.cantidadPartidas != 1).toString()),
-                onTap: () {
-                  setState(() {
-                    _pageController.animateToPage(1, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
-                  });
-                },
               ),
             ),
           ),
@@ -339,29 +273,26 @@ class DetalleJugadorState extends ConsumerState<DetalleJugadorView> {
     );
   }
 
-  Widget _statsItem({required String valor, required String etiqueta, required VoidCallback onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            valor,
-            style: styleTexto.titleLarge?.copyWith(
-              color: color.tertiary,
-              fontWeight: FontWeight.w600,
-            ),
+  Widget _statsItem({required String valor, required String etiqueta}) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          valor,
+          style: styleTexto.titleLarge?.copyWith(
+            color: color.tertiary,
+            fontWeight: FontWeight.w600,
           ),
-          const SizedBox(height: 4),
-          Text(
-            etiqueta,
-            style: styleTexto.bodySmall?.copyWith(
-              color: color.outline.withValues(alpha: 0.5),
-            ),
-            textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          etiqueta,
+          style: styleTexto.bodySmall?.copyWith(
+            color: color.outline.withValues(alpha: 0.5),
           ),
-        ],
-      ),
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 

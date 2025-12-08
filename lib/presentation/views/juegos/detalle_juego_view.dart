@@ -259,8 +259,8 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
               child: BottomNavigationBar(
                 elevation: 0,
                 backgroundColor: Colors.transparent,
-                selectedItemColor: color.primary,
-                unselectedItemColor: color.primary.withValues(alpha: 0.5),
+                selectedItemColor: color.onTertiary,
+                unselectedItemColor: color.onTertiary.withValues(alpha: 0.5),
                 selectedLabelStyle: styleTexto.bodyLarge?.copyWith(
                   color: color.primary,
                   fontWeight: FontWeight.w600,
