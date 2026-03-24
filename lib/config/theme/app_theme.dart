@@ -15,7 +15,7 @@ class AppTheme {
         colorScheme: color,
         progressIndicatorTheme: ProgressIndicatorThemeData(circularTrackColor: color.tertiary),
         useMaterial3: true,
-        cardTheme: CardTheme(color: color.secondary),
+        cardTheme: CardThemeData(color: color.secondary),
         listTileTheme: ListTileThemeData(textColor: color.outline),
         appBarTheme: AppBarTheme(
           // backgroundColor: Colors.transparent,
