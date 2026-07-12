@@ -23,7 +23,10 @@ class PartidaCommons {
               children: [
                 Container(
                   width: AppInfo().porcentajeAncho(0.2),
-                  decoration: BoxDecoration(color: color.tertiary.withValues(alpha: 0.6), borderRadius: BorderRadius.all(Radius.circular(18))),
+                  decoration: BoxDecoration(
+                      color: color.tertiary.withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.all(Radius.circular(18)),
+                      border: Border.all(color: color.tertiary)),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
                     child: Column(

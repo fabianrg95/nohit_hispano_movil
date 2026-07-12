@@ -240,49 +240,33 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
               ]),
           bottomNavigationBar: Container(
             margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              boxShadow: [
-                BoxShadow(
-                  color: color.tertiary.withValues(alpha: 0.1),
-                  blurRadius: 15,
-                  offset: const Offset(0, 5),
-                ),
-              ],
-            ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: Container(
                 decoration: BoxDecoration(
-                  color: color.tertiary,
+                  color: color.tertiary.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: color.tertiary),
                 ),
                 child: BottomNavigationBar(
                   elevation: 0,
                   backgroundColor: Colors.transparent,
-                  selectedItemColor: color.onTertiary,
-                  unselectedItemColor: color.onTertiary.withValues(alpha: 0.5),
+                  selectedItemColor: color.onSurfaceVariant,
+                  unselectedItemColor: color.onSurfaceVariant,
                   selectedLabelStyle: styleTexto.bodyLarge?.copyWith(
                     color: color.primary,
                     fontWeight: FontWeight.w600,
                   ),
                   unselectedLabelStyle: styleTexto.bodySmall?.copyWith(
-                    color: color.primary.withValues(alpha: 0.5),
+                    color: color.primary,
                   ),
                   selectedIconTheme: IconThemeData(
                     size: 28,
-                    color: color.primary,
-                    shadows: [
-                      Shadow(
-                        color: color.primary.withValues(alpha: 0.3),
-                        blurRadius: 10,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
+                    color: color.onSurface,
                   ),
                   unselectedIconTheme: IconThemeData(
                     size: 24,
-                    color: color.primary.withValues(alpha: 0.5),
+                    color: color.onSurfaceVariant,
                   ),
                   currentIndex: pageViewIndex,
                   onTap: _navegarPage,
@@ -295,7 +279,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
                         duration: const Duration(milliseconds: 200),
                         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                         decoration: BoxDecoration(
-                          color: pageViewIndex == 0 ? color.primary.withValues(alpha: 0.1) : Colors.transparent,
+                          color: pageViewIndex == 0 ? color.primary : Colors.transparent,
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: const Icon(Icons.workspace_premium),
@@ -307,7 +291,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
                         duration: const Duration(milliseconds: 200),
                         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                         decoration: BoxDecoration(
-                          color: pageViewIndex == 1 ? color.primary.withValues(alpha: 0.1) : Colors.transparent,
+                          color: pageViewIndex == 1 ? color.primary : Colors.transparent,
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: const Icon(Icons.sports_esports),
@@ -319,7 +303,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
                         duration: const Duration(milliseconds: 200),
                         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
                         decoration: BoxDecoration(
-                          color: pageViewIndex == 2 ? color.primary.withValues(alpha: 0.1) : Colors.transparent,
+                          color: pageViewIndex == 2 ? color.primary : Colors.transparent,
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: const Icon(Icons.groups),
@@ -403,28 +387,10 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
       return SizedBox(height: 100, child: PantallaCargaBasica(texto: AppLocalizations.of(context)!.consultando_partidas));
     }
 
+    final colorJuego = informacionJuego.oficialTeamHistless != null && informacionJuego.oficialTeamHistless! ? color.surfaceBright : color.error;
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: color.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: color.tertiary.withValues(alpha: 0.5),
-          width: 1.5,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: color.tertiary.withValues(alpha: 0.15),
-            blurRadius: 24,
-            offset: const Offset(0, 8),
-          ),
-          BoxShadow(
-            color: color.shadow.withValues(alpha: 0.08),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
         child: Column(
@@ -433,14 +399,9 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                color: informacionJuego.oficialTeamHistless != null && informacionJuego.oficialTeamHistless!
-                    ? color.surfaceBright.withValues(alpha: 0.12)
-                    : color.error.withValues(alpha: 0.12),
+                color: colorJuego.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: color.tertiary.withValues(alpha: 0.25),
-                  width: 1.2,
-                ),
+                border: Border.all(color: colorJuego),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -453,7 +414,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
                       Text(
                         AppLocalizations.of(context)!.tipo_juego(informacionJuego.oficialTeamHistless.toString()),
                         style: styleTexto.titleMedium?.copyWith(
-                          color: color.tertiary,
+                          color: color.onSurfaceVariant,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 0.2,
                         ),
@@ -516,25 +477,15 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
-        splashColor: color.withValues(alpha: 0.2),
-        highlightColor: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(16),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
           decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.12),
+            color: color.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: color.withValues(alpha: 0.25),
-              width: 1.2,
+              color: color,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: color.withValues(alpha: 0.1),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -543,15 +494,8 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: colorIcono.withValues(alpha: 0.5),
+                  color: this.color.primary,
                   shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: colorIcono.withValues(alpha: 0.15),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
                 ),
                 child: Icon(
                   icono,
@@ -563,7 +507,7 @@ class DetalleJuegoState extends ConsumerState<DetalleJuego> with SingleTickerPro
               Text(
                 numero,
                 style: styleTexto.headlineMedium?.copyWith(
-                  color: this.color.tertiary,
+                  color: this.color.onSurfaceVariant,
                   fontWeight: FontWeight.w800,
                   letterSpacing: -0.5,
                 ),

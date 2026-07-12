@@ -54,13 +54,6 @@ class Comunidad extends StatelessWidget {
                   color: color.outline.withValues(alpha: 0.1),
                   width: 1,
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: color.shadow.withValues(alpha: 0.1),
-                    blurRadius: 20,
-                    spreadRadius: 2,
-                  ),
-                ],
               ),
               child: Image.asset(
                 'assets/images/comunidadNoHit.png',
@@ -126,7 +119,7 @@ class Comunidad extends StatelessWidget {
 
   Widget _buildSocialButton(
     BuildContext context, {
-    required IconData icon,
+    required FaIconData icon,
     required String label,
     required Color color,
     required VoidCallback onTap,
@@ -134,7 +127,7 @@ class Comunidad extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Material(
-      color: color.withValues(alpha: 0.1),
+      color: Colors.transparent,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         onTap: onTap,
@@ -142,8 +135,9 @@ class Comunidad extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
           decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: color.withValues(alpha: 0.2)),
+            border: Border.all(color: color),
           ),
           child: Row(
             children: [

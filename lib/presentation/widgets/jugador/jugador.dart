@@ -58,7 +58,7 @@ class JugadorCommons {
                       color: color.primary.withValues(alpha: 0.1),
                       border: Border.all(color: color.primary.withValues(alpha: 0.3), width: 1),
                     ),
-                    child: CustomLinks().link(jugador.urlYoutube, FontAwesomeIcons.youtube, tamanio: 20),
+                    child: CustomLinks().link(jugador.urlYoutube, FontAwesomeIcons.youtube.data, tamanio: 20),
                   ),
                 if (jugador.urlYoutube != null && jugador.urlTwitch != null)
                   Padding(
@@ -76,7 +76,7 @@ class JugadorCommons {
                       color: color.primary.withValues(alpha: 0.1),
                       border: Border.all(color: color.primary.withValues(alpha: 0.3), width: 1),
                     ),
-                    child: CustomLinks().link(jugador.urlTwitch, FontAwesomeIcons.twitch, tamanio: 20),
+                    child: CustomLinks().link(jugador.urlTwitch, FontAwesomeIcons.twitch.data, tamanio: 20),
                   ),
               ],
             )
@@ -125,13 +125,13 @@ class JugadorCommons {
                                 style: styleTexto.labelSmall?.copyWith(color: color.inverseSurface.withAlpha(70)))),
                         const SizedBox(height: 10),
                         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          CustomLinks().link(detalleJugador.urlYoutube, FontAwesomeIcons.youtube),
+                          CustomLinks().link(detalleJugador.urlYoutube, FontAwesomeIcons.youtube.data),
                           Visibility(
                               visible: detalleJugador.urlYoutube != null && detalleJugador.urlTwitch != null,
                               child: VerticalDivider(
                                 color: color.tertiary,
                               )),
-                          CustomLinks().link(detalleJugador.urlTwitch, FontAwesomeIcons.twitch)
+                          CustomLinks().link(detalleJugador.urlTwitch, FontAwesomeIcons.twitch.data)
                         ])
                       ],
                     ),
@@ -218,11 +218,12 @@ class JugadorCommons {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if (detalleJugador.urlYoutube != null) CustomLinks().link(detalleJugador.urlYoutube, FontAwesomeIcons.youtube, tamanio: 30),
+                        if (detalleJugador.urlYoutube != null)
+                          CustomLinks().link(detalleJugador.urlYoutube, FontAwesomeIcons.youtube.data, tamanio: 30),
                         if (detalleJugador.urlTwitch != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 8),
-                            child: CustomLinks().link(detalleJugador.urlTwitch, FontAwesomeIcons.twitch, tamanio: 30),
+                            child: CustomLinks().link(detalleJugador.urlTwitch, FontAwesomeIcons.twitch.data, tamanio: 30),
                           ),
                       ],
                     ),

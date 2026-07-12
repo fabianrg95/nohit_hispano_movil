@@ -262,7 +262,7 @@ class Aplicacion extends StatelessWidget {
     );
   }
 
-  Widget _buildLinkCard(BuildContext context, {required IconData icon, required String title, required VoidCallback onTap}) {
+  Widget _buildLinkCard(BuildContext context, {required FaIconData icon, required String title, required VoidCallback onTap}) {
     final color = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 

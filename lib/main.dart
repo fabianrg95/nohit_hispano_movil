@@ -86,7 +86,8 @@ Future<void> _inicializarSupabase() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(
     url: 'https://${Environment.supabaseProyecto}',
-    anonKey: Environment.supabaseApiKey,
+    publishableKey: Environment.supabaseApiKey,
+    // anonKey: Environment.supabaseApiKey,
   );
 }
 

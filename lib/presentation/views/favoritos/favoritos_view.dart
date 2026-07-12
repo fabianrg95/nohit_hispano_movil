@@ -85,9 +85,8 @@ class TapbarFavoritosState extends ConsumerState<TapbarFavoritos> with SingleTic
         child: TabBar(
             controller: tabController,
             labelStyle: styleTexto.titleMedium,
-            labelColor: color.onTertiary,
             unselectedLabelStyle: styleTexto.bodySmall?.copyWith(color: color.onSurfaceVariant),
-            indicator: BoxDecoration(color: color.tertiary, borderRadius: BorderRadius.circular(15.5)),
+            indicator: BoxDecoration(color: color.tertiary.withValues(alpha: 0.5), borderRadius: BorderRadius.circular(15.5)),
             indicatorSize: TabBarIndicatorSize.tab,
             padding: const EdgeInsets.all(2),
             dividerHeight: 0,

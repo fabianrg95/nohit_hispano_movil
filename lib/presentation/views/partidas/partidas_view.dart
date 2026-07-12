@@ -191,9 +191,9 @@ class PartidasViewState extends ConsumerState<PartidasView> {
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: color.surfaceContainerHighest,
+          color: color.tertiary.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: color.tertiary.withValues(alpha: 0.5), width: 1),
+          border: Border.all(color: color.tertiary, width: 1),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.1),
@@ -404,15 +404,9 @@ class PartidasViewState extends ConsumerState<PartidasView> {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         height: 160,
         decoration: BoxDecoration(
-          color: color.surfaceContainerHighest,
+          color: color.tertiary.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          border: Border.all(color: color.tertiary),
         ),
         child: Material(
           color: Colors.transparent,

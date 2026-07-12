@@ -41,10 +41,10 @@ class ViewData {
         topRight: Radius.circular(borderRadiusTopRight ? 20 : 0));
 
     Border borderColor = Border(
-        top: borderColorTop ? BorderSide(color: colorSheme.tertiary, width: 2) : BorderSide.none,
-        bottom: borderColorBottom ? BorderSide(color: colorSheme.tertiary, width: 2) : BorderSide.none,
-        right: borderColorRight ? BorderSide(color: colorSheme.tertiary, width: 2) : BorderSide.none,
-        left: borderColorLeft ? BorderSide(color: colorSheme.tertiary, width: 2) : BorderSide.none);
+        top: borderColorTop ? BorderSide(color: colorSheme.tertiary) : BorderSide.none,
+        bottom: borderColorBottom ? BorderSide(color: colorSheme.tertiary) : BorderSide.none,
+        right: borderColorRight ? BorderSide(color: colorSheme.tertiary) : BorderSide.none,
+        left: borderColorLeft ? BorderSide(color: colorSheme.tertiary) : BorderSide.none);
 
     return BoxDecoration(color: colorSheme.surfaceContainerHighest, borderRadius: borderRadius, border: borderColor);
   }

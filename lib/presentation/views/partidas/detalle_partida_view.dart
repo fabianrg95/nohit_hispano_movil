@@ -244,7 +244,7 @@ class DetallePartidaState extends ConsumerState<DetallePartidaView> {
   Widget link(final String linkVideo) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
-      child: CustomLinks().link(linkVideo, linkVideo.contains("youtu") ? FontAwesomeIcons.youtube : FontAwesomeIcons.twitch, tamanio: 40),
+      child: CustomLinks().link(linkVideo, linkVideo.contains("youtu") ? FontAwesomeIcons.youtube.data : FontAwesomeIcons.twitch.data, tamanio: 40),
     );
   }
 

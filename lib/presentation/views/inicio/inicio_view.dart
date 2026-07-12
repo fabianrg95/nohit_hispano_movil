@@ -132,10 +132,11 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
             _buildActionCard(
               context: context,
               count: totalPartidas,
-              label: AppLocalizations.of(context)!.partidas('true').toUpperCase(),
+              label: AppLocalizations.of(context)!.partidas('true'),
               icon: Icons.workspace_premium_rounded,
               color: color.tertiary,
               colorPrimario: color.primary,
+              textColor: isDark ? Colors.white : Colors.black,
               onTap: () => _navigateTo(const PartidasView()),
             ),
             const SizedBox(height: 16),
@@ -147,10 +148,11 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                   child: _buildActionCard(
                     context: context,
                     count: totalJugadores,
-                    label: AppLocalizations.of(context)!.jugadores('true').toUpperCase(),
+                    label: AppLocalizations.of(context)!.jugadores('true'),
                     icon: Icons.people_alt_rounded,
                     color: color.tertiary,
                     colorPrimario: color.primary,
+                    textColor: isDark ? Colors.white : Colors.black,
                     onTap: () => _navigateTo(const ListaJugadoresView()),
                   ),
                 ),
@@ -159,10 +161,11 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                   child: _buildActionCard(
                     context: context,
                     count: totalJuegos,
-                    label: AppLocalizations.of(context)!.juegos('true').toUpperCase(),
+                    label: AppLocalizations.of(context)!.juegos('true'),
                     icon: Icons.sports_esports_rounded,
                     color: color.tertiary,
                     colorPrimario: color.primary,
+                    textColor: isDark ? Colors.white : Colors.black,
                     onTap: () => _navigateTo(const ListaJuegosView()),
                   ),
                 ),
@@ -177,11 +180,11 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                   flex: 3,
                   child: _buildActionCard(
                     context: context,
-                    label: AppLocalizations.of(context)!.preguntas_frecuentes.toUpperCase(),
+                    label: AppLocalizations.of(context)!.preguntas_frecuentes,
                     icon: Icons.help_outline_rounded,
                     color: color.tertiary,
                     colorPrimario: color.primary,
-                    textColor: color.tertiary,
+                    textColor: isDark ? Colors.white : Colors.black,
                     onTap: () => _navigateTo(const PreguntasFrecuentesView()),
                   ),
                 ),
@@ -212,16 +215,21 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
     final isSmall = MediaQuery.of(context).size.width < 350;
 
     return Material(
-      color: color.withValues(alpha: 0.3),
+      color: Colors.transparent,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
+        customBorder: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: color),
+        ),
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: color.withValues(alpha: 0.2)),
+            color: color.withValues(alpha: 0.3),
+            border: Border.all(color: color),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -244,7 +252,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                         AnimatedBuilder(
                             animation: _controller,
                             builder: (context, child) => Text((count * _controller.value).toInt().toString(),
-                                style: TextStyle(color: color, fontSize: AppInfo().porcentajeAncho(0.08)))),
+                                style: TextStyle(color: textColor ?? color, fontSize: AppInfo().porcentajeAncho(0.08)))),
                       ],
                     ),
                   ],
@@ -264,7 +272,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  if (count != null) Icon(Icons.arrow_forward_ios, color: color, size: 16),
+                  if (count != null) Icon(Icons.arrow_forward_ios, color: textColor ?? color, size: 16),
                 ],
               ),
             ],
@@ -297,12 +305,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
               Icon(
                 isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
                 color: color.onTertiary,
-                size: 24,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                isDark ? 'Claro' : 'Oscuro',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(color: color.onTertiary),
+                size: 44,
               ),
             ],
           ),

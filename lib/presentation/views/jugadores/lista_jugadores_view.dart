@@ -94,11 +94,14 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
           floatingActionButton: Builder(builder: (context) {
             return TextButton(
               onPressed: () => Scaffold.of(context).openEndDrawer(),
-              style: TextButton.styleFrom(backgroundColor: color.tertiary),
-              child: const Icon(
+              style: TextButton.styleFrom(
+                  backgroundColor: color.tertiary.withValues(alpha: 0.3),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8), side: BorderSide(color: color.tertiary))),
+              child: Icon(
                 Icons.filter_alt_outlined,
                 size: 25,
                 weight: 0.1,
+                color: color.onSurfaceVariant,
               ),
             );
           }),
@@ -297,6 +300,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
     final TextTheme styleTexto = Theme.of(context).textTheme;
 
     return Drawer(
+      backgroundColor: color.primary,
       width: size.width * 0.9,
       child: Column(
         children: [
@@ -369,7 +373,14 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: TextButton(
-                    style: TextButton.styleFrom(backgroundColor: color.tertiary),
+                    style: TextButton.styleFrom(
+                      backgroundColor: color.tertiary.withValues(alpha: 0.3),
+                      foregroundColor: color.onSurfaceVariant,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: color.tertiary),
+                      ),
+                    ),
                     onPressed: () {
                       limpiarFiltros();
                       Navigator.pop(context);
@@ -380,7 +391,14 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: TextButton(
-                    style: TextButton.styleFrom(backgroundColor: color.tertiary),
+                    style: TextButton.styleFrom(
+                      backgroundColor: color.tertiary.withValues(alpha: 0.3),
+                      foregroundColor: color.onSurfaceVariant,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: color.tertiary),
+                      ),
+                    ),
                     onPressed: () {
                       aplicarFiltros();
                       Navigator.pop(context);

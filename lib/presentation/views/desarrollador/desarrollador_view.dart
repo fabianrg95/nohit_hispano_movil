@@ -139,7 +139,7 @@ class Desarrollador extends StatelessWidget {
                 // Email
                 _buildListTile(
                   context,
-                  icon: FontAwesomeIcons.envelope,
+                  icon: FontAwesomeIcons.envelope.data,
                   title: AppLocalizations.of(context)!.correo_electronico,
                   onTap: () => launchUrl(emailLaunchUri),
                 ),
@@ -147,7 +147,7 @@ class Desarrollador extends StatelessWidget {
                 // GitHub
                 _buildListTile(
                   context,
-                  icon: FontAwesomeIcons.github,
+                  icon: FontAwesomeIcons.github.data,
                   title: 'GitHub',
                   onTap: () => CustomLinks().lanzarUrl("https://github.com/fabianrg95"),
                 ),
@@ -169,7 +169,7 @@ class Desarrollador extends StatelessWidget {
                 // Instagram
                 _buildListTile(
                   context,
-                  icon: FontAwesomeIcons.instagram,
+                  icon: FontAwesomeIcons.instagram.data,
                   title: AppLocalizations.of(context)!.instagram,
                   onTap: () => CustomLinks().lanzarUrl("https://www.instagram.com/fabiancho.r"),
                 ),
@@ -177,7 +177,7 @@ class Desarrollador extends StatelessWidget {
                 // Twitch
                 _buildListTile(
                   context,
-                  icon: FontAwesomeIcons.twitch,
+                  icon: FontAwesomeIcons.twitch.data,
                   title: AppLocalizations.of(context)!.twitch,
                   onTap: () => CustomLinks().lanzarUrl("https://www.twitch.tv/fabiancho13"),
                 ),
@@ -185,7 +185,7 @@ class Desarrollador extends StatelessWidget {
                 // Discord
                 _buildListTile(
                   context,
-                  icon: FontAwesomeIcons.discord,
+                  icon: FontAwesomeIcons.discord.data,
                   title: AppLocalizations.of(context)!.discord,
                   onTap: () => CustomLinks().lanzarUrl("https://discord.gg/pDmvE2TSp9"),
                 ),
@@ -193,7 +193,7 @@ class Desarrollador extends StatelessWidget {
                 // YouTube
                 _buildListTile(
                   context,
-                  icon: FontAwesomeIcons.youtube,
+                  icon: FontAwesomeIcons.youtube.data,
                   title: AppLocalizations.of(context)!.youtube,
                   onTap: () => CustomLinks().lanzarUrl("https://www.youtube.com/channel/UC1jyPT2CCXnUs8k11UWVjyQ"),
                 ),
@@ -201,7 +201,7 @@ class Desarrollador extends StatelessWidget {
                 // PayPal
                 _buildListTile(
                   context,
-                  icon: FontAwesomeIcons.paypal,
+                  icon: FontAwesomeIcons.paypal.data,
                   title: AppLocalizations.of(context)!.paypal,
                   onTap: () => CustomLinks().lanzarUrl("https://www.paypal.com/donate/?hosted_button_id=88R47UE5XYDSQ"),
                 ),
