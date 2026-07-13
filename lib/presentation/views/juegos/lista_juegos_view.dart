@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:no_hit/infraestructure/enums/menu/menu_items.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 
@@ -28,7 +29,7 @@ class ListaJuegosView extends ConsumerWidget {
             title: Text(AppLocalizations.of(context)!.juegos(true.toString())),
             forceMaterialTransparency: true,
           ),
-          drawer: const CustomNavigation(),
+          drawer: const CustomNavigation(selectedItem: MenuItem.juegos),
           body: const TapbarJuegos(),
         ),
       ),

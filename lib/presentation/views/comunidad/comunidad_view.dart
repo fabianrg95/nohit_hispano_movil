@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:no_hit/infraestructure/enums/menu/menu_items.dart';
 
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
 import 'package:no_hit/presentation/widgets/widgets.dart';
@@ -19,7 +20,7 @@ class Comunidad extends StatelessWidget {
         },
         child: SafeArea(
           child: Scaffold(
-            drawer: const CustomNavigation(),
+            drawer: const CustomNavigation(selectedItem: MenuItem.comunidad),
             appBar: AppBar(
               forceMaterialTransparency: true,
               title: Text(AppLocalizations.of(context)!.comunidad),

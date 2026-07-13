@@ -2,6 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:no_hit/infraestructure/enums/menu/menu_items.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 import 'package:no_hit/main.dart';
@@ -89,7 +90,7 @@ class JugadoresViewState extends ConsumerState<ListaJugadoresView> {
       },
       child: SafeArea(
         child: Scaffold(
-          drawer: const CustomNavigation(),
+          drawer: const CustomNavigation(selectedItem: MenuItem.jugadores),
           endDrawer: _filtroJugadores(),
           floatingActionButton: Builder(builder: (context) {
             return TextButton(

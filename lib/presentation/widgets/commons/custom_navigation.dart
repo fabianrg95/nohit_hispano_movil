@@ -6,7 +6,10 @@ import 'package:no_hit/main.dart';
 import 'package:package_info_plus/package_info_plus.dart' as package_info;
 
 class CustomNavigation extends StatelessWidget {
-  const CustomNavigation({super.key});
+  final MenuItem? selectedItem;
+  final ValueChanged<MenuItem>? onItemSelected;
+
+  const CustomNavigation({super.key, this.selectedItem, this.onItemSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +24,31 @@ class CustomNavigation extends StatelessWidget {
                 children: [
                   cabeceraMenu(color),
                   const SizedBox(height: 16),
-                  const _ItemMenu(item: MenuItem.inicio),
-                  const _ItemMenu(item: MenuItem.juegos),
-                  const _ItemMenu(item: MenuItem.jugadores),
-                  const _ItemMenu(item: MenuItem.partidas),
-                  const _ItemMenu(item: MenuItem.favoritos),
+                  _ItemMenu(
+                    item: MenuItem.inicio,
+                    isSelected: selectedItem == MenuItem.inicio,
+                    onTap: () => _onTapItem(context, MenuItem.inicio),
+                  ),
+                  _ItemMenu(
+                    item: MenuItem.juegos,
+                    isSelected: selectedItem == MenuItem.juegos,
+                    onTap: () => _onTapItem(context, MenuItem.juegos),
+                  ),
+                  _ItemMenu(
+                    item: MenuItem.jugadores,
+                    isSelected: selectedItem == MenuItem.jugadores,
+                    onTap: () => _onTapItem(context, MenuItem.jugadores),
+                  ),
+                  _ItemMenu(
+                    item: MenuItem.partidas,
+                    isSelected: selectedItem == MenuItem.partidas,
+                    onTap: () => _onTapItem(context, MenuItem.partidas),
+                  ),
+                  _ItemMenu(
+                    item: MenuItem.favoritos,
+                    isSelected: selectedItem == MenuItem.favoritos,
+                    onTap: () => _onTapItem(context, MenuItem.favoritos),
+                  ),
                   const SizedBox(height: 8),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -42,16 +65,51 @@ class CustomNavigation extends StatelessWidget {
                       style: styleTexto.titleMedium?.copyWith(color: color.tertiary),
                     ),
                   ),
-                  const _ItemMenu(item: MenuItem.preguntasFrecuentes),
-                  const _ItemMenu(item: MenuItem.aplicacion),
-                  const _ItemMenu(item: MenuItem.comunidad),
-                  const _ItemMenu(item: MenuItem.desarrollador),
+                  _ItemMenu(
+                    item: MenuItem.preguntasFrecuentes,
+                    isSelected: selectedItem == MenuItem.preguntasFrecuentes,
+                    onTap: () => _onTapItem(context, MenuItem.preguntasFrecuentes),
+                  ),
+                  _ItemMenu(
+                    item: MenuItem.aplicacion,
+                    isSelected: selectedItem == MenuItem.aplicacion,
+                    onTap: () => _onTapItem(context, MenuItem.aplicacion),
+                  ),
+                  _ItemMenu(
+                    item: MenuItem.comunidad,
+                    isSelected: selectedItem == MenuItem.comunidad,
+                    onTap: () => _onTapItem(context, MenuItem.comunidad),
+                  ),
+                  _ItemMenu(
+                    item: MenuItem.desarrollador,
+                    isSelected: selectedItem == MenuItem.desarrollador,
+                    onTap: () => _onTapItem(context, MenuItem.desarrollador),
+                  ),
                 ],
               ),
             ),
             _FooterVersion(color: color),
           ],
         ),
+      ),
+    );
+  }
+
+  void _onTapItem(BuildContext context, MenuItem item) {
+    Navigator.of(context).pop();
+
+    if (onItemSelected != null) {
+      onItemSelected!(item);
+      return;
+    }
+
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, ___) => FadeTransition(
+          opacity: animation,
+          child: item.page,
+        ),
+        transitionDuration: const Duration(milliseconds: 300),
       ),
     );
   }
@@ -79,8 +137,10 @@ class CustomNavigation extends StatelessWidget {
 
 class _ItemMenu extends StatelessWidget {
   final MenuItem item;
+  final bool isSelected;
+  final VoidCallback onTap;
 
-  const _ItemMenu({required this.item});
+  const _ItemMenu({required this.item, required this.isSelected, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -92,27 +152,21 @@ class _ItemMenu extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {
-            Navigator.of(context).push(
-              PageRouteBuilder(
-                pageBuilder: (context, animation, ___) => FadeTransition(
-                  opacity: animation,
-                  child: item.page,
-                ),
-                transitionDuration: const Duration(milliseconds: 300),
-              ),
-            );
-          },
+          onTap: isSelected ? null : onTap,
           borderRadius: BorderRadius.circular(12),
-          splashColor: color.tertiary.withValues(alpha: 0.15),
-          highlightColor: Colors.transparent,
-          child: Padding(
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 180),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: isSelected ? color.tertiary.withValues(alpha: 0.3) : Colors.transparent,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: isSelected ? color.tertiary : Colors.transparent),
+            ),
             child: Row(
               children: [
                 Icon(
                   item.icon,
-                  color: color.tertiary,
+                  color: isSelected ? color.onSurfaceVariant : color.tertiary,
                   size: 24,
                 ),
                 const SizedBox(width: 16),
@@ -120,15 +174,10 @@ class _ItemMenu extends StatelessWidget {
                   child: Text(
                     item.title,
                     style: textTheme.bodyLarge?.copyWith(
-                      color: color.tertiary,
-                      fontWeight: FontWeight.w500,
+                      color: isSelected ? color.onSurfaceVariant : color.tertiary,
+                      fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                     ),
                   ),
-                ),
-                Icon(
-                  Icons.chevron_right_rounded,
-                  color: color.onTertiary.withValues(alpha: 0.5),
-                  size: 20,
                 ),
               ],
             ),

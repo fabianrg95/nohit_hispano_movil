@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/helpers/human_format.dart';
 import 'package:no_hit/infraestructure/dto/dtos.dart';
+import 'package:no_hit/infraestructure/enums/menu/menu_items.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
@@ -88,7 +89,7 @@ class PartidasViewState extends ConsumerState<PartidasView> {
         },
         child: SafeArea(
           child: Scaffold(
-            drawer: const CustomNavigation(),
+            drawer: const CustomNavigation(selectedItem: MenuItem.partidas),
             appBar: _titulo(context),
             body: RefreshIndicator(
               onRefresh: () => _reiniciarPartidas(),

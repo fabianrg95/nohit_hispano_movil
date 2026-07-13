@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:no_hit/infraestructure/enums/menu/menu_items.dart';
 
 import 'package:no_hit/infraestructure/dto/juego/juego_dto.dart';
 import 'package:no_hit/infraestructure/dto/jugador/jugador_dto.dart';
@@ -29,7 +30,7 @@ class FavoritosView extends ConsumerWidget {
             forceMaterialTransparency: true,
             centerTitle: true,
           ),
-          drawer: const CustomNavigation(),
+          drawer: const CustomNavigation(selectedItem: MenuItem.favoritos),
           body: const TapbarFavoritos(),
         ),
       ),

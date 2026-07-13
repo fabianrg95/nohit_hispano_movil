@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_hit/config/helpers/app_info.dart';
+import 'package:no_hit/infraestructure/enums/menu/menu_items.dart';
 import 'package:no_hit/infraestructure/providers/providers.dart';
 
 import 'package:no_hit/presentation/views/introduccion/introduccion_view.dart';
@@ -87,7 +88,7 @@ class InicioViewState extends ConsumerState<InicioView> with SingleTickerProvide
               forceMaterialTransparency: true,
             ),
             extendBodyBehindAppBar: true,
-            drawer: const CustomNavigation(),
+            drawer: const CustomNavigation(selectedItem: MenuItem.inicio),
             body: RefreshIndicator(
                 onRefresh: () => _actualizarConteos(reload: true),
                 color: color.surfaceTint,

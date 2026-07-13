@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:no_hit/infraestructure/enums/menu/menu_items.dart';
 
 import 'package:no_hit/presentation/views/informacion/informacion_data.dart';
 import 'package:no_hit/presentation/views/inicio/inicio_view.dart';
@@ -20,7 +21,7 @@ class PreguntasFrecuentesView extends StatelessWidget {
       },
       child: SafeArea(
         child: Scaffold(
-          drawer: const CustomNavigation(),
+          drawer: const CustomNavigation(selectedItem: MenuItem.preguntasFrecuentes),
           appBar: AppBar(
             forceMaterialTransparency: true,
             title: Text(AppLocalizations.of(context)!.preguntas_frecuentes),
